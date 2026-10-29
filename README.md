@@ -67,11 +67,14 @@ See the [serving guide](docs/serving.md) for deployment and vLLM path preparatio
 
 ## Adapters and compatibility
 
-| Runtime | Tasks | Serving backend |
-| --- | --- | --- |
-| `transformers` | Generation, text-to-text, classification, raw features | Python / HF pipeline; CPU or GPU |
-| `vllm` | Text generation | Native Triton vLLM backend; GPU |
-| `tensorrt-llm` | Text generation | Python / LLM API with PyTorch backend; GPU |
+| Builder adapter (`runtime`) | Triton backend | Model execution | Tasks | Device |
+| --- | --- | --- | --- | --- |
+| `transformers` | Python | Hugging Face Transformers with PyTorch | Generation, text-to-text, classification, raw features | CPU or GPU |
+| `vllm` | vLLM | vLLM engine | Text generation | GPU |
+| `tensorrt-llm` | Python | TensorRT-LLM LLM API with PyTorch backend | Text generation | GPU |
+
+The API parameter `runtime` selects the builder adapter. The Triton backend and
+model execution framework are separate layers.
 
 Recognized multimodal checkpoints and custom model Python are outside the current
 adapter scope. See [runtime limitations](docs/serving.md#runtimes-and-request-contracts).

@@ -66,6 +66,13 @@ def run_case(args, runtime, case_name, base_image, run_dir, cache, revisions, *,
             ):
                 arguments += ["--requirement", requirement]
         command(arguments, log)
+        if runtime == "vllm":
+            # Leave GPU memory for the desktop during this small serving test.
+            settings_path = repository / model_name / "1/model.json"
+            settings = json.loads(settings_path.read_text(encoding="utf-8"))
+            settings["gpu_memory_utilization"] = 0.5
+            write_json(settings_path, settings)
+            result["runtime_settings"] = {"gpu_memory_utilization": 0.5}
         requirements_path = repository / "requirements.txt"
         result["requirements"] = {
             "file": str(requirements_path),

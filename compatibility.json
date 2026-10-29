@@ -1,0 +1,2210 @@
+{
+  "schema_version": 1,
+  "policy": {
+    "recent_per_runtime": 1,
+    "retain_releases": [
+      "26.06"
+    ]
+  },
+  "image_matrix_source": {
+    "url": "https://github.com/triton-inference-server/server/blob/eb74dea5d400b92f54eacbd5f3f84903c786e4cd/docs/introduction/compatibility.md",
+    "ref": "main",
+    "commit": "eb74dea5d400b92f54eacbd5f3f84903c786e4cd",
+    "sha256": "514d7e8a54526e6491428a1c76dfe7528c1e0fb92c3077aa9d1699a8893bec70"
+  },
+  "scope": "Text generation candidates only; consult versioned sources for all conditions. Architecture listing does not verify quantization, GPU, custom code or adapter compatibility.",
+  "images": [
+    {
+      "runtime": "vllm",
+      "release": "26.09",
+      "image": "nvcr.io/nvidia/tritonserver:26.09-vllm-python-py3",
+      "engine_version": "0.29.0+3b480f30.nv26.9.68265578",
+      "cuda_version": "13.4.1.012",
+      "driver_version_reported": "615.71.09",
+      "python_version": "Python 3.12.3",
+      "architectures": [
+        {
+          "architecture": "AXK1ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "AfmoeForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "ApertusForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "ArceeForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "BailingMoeForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "BailingMoeV2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "BailingMoeV2_5ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "BailingMoeV3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "BloomForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "ChatGLMForConditionalGeneration",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "not_covered",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "ChatGLMModel",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "not_covered",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Cohere2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Cohere2MoeForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "CohereForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "CwmForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "DbrxForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "DeciLMForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "DeepseekForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "DeepseekV2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "DeepseekV32ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "DeepseekV3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "DeepseekV4ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "DotsOCRForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Ernie4_5ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Ernie4_5_MoeForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Exaone4ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "ExaoneForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "ExaoneMoeForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "FalconForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "FalconH1ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "FalconMambaForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "FlexOlmoForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "transformers",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "GPT2LMHeadModel",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "GPTBigCodeForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "transformers",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "GPTJForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "GPTNeoXForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Gemma2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Gemma3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Gemma3nForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Gemma4ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "GemmaForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Glm4ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Glm4MoeForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Glm4MoeLiteForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "GlmForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "GlmMoeDsaForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "GptOssForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "GraniteForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "GraniteMoeForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "GraniteMoeHybridForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "GraniteMoeSWAForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "GraniteMoeSharedForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "GraniteSWAForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "HYV3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "HYV4ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "HrmTextForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "HunYuanDenseV1ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "transformers",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "HunYuanMoEV1ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "transformers",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "HyperCLOVAXForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "IQuestCoderForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "IQuestLoopCoderForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "InternLM2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "InternLM3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Jais2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "JambaForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "KimiLinearForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Lfm2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Lfm2MoeForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "LlamaForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "LongcatFlashForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Mamba2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MambaForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MellumForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MiMoForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MiMoV2FlashForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MiMoV2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MiniCPM3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MiniCPMForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MiniMaxM2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MiniMaxM3SparseForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MistralForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MistralLarge3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MixtralForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "NemotronForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "NemotronHForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "OPTForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Olmo2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "transformers",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Olmo3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "transformers",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "OlmoForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "transformers",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "OlmoHybridForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "OlmoeForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "OrionForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "PanguEmbeddedForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "PanguProMoEV2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "PanguUltraMoEForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Param2MoEForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Phi3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "PhiForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "PhiMoEForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Plamo3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Qwen2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Qwen2MoeForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Qwen3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Qwen3MoeForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Qwen3NextForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Rnj1ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "SarvamMLAForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "SarvamMoEForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "SeedOssForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "SmolLM3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "transformers",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "SolarForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "StableLmForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Starcoder2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "transformers",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Step1ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Step3p5ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "TeleChat2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "TeleChat3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "TeleFLMForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "VaultGemmaForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "transformers",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Zamba2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        }
+      ],
+      "architecture_status": "upstream_documented",
+      "model_source": {
+        "url": "https://github.com/vllm-project/vllm/blob/98dff2a81d747d1dba01a47f939f48c3526d4206/docs/models/supported_models.md",
+        "ref": "v0.29.0",
+        "commit": "98dff2a81d747d1dba01a47f939f48c3526d4206",
+        "sha256": "d982e37f455ad3771682904b12991d5728eec737264a9ba1596285c56cc0a0ee"
+      },
+      "builder_test_status": "not_tested",
+      "quantization_status": "not_evaluated",
+      "gpu_support_status": "not_evaluated",
+      "upstream_version": "0.29.0",
+      "version_match": "upstream_base_only"
+    },
+    {
+      "runtime": "vllm",
+      "release": "26.06",
+      "image": "nvcr.io/nvidia/tritonserver:26.06-vllm-python-py3",
+      "engine_version": "0.22.1+7b9cb5b7.nv26.6.55098374",
+      "cuda_version": "13.3.0.035",
+      "driver_version_reported": "610.43.02",
+      "python_version": "Python 3.12.3",
+      "architectures": [
+        {
+          "architecture": "AXK1ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "AfmoeForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "ApertusForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "AquilaForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "ArceeForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "ArcticForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "BaiChuanForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "BailingMoeForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "BailingMoeV2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "BailingMoeV2_5ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "BambaForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "BloomForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "ChatGLMForConditionalGeneration",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "not_covered",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "ChatGLMModel",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "not_covered",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Cohere2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Cohere2MoeForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "CohereForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "CwmForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "DbrxForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "DeciLMForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "DeepseekForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "DeepseekV2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "DeepseekV3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "DeepseekV4ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Dots1ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "DotsOCRForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Ernie4_5ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Ernie4_5_MoeForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Exaone4ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "ExaoneForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "ExaoneMoEForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Fairseq2LlamaForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "FalconForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "FalconH1ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "FalconMambaForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "FlexOlmoForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "GPT2LMHeadModel",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "GPTBigCodeForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "GPTJForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "GPTNeoXForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Gemma2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Gemma3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Gemma3nForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Gemma4ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "GemmaForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Glm4ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Glm4MoeForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Glm4MoeLiteForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "GlmForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "GptOssForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "GraniteForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "GraniteMoeForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "GraniteMoeHybridForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "GraniteMoeSharedForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "GritLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "not_covered",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Grok1ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Grok1ModelForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "HYV3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "HunYuanDenseV1ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "HunYuanMoEV1ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "HyperCLOVAXForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "IQuestCoderForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "IQuestLoopCoderForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "InternLM2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "InternLM3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "InternLMForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "JAISLMHeadModel",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "not_covered",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Jais2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "JambaForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "KimiLinearForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Lfm2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Lfm2MoeForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "LlamaForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "LongcatFlashForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MPTForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Mamba2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MambaForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MellumForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MiMoForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MiMoV2FlashForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MiMoV2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MiniCPM3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MiniCPMForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MiniMaxForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MiniMaxM1ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MiniMaxM2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MiniMaxText01ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MistralForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MistralLarge3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MixtralForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "NemotronForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "NemotronHForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "OPTForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Olmo2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Olmo3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "OlmoForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "OlmoHybridForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "OlmoeForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "OrionForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "OuroForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "PanguEmbeddedForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "PanguProMoEV2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "PanguUltraMoEForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Param2MoEForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "PersimmonForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Phi3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "PhiForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "PhiMoEForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Plamo2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Plamo3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "QWenLMHeadModel",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "not_covered",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Qwen2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Qwen2MoeForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Qwen3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Qwen3MoeForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Qwen3NextForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "RWForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Rnj1ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "SarvamMLAForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "SarvamMoEForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "SeedOssForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "SmolLM3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "transformers",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "SolarForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "StableLMEpochForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "StableLmForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Starcoder2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Step1ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Step3p5ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "TeleChat2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "TeleChat3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "TeleChatForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "TeleFLMForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "XverseForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Zamba2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        }
+      ],
+      "architecture_status": "upstream_documented",
+      "model_source": {
+        "url": "https://github.com/vllm-project/vllm/blob/0decac0d96c42b49572498019f0a0e3600f50398/docs/models/supported_models.md",
+        "ref": "v0.22.1",
+        "commit": "0decac0d96c42b49572498019f0a0e3600f50398",
+        "sha256": "d923af234bdb4af2fc15beafa5f0c9beb3a44e971c96916ad1f827fe704fa569"
+      },
+      "builder_test_status": "not_tested",
+      "quantization_status": "not_evaluated",
+      "gpu_support_status": "not_evaluated",
+      "upstream_version": "0.22.1",
+      "version_match": "upstream_base_only"
+    },
+    {
+      "runtime": "tensorrt-llm",
+      "release": "26.07",
+      "image": "nvcr.io/nvidia/tritonserver:26.07-trtllm-python-py3",
+      "engine_version": "1.2.1",
+      "cuda_version": "13.1.0.036",
+      "driver_version_reported": "590.44.01",
+      "python_version": "Python 3.12.3",
+      "architectures": [
+        {
+          "architecture": "BertForSequenceClassification",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "not_covered",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "DeciLMForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "DeepseekV32ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "DeepseekV3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Exaone4ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Gemma3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "GptOssForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Llama4ForConditionalGeneration",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "not_covered",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "LlamaForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MiniMaxM2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MistralForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MixtralForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MllamaForConditionalGeneration",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "not_covered",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "NemotronForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "NemotronHForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "NemotronNASForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Phi3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Qwen2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Qwen2ForProcessRewardModel",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "not_covered",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Qwen2ForRewardModel",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "not_covered",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Qwen3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Qwen3MoeForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Qwen3NextForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        }
+      ],
+      "architecture_status": "upstream_documented",
+      "model_source": {
+        "url": "https://github.com/NVIDIA/TensorRT-LLM/blob/376f7e1bd8ed543f75014309e3fd4b237e9b0e73/docs/source/models/supported-models.md",
+        "ref": "v1.2.1",
+        "commit": "376f7e1bd8ed543f75014309e3fd4b237e9b0e73",
+        "sha256": "e145c90d930ac01e2037dbad60ece63b420369fa9ce74e6378e87bc88dc5c378"
+      },
+      "builder_test_status": "not_tested",
+      "quantization_status": "not_evaluated",
+      "gpu_support_status": "not_evaluated",
+      "upstream_version": "1.2.1",
+      "version_match": "release_version"
+    },
+    {
+      "runtime": "tensorrt-llm",
+      "release": "26.06",
+      "image": "nvcr.io/nvidia/tritonserver:26.06-trtllm-python-py3",
+      "engine_version": "1.2.1",
+      "cuda_version": "13.1.0.036",
+      "driver_version_reported": "590.44.01",
+      "python_version": "Python 3.12.3",
+      "architectures": [
+        {
+          "architecture": "BertForSequenceClassification",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "not_covered",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "DeciLMForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "DeepseekV32ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "DeepseekV3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Exaone4ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Gemma3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "GptOssForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Llama4ForConditionalGeneration",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "not_covered",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "LlamaForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MiniMaxM2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MistralForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MixtralForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "MllamaForConditionalGeneration",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "not_covered",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "NemotronForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "NemotronHForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "NemotronNASForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Phi3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Qwen2ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Qwen2ForProcessRewardModel",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "not_covered",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Qwen2ForRewardModel",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "not_covered",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Qwen3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Qwen3MoeForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Qwen3NextForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "pytorch",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        }
+      ],
+      "architecture_status": "upstream_documented",
+      "model_source": {
+        "url": "https://github.com/NVIDIA/TensorRT-LLM/blob/376f7e1bd8ed543f75014309e3fd4b237e9b0e73/docs/source/models/supported-models.md",
+        "ref": "v1.2.1",
+        "commit": "376f7e1bd8ed543f75014309e3fd4b237e9b0e73",
+        "sha256": "e145c90d930ac01e2037dbad60ece63b420369fa9ce74e6378e87bc88dc5c378"
+      },
+      "builder_test_status": "not_tested",
+      "quantization_status": "not_evaluated",
+      "gpu_support_status": "not_evaluated",
+      "upstream_version": "1.2.1",
+      "version_match": "release_version"
+    }
+  ]
+}

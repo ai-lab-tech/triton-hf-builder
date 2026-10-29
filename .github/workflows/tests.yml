@@ -25,6 +25,7 @@ jobs:
           ruff check src scripts tests
           ruff format --check src scripts tests
           python scripts/check_release.py
+          python scripts/update_compatibility.py --check
           if [ -n "$RELEASE_TAG" ]; then
             python scripts/check_release.py --tag "$RELEASE_TAG"
           fi

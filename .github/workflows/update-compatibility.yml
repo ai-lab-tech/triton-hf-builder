@@ -1,0 +1,54 @@
+name: Update manufacturer compatibility
+
+on:
+  schedule:
+    - cron: '23 6 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: update-manufacturer-compatibility
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: github.repository == 'ai-lab-tech/triton-hf-builder'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.repository.default_branch }}
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install '.[dev]'
+      - name: Refresh official versioned sources
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: python scripts/update_compatibility.py --summary "$RUNNER_TEMP/compatibility-pr.md"
+      # GITHUB_TOKEN-created PRs do not trigger ordinary PR workflows.
+      # Validate the generated update here before opening/updating the PR.
+      - name: Validate generated update
+        run: |
+          python scripts/update_compatibility.py --check
+          python -m unittest discover -s tests -v
+          ruff check src scripts tests
+          ruff format --check src scripts tests
+          git diff --check
+      - name: Propose catalog update
+        uses: peter-evans/create-pull-request@v8
+        with:
+          branch: automation/manufacturer-compatibility
+          delete-branch: true
+          add-paths: |
+            compatibility.json
+            README.md
+          commit-message: 'docs: refresh manufacturer compatibility catalog'
+          title: 'Update manufacturer image and architecture compatibility'
+          body-path: ${{ runner.temp }}/compatibility-pr.md

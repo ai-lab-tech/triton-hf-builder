@@ -195,6 +195,58 @@ a forced process termination can leave a `.triton-hf-*` temporary directory.
 
 ## Adapters and compatibility
 
+### Manufacturer compatibility catalog
+
+<!-- compatibility:begin -->
+
+Manufacturer documentation, **not our serving-test results**. The full [catalog](compatibility.json) records architecture names and immutable sources.
+
+| Runtime / image tag | Engine version | CUDA / reported driver | Architecture reference | Our tests |
+| --- | --- | --- | --- | --- |
+| `26.09-vllm-python-py3` | `0.29.0+3b480f30.nv26.9.68265578` | 13.4.1.012 / 615.71.09 | [118 text-generation candidates](https://github.com/vllm-project/vllm/blob/98dff2a81d747d1dba01a47f939f48c3526d4206/docs/models/supported_models.md) (upstream base; NVIDIA build differs) | Not tested |
+| `26.06-vllm-python-py3` | `0.22.1+7b9cb5b7.nv26.6.55098374` | 13.3.0.035 / 610.43.02 | [129 text-generation candidates](https://github.com/vllm-project/vllm/blob/0decac0d96c42b49572498019f0a0e3600f50398/docs/models/supported_models.md) (upstream base; NVIDIA build differs) | Not tested |
+| `26.07-trtllm-python-py3` | `1.2.1` | 13.1.0.036 / 590.44.01 | [18 text-generation candidates](https://github.com/NVIDIA/TensorRT-LLM/blob/376f7e1bd8ed543f75014309e3fd4b237e9b0e73/docs/source/models/supported-models.md) | Not tested |
+| `26.06-trtllm-python-py3` | `1.2.1` | 13.1.0.036 / 590.44.01 | [18 text-generation candidates](https://github.com/NVIDIA/TensorRT-LLM/blob/376f7e1bd8ed543f75014309e3fd4b237e9b0e73/docs/source/models/supported-models.md) | Not tested |
+
+Image versions: [NVIDIA matrix](https://github.com/triton-inference-server/server/blob/eb74dea5d400b92f54eacbd5f3f84903c786e4cd/docs/introduction/compatibility.md). The reported driver is copied from the matrix, not inferred as a universal minimum.
+
+Quantization and GPU support remain **not evaluated** here. Follow each versioned architecture source for feature matrices, footnotes and hardware restrictions. Absence from this catalog means unknown or outside our adapter scope, not unsupported.
+
+<details>
+<summary>26.09-vllm-python-py3: architecture names</summary>
+
+`AXK1ForCausalLM`, `AfmoeForCausalLM`, `ApertusForCausalLM`, `ArceeForCausalLM`, `BailingMoeForCausalLM`, `BailingMoeV2ForCausalLM`, `BailingMoeV2_5ForCausalLM`, `BailingMoeV3ForCausalLM`, `BloomForCausalLM`, `Cohere2ForCausalLM`, `Cohere2MoeForCausalLM`, `CohereForCausalLM`, `CwmForCausalLM`, `DbrxForCausalLM`, `DeciLMForCausalLM`, `DeepseekForCausalLM`, `DeepseekV2ForCausalLM`, `DeepseekV32ForCausalLM`, `DeepseekV3ForCausalLM`, `DeepseekV4ForCausalLM`, `DotsOCRForCausalLM`, `Ernie4_5ForCausalLM`, `Ernie4_5_MoeForCausalLM`, `Exaone4ForCausalLM`, `ExaoneForCausalLM`, `ExaoneMoeForCausalLM`, `FalconForCausalLM`, `FalconH1ForCausalLM`, `FalconMambaForCausalLM`, `FlexOlmoForCausalLM`, `GPT2LMHeadModel`, `GPTBigCodeForCausalLM`, `GPTJForCausalLM`, `GPTNeoXForCausalLM`, `Gemma2ForCausalLM`, `Gemma3ForCausalLM`, `Gemma3nForCausalLM`, `Gemma4ForCausalLM`, `GemmaForCausalLM`, `Glm4ForCausalLM`, `Glm4MoeForCausalLM`, `Glm4MoeLiteForCausalLM`, `GlmForCausalLM`, `GlmMoeDsaForCausalLM`, `GptOssForCausalLM`, `GraniteForCausalLM`, `GraniteMoeForCausalLM`, `GraniteMoeHybridForCausalLM`, `GraniteMoeSWAForCausalLM`, `GraniteMoeSharedForCausalLM`, `GraniteSWAForCausalLM`, `HYV3ForCausalLM`, `HYV4ForCausalLM`, `HrmTextForCausalLM`, `HunYuanDenseV1ForCausalLM`, `HunYuanMoEV1ForCausalLM`, `HyperCLOVAXForCausalLM`, `IQuestCoderForCausalLM`, `IQuestLoopCoderForCausalLM`, `InternLM2ForCausalLM`, `InternLM3ForCausalLM`, `Jais2ForCausalLM`, `JambaForCausalLM`, `KimiLinearForCausalLM`, `Lfm2ForCausalLM`, `Lfm2MoeForCausalLM`, `LlamaForCausalLM`, `LongcatFlashForCausalLM`, `Mamba2ForCausalLM`, `MambaForCausalLM`, `MellumForCausalLM`, `MiMoForCausalLM`, `MiMoV2FlashForCausalLM`, `MiMoV2ForCausalLM`, `MiniCPM3ForCausalLM`, `MiniCPMForCausalLM`, `MiniMaxM2ForCausalLM`, `MiniMaxM3SparseForCausalLM`, `MistralForCausalLM`, `MistralLarge3ForCausalLM`, `MixtralForCausalLM`, `NemotronForCausalLM`, `NemotronHForCausalLM`, `OPTForCausalLM`, `Olmo2ForCausalLM`, `Olmo3ForCausalLM`, `OlmoForCausalLM`, `OlmoHybridForCausalLM`, `OlmoeForCausalLM`, `OrionForCausalLM`, `PanguEmbeddedForCausalLM`, `PanguProMoEV2ForCausalLM`, `PanguUltraMoEForCausalLM`, `Param2MoEForCausalLM`, `Phi3ForCausalLM`, `PhiForCausalLM`, `PhiMoEForCausalLM`, `Plamo3ForCausalLM`, `Qwen2ForCausalLM`, `Qwen2MoeForCausalLM`, `Qwen3ForCausalLM`, `Qwen3MoeForCausalLM`, `Qwen3NextForCausalLM`, `Rnj1ForCausalLM`, `SarvamMLAForCausalLM`, `SarvamMoEForCausalLM`, `SeedOssForCausalLM`, `SmolLM3ForCausalLM`, `SolarForCausalLM`, `StableLmForCausalLM`, `Starcoder2ForCausalLM`, `Step1ForCausalLM`, `Step3p5ForCausalLM`, `TeleChat2ForCausalLM`, `TeleChat3ForCausalLM`, `TeleFLMForCausalLM`, `VaultGemmaForCausalLM`, `Zamba2ForCausalLM`
+
+</details>
+
+<details>
+<summary>26.06-vllm-python-py3: architecture names</summary>
+
+`AXK1ForCausalLM`, `AfmoeForCausalLM`, `ApertusForCausalLM`, `AquilaForCausalLM`, `ArceeForCausalLM`, `ArcticForCausalLM`, `BaiChuanForCausalLM`, `BailingMoeForCausalLM`, `BailingMoeV2ForCausalLM`, `BailingMoeV2_5ForCausalLM`, `BambaForCausalLM`, `BloomForCausalLM`, `Cohere2ForCausalLM`, `Cohere2MoeForCausalLM`, `CohereForCausalLM`, `CwmForCausalLM`, `DbrxForCausalLM`, `DeciLMForCausalLM`, `DeepseekForCausalLM`, `DeepseekV2ForCausalLM`, `DeepseekV3ForCausalLM`, `DeepseekV4ForCausalLM`, `Dots1ForCausalLM`, `DotsOCRForCausalLM`, `Ernie4_5ForCausalLM`, `Ernie4_5_MoeForCausalLM`, `Exaone4ForCausalLM`, `ExaoneForCausalLM`, `ExaoneMoEForCausalLM`, `Fairseq2LlamaForCausalLM`, `FalconForCausalLM`, `FalconH1ForCausalLM`, `FalconMambaForCausalLM`, `FlexOlmoForCausalLM`, `GPT2LMHeadModel`, `GPTBigCodeForCausalLM`, `GPTJForCausalLM`, `GPTNeoXForCausalLM`, `Gemma2ForCausalLM`, `Gemma3ForCausalLM`, `Gemma3nForCausalLM`, `Gemma4ForCausalLM`, `GemmaForCausalLM`, `Glm4ForCausalLM`, `Glm4MoeForCausalLM`, `Glm4MoeLiteForCausalLM`, `GlmForCausalLM`, `GptOssForCausalLM`, `GraniteForCausalLM`, `GraniteMoeForCausalLM`, `GraniteMoeHybridForCausalLM`, `GraniteMoeSharedForCausalLM`, `Grok1ForCausalLM`, `Grok1ModelForCausalLM`, `HYV3ForCausalLM`, `HunYuanDenseV1ForCausalLM`, `HunYuanMoEV1ForCausalLM`, `HyperCLOVAXForCausalLM`, `IQuestCoderForCausalLM`, `IQuestLoopCoderForCausalLM`, `InternLM2ForCausalLM`, `InternLM3ForCausalLM`, `InternLMForCausalLM`, `Jais2ForCausalLM`, `JambaForCausalLM`, `KimiLinearForCausalLM`, `Lfm2ForCausalLM`, `Lfm2MoeForCausalLM`, `LlamaForCausalLM`, `LongcatFlashForCausalLM`, `MPTForCausalLM`, `Mamba2ForCausalLM`, `MambaForCausalLM`, `MellumForCausalLM`, `MiMoForCausalLM`, `MiMoV2FlashForCausalLM`, `MiMoV2ForCausalLM`, `MiniCPM3ForCausalLM`, `MiniCPMForCausalLM`, `MiniMaxForCausalLM`, `MiniMaxM1ForCausalLM`, `MiniMaxM2ForCausalLM`, `MiniMaxText01ForCausalLM`, `MistralForCausalLM`, `MistralLarge3ForCausalLM`, `MixtralForCausalLM`, `NemotronForCausalLM`, `NemotronHForCausalLM`, `OPTForCausalLM`, `Olmo2ForCausalLM`, `Olmo3ForCausalLM`, `OlmoForCausalLM`, `OlmoHybridForCausalLM`, `OlmoeForCausalLM`, `OrionForCausalLM`, `OuroForCausalLM`, `PanguEmbeddedForCausalLM`, `PanguProMoEV2ForCausalLM`, `PanguUltraMoEForCausalLM`, `Param2MoEForCausalLM`, `PersimmonForCausalLM`, `Phi3ForCausalLM`, `PhiForCausalLM`, `PhiMoEForCausalLM`, `Plamo2ForCausalLM`, `Plamo3ForCausalLM`, `Qwen2ForCausalLM`, `Qwen2MoeForCausalLM`, `Qwen3ForCausalLM`, `Qwen3MoeForCausalLM`, `Qwen3NextForCausalLM`, `RWForCausalLM`, `Rnj1ForCausalLM`, `SarvamMLAForCausalLM`, `SarvamMoEForCausalLM`, `SeedOssForCausalLM`, `SmolLM3ForCausalLM`, `SolarForCausalLM`, `StableLMEpochForCausalLM`, `StableLmForCausalLM`, `Starcoder2ForCausalLM`, `Step1ForCausalLM`, `Step3p5ForCausalLM`, `TeleChat2ForCausalLM`, `TeleChat3ForCausalLM`, `TeleChatForCausalLM`, `TeleFLMForCausalLM`, `XverseForCausalLM`, `Zamba2ForCausalLM`
+
+</details>
+
+<details>
+<summary>26.07-trtllm-python-py3: architecture names</summary>
+
+`DeciLMForCausalLM`, `DeepseekV32ForCausalLM`, `DeepseekV3ForCausalLM`, `Exaone4ForCausalLM`, `Gemma3ForCausalLM`, `GptOssForCausalLM`, `LlamaForCausalLM`, `MiniMaxM2ForCausalLM`, `MistralForCausalLM`, `MixtralForCausalLM`, `NemotronForCausalLM`, `NemotronHForCausalLM`, `NemotronNASForCausalLM`, `Phi3ForCausalLM`, `Qwen2ForCausalLM`, `Qwen3ForCausalLM`, `Qwen3MoeForCausalLM`, `Qwen3NextForCausalLM`
+
+</details>
+
+<details>
+<summary>26.06-trtllm-python-py3: architecture names</summary>
+
+`DeciLMForCausalLM`, `DeepseekV32ForCausalLM`, `DeepseekV3ForCausalLM`, `Exaone4ForCausalLM`, `Gemma3ForCausalLM`, `GptOssForCausalLM`, `LlamaForCausalLM`, `MiniMaxM2ForCausalLM`, `MistralForCausalLM`, `MixtralForCausalLM`, `NemotronForCausalLM`, `NemotronHForCausalLM`, `NemotronNASForCausalLM`, `Phi3ForCausalLM`, `Qwen2ForCausalLM`, `Qwen3ForCausalLM`, `Qwen3MoeForCausalLM`, `Qwen3NextForCausalLM`
+
+</details>
+
+<!-- compatibility:end -->
+
+The updater tracks the latest documented image per runtime plus release 26.06.
+These are reference images, not automatically recommended or tested releases.
+See [catalog maintenance](scripts/README.md#compatibility-catalog-maintenance)
+for automatic update PRs, sources and limitations.
+
 | Runtime | Tasks | Generated adapter |
 | --- | --- | --- |
 | `transformers` | Text generation, text-to-text generation, classification, feature extraction | Triton Python backend, Hugging Face pipeline |

@@ -134,3 +134,84 @@ saving logs, including failures. `--keep-containers` retains them for debugging.
 Images, caches and artifacts remain available. Startup timeout defaults to 900
 seconds, inference to 300 seconds, and image build/pull to 3600 seconds. Each has
 a corresponding CLI option; see `python scripts/test_serving.py --help`.
+
+## Compatibility catalog maintenance
+
+The manufacturer catalog is independent of serving tests. It downloads small
+official documentation files; it does not download weights, pull Docker images,
+install serving engines or run inference. No AI service or API key is needed.
+
+```bash
+# Refresh the catalog and generated README block from official sources.
+python scripts/update_compatibility.py
+
+# Verify the saved JSON and README agree, without network access.
+python scripts/update_compatibility.py --check
+```
+
+`compatibility-policy.json` selects how many recent images to track per runtime
+and which releases to retain. Initially this is one latest documented image per
+runtime plus 26.06. Updating this policy does not change builder, extension or
+serving-test image defaults. "Latest documented" is not a recommendation.
+
+The updater follows this chain:
+
+1. NVIDIA's Triton `docs/introduction/compatibility.md` supplies the precise
+   image-to-engine, Python, CUDA and reported driver mapping. The source is pinned
+   to the last commit that changed that file.
+2. The exact engine release tag selects the versioned model document in the
+   official vLLM or TensorRT-LLM repository. Tags are resolved to immutable commits.
+   A NVIDIA-specific version suffix is preserved; an upstream base-version match
+   is explicitly weaker than documentation for the exact vendor build.
+3. Only the vLLM text-generation sections and TensorRT-LLM PyTorch-backend model
+   table are imported. Each architecture retains the modeling backend and builder
+   scope. The conservative candidate filter accepts `*ForCausalLM` and
+   `GPT2LMHeadModel`; other entries remain `not_covered`, not "unsupported".
+4. `compatibility.json` records source URLs, refs, commit hashes and SHA-256 hashes.
+   The README table and expandable architecture lists are generated from that JSON.
+
+All architecture entries mean **documented upstream**, not "tested with this
+builder". Quantization, GPU support, custom-code requirements and feature
+restrictions remain unverified; follow the immutable model-source links for the
+complete matrices and footnotes. In particular, being listed does not establish
+that a checkpoint works with `trust_remote_code=False` or fits GPU memory.
+The reported driver value is not reinterpreted as the minimum compatible driver.
+Missing architectures can also work through upstream fallback mechanisms; the
+catalog is not a denylist and does not block generation.
+
+Missing exact-release documents remain `unknown`; there is no fallback to current
+`main`/`latest` model documentation. HTTP errors other than 404 and unfamiliar
+table layouts fail the refresh before tracked files are written. This makes format
+changes visible instead of silently publishing an empty or guessed support list.
+Unchanged upstream files yield identical output, avoiding timestamp-only PRs.
+
+### GitHub automation
+
+`.github/workflows/update-compatibility.yml` runs every Monday at 06:23 UTC and can
+also be started with **Actions → Update manufacturer compatibility → Run workflow**.
+Once the workflow is on the default branch, it updates the existing
+`automation/manufacturer-compatibility` PR or opens one when changes exist. Only
+`compatibility.json` and `README.md` are committed. It does not automatically merge.
+
+Enable **Settings → Actions → General → Workflow permissions → Allow GitHub
+Actions to create and approve pull requests** (the organization may control this).
+The workflow needs `contents: write` and `pull-requests: write`; its built-in
+`GITHUB_TOKEN` also authenticates source API reads to avoid anonymous rate limits.
+The token is sent only to the GitHub API, never to raw-content downloads.
+
+PRs created with `GITHUB_TOKEN` normally do not trigger another PR workflow, so
+the updater runs unit tests, lint, formatting and offline catalog consistency
+checks itself before opening the PR. If branch protection requires ordinary PR
+CI, use an appropriately scoped GitHub App token for PR creation or arrange an
+explicit CI run; do not bypass required checks. These GitHub settings are not
+configured by adding workflow files. Scheduled runs may be delayed, and GitHub
+may disable schedules on inactive public repositories; the manual trigger remains
+useful for recovery.
+
+Upstream references:
+
+- [NVIDIA image compatibility matrix](https://github.com/triton-inference-server/server/blob/main/docs/introduction/compatibility.md)
+- [vLLM model documentation](https://github.com/vllm-project/vllm/blob/main/docs/models/supported_models.md)
+- [TensorRT-LLM model documentation](https://github.com/NVIDIA/TensorRT-LLM/blob/main/docs/source/models/supported-models.md)
+- [GitHub scheduled workflows](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows/#schedule)
+- [Automated PR permissions and token behavior](https://github.com/peter-evans/create-pull-request#workflow-permissions)

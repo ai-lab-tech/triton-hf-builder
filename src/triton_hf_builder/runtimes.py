@@ -7,6 +7,7 @@ from importlib.resources import files
 from pathlib import Path
 
 from .inspector import TASKS
+from .model_config import render_model_config
 from .options import BuildOptions
 
 
@@ -37,14 +38,9 @@ class RuntimeAdapter:
         version = model / "1"
         kind = self.instance_kind or ("KIND_GPU" if options.device == "gpu" else "KIND_CPU")
         backend = "python" if self.model_template else self.name
-        config = f'name: "{options.name}"\nbackend: "{backend}"\n'
-        if self.model_template:
-            config += (
-                "max_batch_size: 0\n"
-                'input [{ name: "text_input" data_type: TYPE_STRING dims: [1] }]\n'
-                'output [{ name: "text_output" data_type: TYPE_STRING dims: [1] }]\n'
-            )
-        config += f"instance_group [{{ count: 1 kind: {kind} }}]\n"
+        config = render_model_config(
+            options.name, backend, kind, python_io=self.model_template is not None
+        )
         (model / "config.pbtxt").write_text(config, encoding="utf-8")
         if self.model_template:
             _write_template(self.model_template, version / "model.py")

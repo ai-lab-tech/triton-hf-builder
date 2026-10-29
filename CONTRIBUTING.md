@@ -39,3 +39,8 @@ repositories or test reports. Include provenance for third-party code; model
 licenses remain separate from this project's Apache-2.0 license.
 
 See [RELEASING.md](RELEASING.md) for packaging and publication.
+
+Generate `config.pbtxt` through the official `tritonclient` `ModelConfig` protobuf
+type and `google.protobuf.text_format`, not hand-built strings. Keep target-server
+compatibility checks separate; do not add per-release schema snapshots. Config
+tests parse generated files using the official message type.

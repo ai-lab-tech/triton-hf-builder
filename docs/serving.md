@@ -2,6 +2,23 @@
 
 [Quick start](../README.md#quick-start) · [Python API](python-api.md) · [Real serving tests](../scripts/README.md)
 
+## Configuration format
+
+`config.pbtxt` is generated as the official Triton client's `ModelConfig`
+protobuf message and serialized with `google.protobuf.text_format`. The builder
+parses the result before writing it, rejecting malformed text, unknown fields
+and invalid protobuf field types. Formatting follows Protobuf conventions;
+default scalar values such as `max_batch_size: 0` may be omitted from the text.
+
+The type comes from the installed `tritonclient` package. The builder maintains
+no per-image schema copies and makes no schema downloads during generation.
+Protobuf validation does not establish backend availability, model compatibility
+or support in the selected server version; Triton checks those when loading.
+
+`tritonclient[grpc]` and `protobuf` are builder dependencies installed with the
+package. They are not added to the generated serving `requirements.txt`.
+
+
 ## Generated repository
 
 ```text

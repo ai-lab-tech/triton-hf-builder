@@ -8,7 +8,11 @@ dynamic = ["version"]
 description = "Build Triton model repositories from local Hugging Face checkpoints"
 readme = "README.md"
 requires-python = ">=3.10"
-dependencies = ["packaging>=23"]
+dependencies = [
+    "packaging>=23",
+    "protobuf>=6.33.5,<7",
+    "tritonclient[grpc]>=2.73,<3",
+]
 license = "Apache-2.0"
 license-files = ["LICENSE"]
 keywords = ["triton", "huggingface", "inference", "model-repository"]

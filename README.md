@@ -152,6 +152,21 @@ The adapter contract tests use lightweight fake engines and fake tensors; they
 exercise lifecycle, paths, device selection and responses without weights or a
 GPU. Real engine compatibility and GPU inference need deployment testing.
 
+## Real serving tests
+
+The opt-in runner downloads real Hugging Face checkpoints, invokes the builder,
+starts Triton in Docker, and sends inference requests. Run it yourself:
+
+```bash
+python -m pip install -e '.[e2e]'
+python scripts/test_serving.py --runtime all --device gpu
+```
+
+For Transformers on CPU, use `--runtime transformers --device cpu`.
+See [the serving-test guide](scripts/README.md) for checkpoints, assertions,
+image options, saved logs, reproduction and cleanup. The runner has not yet
+been validated against a real serving environment.
+
 Reference documentation:
 
 - [Triton Python backend and execution environments](https://docs.nvidia.com/deeplearning/triton-inference-server/user-guide/docs/python_backend/README.html)

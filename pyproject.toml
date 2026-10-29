@@ -20,7 +20,7 @@ classifiers = [
 ]
 
 [project.optional-dependencies]
-e2e = ["huggingface-hub>=0.30,<1"]
+e2e = ["huggingface-hub>=0.30,<3"]
 dev = ["build>=1.2,<2", "twine>=6,<7", "ruff>=0.9,<1"]
 
 [project.scripts]

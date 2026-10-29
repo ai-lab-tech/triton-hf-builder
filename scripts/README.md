@@ -49,26 +49,48 @@ port. Cases run sequentially. Direct Transformers reference inference runs insid
 the container from the same local weights independently of generated `model.py`.
 This temporarily loads a second small model; allow memory for that.
 
+Every case follows the complete path independently:
+
+1. Download the checkpoint and generate its Triton repository and `requirements.txt`.
+2. Build a dedicated image from that runtime's base image and install **that exact file**.
+3. Verify every declared package/version, then load the model in a new Triton container.
+4. Send inference requests and check their responses.
+
+A case cannot reuse another case's dependency installation. Each installation
+layer gets a unique case ID, so it executes even when requirements match another
+case. Base layers and downloaded wheels remain cached. Empty requirements files
+for specialized engine images still go through installation and verification;
+those engines use the dependencies supplied by their base image.
+
 Engine completions must be nonempty; cross-engine numerical parity is not asserted.
 Python adapters must also reject an invalid tensor shape with a client error.
 An artifact generation pass or a successful health check alone cannot pass a case.
 
 ## Images
 
-Default Triton release: `26.06`. Transformers builds a **test-only image** from
-`nvcr.io/nvidia/tritonserver:26.06-py3`, installing generated `requirements.txt`.
+Default Triton release: `26.06`. Every case builds its own **test-only image**.
+Transformers uses `nvcr.io/nvidia/tritonserver:26.06-py3` as the base.
 Its test dependencies are PyTorch 2.9.0, Transformers 4.57.1, NumPy 1.26.4,
 Safetensors 0.6.2, SentencePiece 0.2.1 and Protobuf 5.29.5. The PyTorch wheel index
-is CPU for CPU tests and CUDA 13.0 for GPU tests.
+is CPU for CPU tests and CUDA 13.0 for GPU tests. The generated requirement pins
+the matching PyTorch variant (`+cpu` or `+cu130`). All model dependencies are
+installed with `pip install -r requirements.txt`; there is no separate PyTorch
+installation that could hide a missing requirement.
+
+The test image installs a separate pip 25.2 under `/opt/triton-hf-builder-pip`
+for downloads with a 180-second socket timeout and retries/resumption. It keeps
+Debian's system pip intact. A BuildKit cache retains completed downloads across
+build attempts; interrupted downloads can resume within an active pip invocation.
 
 These defaults are test inputs, not verified compatibility guarantees. The first
 real run may reveal image, dependency or GPU incompatibility, reported as failures.
 Change `--torch-version` or `--transformers-version` as needed. Use an existing
-prepared image with `--transformers-image registry/image:tag`; it must already
-contain the dependencies for the selected checkpoints.
+base image with `--transformers-image registry/image:tag`. Each case still
+installs its generated requirements on top of that base.
 
 vLLM and TensorRT-LLM use official `26.06-vllm-python-py3` and
-`26.06-trtllm-python-py3` images, retaining their engine/framework stacks.
+`26.06-trtllm-python-py3` base images, retaining their engine/framework stacks and
+installing each case's generated extra requirements in a dedicated derived image.
 Override with `--vllm-image`, `--trtllm-image`, `--python-base-image` or
 `--triton-version`. Existing local images are reused. The generated vLLM
 preparation script resolves checkpoint paths inside the serving mount.
@@ -87,6 +109,8 @@ preparation script resolves checkpoint paths inside the serving mount.
         ├── commands.log
         ├── triton.log
         ├── model-metadata.json
+        ├── e2e-install-report.json    # pip's installation report
+        ├── e2e-requirements-verified.json # File hash and installed package versions
         ├── inference-0.json           # Request, response, reference output
         ├── invalid-request.json      # Python adapters
         └── failure.txt               # On failure

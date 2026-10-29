@@ -7,6 +7,7 @@ and reference inference happen inside serving containers, not in this process.
 """
 
 import argparse
+import hashlib
 import json
 import math
 import shutil
@@ -65,7 +66,8 @@ def command(arguments, log, *, capture=False, timeout=1800):
         if capture:
             output.write(result.stdout)
     if result.returncode:
-        raise RuntimeError(f"Command exited {result.returncode}; see {log}")
+        tail = "\n".join(log.read_text(encoding="utf-8", errors="replace").splitlines()[-20:])
+        raise RuntimeError(f"Command exited {result.returncode}; see {log}\n{tail}")
     return result.stdout if capture else ""
 
 
@@ -131,16 +133,30 @@ def image_details(image, log):
     return {"reference": image, "id": details["Id"], "digests": details.get("RepoDigests", [])}
 
 
-def build_transformers_image(args, repository, image, directory, log):
+def build_serving_image(args, runtime, repository, image, base_image, directory, log):
     context = directory / "image-build"
     context.mkdir()
     shutil.copy2(repository / "requirements.txt", context / "requirements.txt")
+    shutil.copy2(
+        Path(__file__).with_name("verify_requirements.py"), context / "verify_requirements.py"
+    )
+    index_option = '--extra-index-url "${TORCH_INDEX_URL}" ' if runtime == "transformers" else ""
     (context / "Dockerfile").write_text(
-        "ARG BASE_IMAGE\nFROM ${BASE_IMAGE}\nARG TORCH_INDEX_URL\n"
-        "ARG TORCH_VERSION\nCOPY requirements.txt /tmp/e2e-requirements.txt\n"
-        'RUN python3 -m pip install --no-cache-dir "torch==${TORCH_VERSION}" '
-        '--index-url "${TORCH_INDEX_URL}" '
-        "&& python3 -m pip install --no-cache-dir -r /tmp/e2e-requirements.txt\n"
+        "ARG BASE_IMAGE=nvcr.io/nvidia/tritonserver:26.06-py3\nFROM ${BASE_IMAGE}\n"
+        "RUN --mount=type=cache,id=triton-hf-builder-pip,target=/root/.cache/pip,sharing=locked "
+        "python3 -m pip --timeout 180 --retries 10 install --no-deps --ignore-installed "
+        '--target /opt/triton-hf-builder-pip "pip==25.2"\n'
+        "ARG TORCH_INDEX_URL\n"
+        "COPY requirements.txt /tmp/e2e-requirements.txt\n"
+        "COPY verify_requirements.py /tmp/e2e-verify-requirements.py\n"
+        "ARG E2E_CASE_ID\n"
+        "RUN --mount=type=cache,id=triton-hf-builder-pip,target=/root/.cache/pip,sharing=locked "
+        'test -n "${E2E_CASE_ID}" && '
+        "PYTHONPATH=/opt/triton-hf-builder-pip "
+        "python3 -m pip --timeout 180 --retries 10 --resume-retries 10 install "
+        "--report /tmp/e2e-install-report.json " + index_option + "-r /tmp/e2e-requirements.txt && "
+        "PYTHONPATH=/opt/triton-hf-builder-pip python3 /tmp/e2e-verify-requirements.py "
+        "/tmp/e2e-requirements.txt /tmp/e2e-requirements-verified.json\n"
     )
     index = "https://download.pytorch.org/whl/" + ("cpu" if args.device == "cpu" else "cu130")
     command(
@@ -150,11 +166,11 @@ def build_transformers_image(args, repository, image, directory, log):
             "--tag",
             image,
             "--build-arg",
-            f"BASE_IMAGE={args.python_base_image}",
+            f"BASE_IMAGE={base_image}",
             "--build-arg",
             f"TORCH_INDEX_URL={index}",
             "--build-arg",
-            f"TORCH_VERSION={args.torch_version}",
+            f"E2E_CASE_ID={directory.parent.name}/{runtime}/{directory.name}",
             context,
         ],
         log,
@@ -325,13 +341,14 @@ def check_inference(args, case, runtime, model_name, container, base_url, direct
     return observations
 
 
-def run_case(args, runtime, case_name, image, run_dir, cache, revisions, image_ready):
+def run_case(args, runtime, case_name, base_image, run_dir, cache, revisions):
     directory = run_dir / f"{runtime}-{case_name}"
     directory.mkdir()
     log = directory / "commands.log"
     result = {"runtime": runtime, "case": case_name, "status": "failed"}
     container = None
     started = time.monotonic()
+    image = f"triton-hf-builder-e2e:{run_dir.name.lower()}-{runtime}-{case_name}"
     try:
         # Arrange: download exact checkpoint, build artifacts, prepare serving image.
         case = CASES[case_name]
@@ -363,8 +380,11 @@ def run_case(args, runtime, case_name, image, run_dir, cache, revisions, image_r
         else:
             arguments += ["--max-new-tokens", "16"]
         if runtime == "transformers":
+            torch_version = args.torch_version
+            if "+" not in torch_version:
+                torch_version += "+cpu" if args.device == "cpu" else "+cu130"
             for requirement in (
-                f"torch=={args.torch_version}",
+                f"torch=={torch_version}",
                 f"transformers=={args.transformers_version}",
                 "numpy==1.26.4",
                 "safetensors==0.6.2",
@@ -373,15 +393,17 @@ def run_case(args, runtime, case_name, image, run_dir, cache, revisions, image_r
             ):
                 arguments += ["--requirement", requirement]
         command(arguments, log)
-        if runtime == "transformers" and not args.transformers_image and not image_ready[0]:
-            build_transformers_image(args, repository, image, directory, log)
-            image_ready[0] = True
-        if not image_ready[0]:
-            try:
-                image_details(image, log)
-            except RuntimeError:
-                command(["docker", "pull", image], log, timeout=args.build_timeout)
-            image_ready[0] = True
+        requirements_path = repository / "requirements.txt"
+        result["requirements"] = {
+            "file": str(requirements_path),
+            "sha256": hashlib.sha256(requirements_path.read_bytes()).hexdigest(),
+            "status": "installing",
+        }
+        # Every case installs its own generated file, including engine extras.
+        # E2E_CASE_ID invalidates this installation layer, while downloads are cached.
+        build_serving_image(args, runtime, repository, image, base_image, directory, log)
+        result["requirements"]["status"] = "installed_and_verified"
+        result["base_image"] = image_details(base_image, log)
         result["image"] = image_details(image, log)
         result["repository"] = str(repository)
         container = "hf-builder-e2e-" + uuid.uuid4().hex[:12]
@@ -420,6 +442,14 @@ def run_case(args, runtime, case_name, image, run_dir, cache, revisions, image_r
 
         # Act: start a real server, wait for model readiness, then invoke real inference.
         command(docker_args, log)
+        for filename in ("e2e-install-report.json", "e2e-requirements-verified.json"):
+            command(["docker", "cp", f"{container}:/tmp/{filename}", directory / filename], log)
+        verification = json.loads((directory / "e2e-requirements-verified.json").read_text())
+        require(
+            verification["sha256"] == result["requirements"]["sha256"],
+            "Serving image installed a different requirements.txt",
+        )
+        result["requirements"]["packages"] = verification["packages"]
         bindings = json.loads(
             command(
                 ["docker", "inspect", "--format", "{{json .NetworkSettings.Ports}}", container],
@@ -466,6 +496,8 @@ def run_case(args, runtime, case_name, image, run_dir, cache, revisions, image_r
         result.update(status="interrupted", error="Interrupted by user")
         raise
     except Exception as error:
+        if result.get("requirements", {}).get("status") == "installing":
+            result["requirements"]["status"] = "failed"
         result["error"] = str(error)
         (directory / "failure.txt").write_text(traceback.format_exc())
     finally:
@@ -499,7 +531,7 @@ def parse_args(argv=None):
     parser.add_argument("--triton-version", default="26.06")
     parser.add_argument("--python-base-image", help="Base image for the Transformers test image")
     parser.add_argument(
-        "--transformers-image", help="Use an existing prepared image instead of building"
+        "--transformers-image", help="Custom base image; each test still installs its requirements"
     )
     parser.add_argument("--vllm-image")
     parser.add_argument("--trtllm-image")
@@ -569,18 +601,14 @@ def main(argv=None):
         cache.mkdir(exist_ok=True)
         for runtime in args.runtime:
             cases = args.case or (list(CASES) if runtime == "transformers" else ["generation"])
-            image = {
-                "transformers": args.transformers_image
-                or f"triton-hf-builder-e2e:{run_id.lower()}",
+            base_image = {
+                "transformers": args.transformers_image or args.python_base_image,
                 "vllm": args.vllm_image,
                 "tensorrt-llm": args.trtllm_image,
             }[runtime]
-            image_ready = [False]
             for case in cases:
                 print(f"RUN {runtime}/{case}", flush=True)
-                result = run_case(
-                    args, runtime, case, image, run_dir, cache, revisions, image_ready
-                )
+                result = run_case(args, runtime, case, base_image, run_dir, cache, revisions)
                 report["results"].append(result)
                 write_json(report_path, report)
                 print(f"{result['status'].upper()} {runtime}/{case}", flush=True)

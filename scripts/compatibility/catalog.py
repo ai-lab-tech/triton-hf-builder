@@ -75,50 +75,33 @@ def render_table(catalog):
     lines = [
         BEGIN,
         "",
-        "Manufacturer documentation, **not our serving-test results**. "
-        "The full [catalog](compatibility.json) records architecture names and immutable sources.",
+        "Manufacturer-documented text-generation candidates. "
+        "[Full catalog and architecture names](compatibility.json).",
         "",
-        "| Runtime / image tag | Engine version | CUDA / reported driver | Architecture reference | Our tests |",
-        "| --- | --- | --- | --- | --- |",
+        "| Image tag | Engine version | CUDA / reported driver | Architectures |",
+        "| --- | --- | --- | --- |",
     ]
     for row in catalog["images"]:
         tag = row["image"].split(":", 1)[1]
         source = row["model_source"]
         count = sum(a["builder_scope"] == "text_generation_candidate" for a in row["architectures"])
-        reference = (
-            f"[{count} text-generation candidates]({source['url']})" if source else "Unknown"
-        )
+        reference = f"[{count} candidates]({source['url']})" if source else "Unknown"
         if row.get("version_match") == "upstream_base_only":
-            reference += " (upstream base; NVIDIA build differs)"
+            reference += " †"
         lines.append(
             f"| `{tag}` | `{row['engine_version']}` | {row['cuda_version']} / "
-            f"{row['driver_version_reported']} | {reference} | Not tested |"
+            f"{row['driver_version_reported']} | {reference} |"
         )
     lines += [
         "",
-        f"Image versions: [NVIDIA matrix]({catalog['image_matrix_source']['url']}). "
-        "The reported driver is copied from the matrix, not inferred as a universal minimum.",
+        f"Source: [NVIDIA image matrix]({catalog['image_matrix_source']['url']}). "
+        "† Upstream base version; NVIDIA build differs.",
         "",
-        "Quantization and GPU support remain **not evaluated** here. Follow each versioned "
-        "architecture source for feature matrices, footnotes and hardware restrictions. "
-        "Absence from this catalog means unknown or outside our adapter scope, not unsupported.",
+        "These are documentation references, not serving guarantees. "
+        "Check the linked matrices for quantization, GPU and feature restrictions; "
+        "the reported driver is not a universal minimum.",
         "",
     ]
-    for row in catalog["images"]:
-        names = [
-            a["architecture"]
-            for a in row["architectures"]
-            if a["builder_scope"] == "text_generation_candidate"
-        ]
-        lines += [
-            "<details>",
-            f"<summary>{row['image'].split(':', 1)[1]}: architecture names</summary>",
-            "",
-            ", ".join(f"`{name}`" for name in names) if names else row.get("reason", "Unknown"),
-            "",
-            "</details>",
-            "",
-        ]
     return "\n".join([*lines, END])
 
 

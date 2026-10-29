@@ -175,7 +175,7 @@ The updater follows this chain:
    scope. The conservative candidate filter accepts `*ForCausalLM` and
    `GPT2LMHeadModel`; other entries remain `not_covered`, not "unsupported".
 4. `compatibility.json` records source URLs, refs, commit hashes and SHA-256 hashes.
-   The README table and expandable architecture lists are generated from that JSON.
+   The compact README table is generated from that JSON; full architecture names remain in the catalog.
 
 All architecture entries mean **documented upstream**, not "tested with this
 builder". Quantization, GPU support, custom-code requirements and feature

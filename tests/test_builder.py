@@ -272,7 +272,7 @@ assert not {"torch", "transformers", "vllm", "tensorrt_llm"}.intersection(sys.mo
 
     def test_failed_copy_leaves_no_partial_repository(self):
         # Arrange
-        with patch("triton_hf_builder.builder.shutil.copy2", side_effect=OSError("disk full")):
+        with patch("triton_hf_builder.artifacts.shutil.copy2", side_effect=OSError("disk full")):
             # Act
             with self.assertRaisesRegex(OSError, "disk full"):
                 self.build()
@@ -290,7 +290,7 @@ from unittest.mock import patch
 from triton_hf_builder.cli import main
 def cancel(*args, **kwargs):
     os.kill(os.getpid(), signal.SIGTERM)
-with patch("triton_hf_builder.builder.shutil.copy2", side_effect=cancel):
+with patch("triton_hf_builder.artifacts.shutil.copy2", side_effect=cancel):
     code = main(["build", sys.argv[1], "--output", sys.argv[2], "--name", "demo",
                  "--runtime", "vllm", "--image", "test:1"])
 assert code == 130

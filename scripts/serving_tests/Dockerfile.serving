@@ -1,0 +1,8 @@
+ARG BASE_IMAGE=nvcr.io/nvidia/tritonserver:26.06-py3
+FROM ${BASE_IMAGE}
+RUN --mount=type=cache,id=triton-hf-builder-pip,target=/root/.cache/pip,sharing=locked python3 -m pip --timeout 180 --retries 10 install --no-deps --ignore-installed --target /opt/triton-hf-builder-pip "pip==25.2"
+ARG TORCH_INDEX_URL
+COPY requirements.txt /tmp/e2e-requirements.txt
+COPY verify_requirements.py /tmp/e2e-verify-requirements.py
+ARG E2E_CASE_ID
+RUN --mount=type=cache,id=triton-hf-builder-pip,target=/root/.cache/pip,sharing=locked test -n "${E2E_CASE_ID}" && PYTHONPATH=/opt/triton-hf-builder-pip python3 -m pip --timeout 180 --retries 10 --resume-retries 10 install --report /tmp/e2e-install-report.json @INDEX_OPTION@-r /tmp/e2e-requirements.txt && PYTHONPATH=/opt/triton-hf-builder-pip python3 /tmp/e2e-verify-requirements.py /tmp/e2e-requirements.txt /tmp/e2e-requirements-verified.json

@@ -19,6 +19,7 @@ class ModelInfo:
     quantization: str | None
     transformers_version: str | None
     warnings: tuple[str, ...]
+    multimodal: bool = False
 
     def to_dict(self):
         return {**asdict(self), "source": str(self.source)}
@@ -41,7 +42,9 @@ def inspect_model(source: str | Path) -> ModelInfo:
     if not source.is_dir() or not (source / "config.json").is_file():
         raise ValueError("Source must be a local HF directory containing config.json")
     config = read_json(source / "config.json")
-    architectures = config.get("architectures") or []
+    architectures = config.get("architectures")
+    if architectures is None:
+        architectures = []
     if not isinstance(architectures, list) or not all(isinstance(a, str) for a in architectures):
         raise ValueError("config.json architectures must be a list of strings")
     weights = set()
@@ -85,7 +88,9 @@ def inspect_model(source: str | Path) -> ModelInfo:
             inferred = "text2text-generation"
     elif any(a.endswith("ForSequenceClassification") for a in architectures):
         inferred = "text-classification"
-    quantization = config.get("quantization_config") or {}
+    quantization = config.get("quantization_config")
+    if quantization is None:
+        quantization = {}
     if not isinstance(quantization, dict):
         raise ValueError("quantization_config must be an object")
     warnings = []
@@ -113,4 +118,5 @@ def inspect_model(source: str | Path) -> ModelInfo:
         quantization=quantization.get("quant_method"),
         transformers_version=config.get("transformers_version"),
         warnings=tuple(warnings),
+        multimodal=any(key in config for key in ("vision_config", "audio_config")),
     )

@@ -5,13 +5,15 @@ import json
 import signal
 import sys
 
-from .builder import RUNTIMES, generate_repository
+from ._version import __version__
+from .builder import generate_repository
 from .inspector import TASKS, inspect_model
+from .runtimes import RUNTIMES
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(prog="triton-hf")
-    parser.add_argument("--version", action="version", version="triton-hf-builder 0.1.0")
+    parser.add_argument("--version", action="version", version=f"triton-hf-builder {__version__}")
     commands = parser.add_subparsers(dest="command", required=True)
     inspect = commands.add_parser("inspect", help="Read local metadata without loading weights")
     inspect.add_argument("source")

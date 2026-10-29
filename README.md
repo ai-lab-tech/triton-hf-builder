@@ -143,6 +143,16 @@ test the model in the target environment.
 
 ## Development
 
+The Python package owns inspection and generation. `builder.py` coordinates the
+build; `options.py` validates inputs; `runtimes.py` declares runtime capabilities
+and renders Triton files; `requirements.py` resolves dependency declarations;
+`artifacts.py` copies checkpoint assets and writes serving instructions. None of
+these modules loads model weights. Engine imports belong in the generated templates.
+
+The code-server extension calls the JSON CLI through its `hf-builder-client.js`;
+the editor wizard stays in `hf-builder.js`. Real-serving test orchestration lives
+in `scripts/serving_tests/`, with `scripts/test_serving.py` as the command entry point.
+
 ```bash
 python3 -m pip install -e .
 python3 -m unittest discover -s tests -v

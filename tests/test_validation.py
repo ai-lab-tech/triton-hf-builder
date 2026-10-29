@@ -1,7 +1,52 @@
 from test_builder import ModelFixture
 
+from triton_hf_builder import generate_repository
+from triton_hf_builder.requirements import image_requirements
+
 
 class ValidationTests(ModelFixture):
+    def test_trt_2606_requirements_include_verified_sdk_pin(self):
+        # Arrange
+        image = "nvcr.io/nvidia/tritonserver:26.06-trtllm-python-py3"
+        # Act
+        result = generate_repository(
+            self.source, self.root / "repository", name="demo", runtime="tensorrt-llm", image=image
+        )
+        # Assert
+        self.assertIn("openai==2.8.1", result.manifest["requirements"])
+        self.assertIn("openai==2.8.1", (result.repository / "requirements.txt").read_text())
+
+    def test_trt_sdk_pin_can_be_explicitly_overridden(self):
+        # Arrange
+        image = "nvcr.io/nvidia/tritonserver:26.06-trtllm-python-py3"
+        # Act
+        result = generate_repository(
+            self.source,
+            self.root / "repository",
+            name="demo",
+            runtime="tensorrt-llm",
+            image=image,
+            requirements=["openai==2.8.2"],
+        )
+        # Assert
+        self.assertIn("openai==2.8.2", result.manifest["requirements"])
+        self.assertNotIn("openai==2.8.1", result.manifest["requirements"])
+
+    def test_image_correction_is_not_guessed_for_other_images_or_runtimes(self):
+        # Arrange
+        cases = [
+            ("tensorrt-llm", "nvcr.io/nvidia/tritonserver:26.07-trtllm-python-py3"),
+            ("tensorrt-llm", "custom/triton:26.06-trtllm-python-py3"),
+            ("vllm", "nvcr.io/nvidia/tritonserver:26.06-trtllm-python-py3"),
+            ("tensorrt-llm", "nvcr.io/nvidia/tritonserver@sha256:" + "a" * 64),
+        ]
+        for runtime, image in cases:
+            with self.subTest(runtime=runtime, image=image):
+                # Act
+                extras = image_requirements(runtime, image)
+                # Assert
+                self.assertEqual(extras, ())
+
     def test_conditional_override_preserves_required_dependency(self):
         # Arrange
         requirements = ['torch==2.9.0; sys_platform == "win32"']

@@ -142,6 +142,12 @@ Images, caches and artifacts remain available. Startup timeout defaults to 900
 seconds, inference to 300 seconds, and image build/pull to 3600 seconds. Each has
 a corresponding CLI option; see `python scripts/test_serving.py --help`.
 
+For the TensorRT-LLM 26.06 base image, the runner applies the builder's shared
+`openai==2.8.1` correction when generating requirements for its derived test image.
+The pin is installed and verified through the same per-case `requirements.txt`
+workflow, not through an extra manual installation. See the
+[image correction and sources](../docs/python-api.md#serving-dependencies).
+
 ## Compatibility catalog maintenance
 
 The manufacturer catalog is independent of serving tests. It downloads small

@@ -6,6 +6,8 @@ import traceback
 import uuid
 from pathlib import Path
 
+from triton_hf_builder.requirements import image_requirements
+
 from .checkpoints import CASES, download_checkpoint
 from .docker import base_image_details, build_serving_image, image_details, wait_ready
 from .inference import check_inference
@@ -65,6 +67,10 @@ def run_case(args, runtime, case_name, base_image, run_dir, cache, revisions, *,
                 "protobuf==5.29.5",
             ):
                 arguments += ["--requirement", requirement]
+        # The manifest names our derived test image; apply the same builder
+        # dependency fixes using its actual FROM image before generation.
+        for requirement in image_requirements(runtime, base_image):
+            arguments += ["--requirement", requirement]
         command(arguments, log)
         if runtime == "vllm":
             # Leave GPU memory for the desktop during this small serving test.

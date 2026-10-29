@@ -13,6 +13,32 @@ from serving_tests import cli, docker, inference, runner, support
 
 
 class ServingRunnerTests(unittest.TestCase):
+    def test_derived_trt_image_uses_base_image_dependency_correction(self):
+        # Arrange
+        base = "nvcr.io/nvidia/tritonserver:26.06-trtllm-python-py3"
+        with (
+            patch.object(runner, "download_checkpoint", return_value=(self.root, "revision")),
+            patch.object(
+                runner, "command", side_effect=RuntimeError("stop before Docker")
+            ) as command,
+        ):
+            # Act
+            runner.run_case(
+                SimpleNamespace(device="gpu"),
+                "tensorrt-llm",
+                "generation",
+                base,
+                self.root,
+                self.root,
+                {},
+            )
+        # Assert
+        arguments = command.call_args.args[0]
+        self.assertEqual(arguments[-2:], ["--requirement", "openai==2.8.1"])
+        self.assertTrue(
+            arguments[arguments.index("--image") + 1].startswith("triton-hf-builder-e2e:")
+        )
+
     def test_buildkit_base_without_local_tag_is_recorded_as_unresolved(self):
         # Arrange
         image = "test:base"

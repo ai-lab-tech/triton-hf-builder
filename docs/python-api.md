@@ -121,6 +121,18 @@ built-in defaults, with a small tokenizer-based addition:
 | `vllm` / `tensorrt-llm` | No engine packages: use the engine stack already supplied by the specialized image. The requirements file can be empty apart from comments. |
 | Any runtime with `tokenizer.model` or `spiece.model` | Adds `sentencepiece`. |
 
+**Known image correction:** for `tensorrt-llm` with
+`nvcr.io/nvidia/tritonserver:26.06-trtllm-python-py3`, the builder also adds
+`openai==2.8.1`. NVIDIA documents the `PartReasoningText` import failure and
+[recommends upgrading the SDK](https://github.com/triton-inference-server/server/blob/main/docs/getting_started/llm.md).
+We pin 2.8.1 because its released SDK provides the
+[required type](https://github.com/openai/openai-python/blob/v2.8.1/src/openai/types/responses/response_content_part_added_event.py).
+This pin fixes the identified missing import; complete TensorRT-LLM serving still
+requires validation. It is not a version prescribed by NVIDIA. Other images and
+digest-only references are not guessed. For a custom image derived from this base,
+pass the same requirement explicitly. An explicit unconditional `openai` requirement
+overrides this default, as with other dependency overrides.
+
 The builder always writes `requirements.txt`. You can inspect it before deploying:
 
 ```python

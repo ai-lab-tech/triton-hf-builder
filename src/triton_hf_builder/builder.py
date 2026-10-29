@@ -59,7 +59,7 @@ def generate_repository(
         raise ValueError(f"Output already exists: {output}")
     if output.resolve().is_relative_to(info.source):
         raise ValueError("Output must be outside the source model directory")
-    deps = resolve_requirements(adapter, info.source, requirements)
+    deps = resolve_requirements(adapter, info.source, requirements, image=image)
     manifest = _manifest(info, adapter, options, selected_task, deps)
     output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix=".triton-hf-", dir=output.parent) as temporary:

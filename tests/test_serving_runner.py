@@ -9,10 +9,55 @@ from types import SimpleNamespace
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
-from serving_tests import cli, inference, runner, support
+from serving_tests import cli, docker, inference, runner, support
 
 
 class ServingRunnerTests(unittest.TestCase):
+    def test_buildkit_base_without_local_tag_is_recorded_as_unresolved(self):
+        # Arrange
+        image = "test:base"
+        failure = RuntimeError(
+            f"Command exited 1\nError response from daemon: No such image: {image}"
+        )
+        with patch.object(docker, "command", side_effect=failure):
+            # Act
+            details = docker.base_image_details(image, Path("unused.log"))
+        # Assert
+        self.assertEqual(details["reference"], image)
+        self.assertIsNone(details["id"])
+        self.assertEqual(details["digests"], [])
+        self.assertEqual(details["inspection_status"], "not_in_local_store")
+
+    def test_local_base_image_keeps_identity(self):
+        # Arrange
+        response = json.dumps([{"Id": "sha256:base", "RepoDigests": ["test@sha256:manifest"]}])
+        with patch.object(docker, "command", return_value=response):
+            # Act
+            details = docker.base_image_details("test:base", Path("unused.log"))
+        # Assert
+        self.assertEqual(details["id"], "sha256:base")
+        self.assertEqual(details["digests"], ["test@sha256:manifest"])
+
+    def test_base_inspection_does_not_hide_daemon_failures(self):
+        # Arrange
+        failure = RuntimeError("Cannot connect to the Docker daemon")
+        with patch.object(docker, "command", side_effect=failure):
+            # Act
+            with self.assertRaises(RuntimeError) as error:
+                docker.base_image_details("test:base", Path("unused.log"))
+        # Assert
+        self.assertIs(error.exception, failure)
+
+    def test_derived_serving_image_must_exist(self):
+        # Arrange
+        failure = RuntimeError("No such image: test:serving")
+        with patch.object(docker, "command", side_effect=failure):
+            # Act
+            with self.assertRaises(RuntimeError) as error:
+                docker.image_details("test:serving", Path("unused.log"))
+        # Assert
+        self.assertIs(error.exception, failure)
+
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
         self.addCleanup(self.temporary.cleanup)

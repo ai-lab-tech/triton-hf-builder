@@ -12,6 +12,26 @@ def image_details(image, log):
     return {"reference": image, "id": details["Id"], "digests": details.get("RepoDigests", [])}
 
 
+def base_image_details(image, log):
+    """BuildKit may cache FROM layers without registering a local image tag.
+
+    A missing base tag is not a build or serving failure. Keep the requested
+    reference and explicitly leave its identity unresolved. The derived serving
+    image is still inspected strictly by the runner.
+    """
+    try:
+        return image_details(image, log)
+    except RuntimeError as error:
+        if f"No such image: {image}" not in str(error):
+            raise
+        return {
+            "reference": image,
+            "id": None,
+            "digests": [],
+            "inspection_status": "not_in_local_store",
+        }
+
+
 def build_serving_image(args, runtime, repository, image, base_image, directory, log):
     context = directory / "image-build"
     context.mkdir()

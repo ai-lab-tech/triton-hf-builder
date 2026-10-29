@@ -128,6 +128,13 @@ python scripts/test_serving.py --runtime transformers --device cpu \
   --revision HuggingFaceTB/SmolLM2-135M-Instruct=COMMIT_FROM_RESULT
 ```
 
+The derived serving image must exist locally and its identity is recorded.
+BuildKit can build successfully while keeping the base image only in its cache,
+without a local base-image tag. In that case `base_image` retains the requested
+reference with `id: null`, empty `digests`, and `inspection_status:
+not_in_local_store`; testing continues. This does not establish the exact base
+digest. Other Docker inspection failures still fail the case.
+
 Exit status: 0 only when all selected cases pass; 1 for failures; 130 for
 interruption. The runner removes only its uniquely named test containers after
 saving logs, including failures. `--keep-containers` retains them for debugging.

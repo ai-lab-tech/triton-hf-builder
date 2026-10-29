@@ -7,7 +7,7 @@ import uuid
 from pathlib import Path
 
 from .checkpoints import CASES, download_checkpoint
-from .docker import build_serving_image, image_details, wait_ready
+from .docker import base_image_details, build_serving_image, image_details, wait_ready
 from .inference import check_inference
 from .support import command, request_json, require, write_json
 
@@ -76,7 +76,7 @@ def run_case(args, runtime, case_name, base_image, run_dir, cache, revisions, *,
         # E2E_CASE_ID invalidates this installation layer, while downloads are cached.
         build_serving_image(args, runtime, repository, image, base_image, directory, log)
         result["requirements"]["status"] = "installed_and_verified"
-        result["base_image"] = image_details(base_image, log)
+        result["base_image"] = base_image_details(base_image, log)
         result["image"] = image_details(image, log)
         result["repository"] = str(repository)
         container = "hf-builder-e2e-" + uuid.uuid4().hex[:12]

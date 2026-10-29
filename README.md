@@ -8,12 +8,21 @@ Generation reads JSON metadata and copies assets. It does not import PyTorch,
 Transformers, vLLM or TensorRT-LLM, load weights, download models, or use a GPU.
 Disk space is required for a full copy of the checkpoint.
 
+**Status: alpha.** Static generation support is distinct from validated serving
+compatibility. See [contributing](CONTRIBUTING.md), [releases](RELEASING.md) and
+[security](SECURITY.md). Project code is licensed under [Apache-2.0](LICENSE);
+downloaded models and serving engines retain their own licenses.
+
 ## Install
 
 Requires Python 3.10+.
 
 ```bash
-python3 -m pip install .
+git clone https://github.com/ai-lab-tech/triton-hf-builder.git
+cd triton-hf-builder
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install .
 triton-hf inspect /workspace/hf-checkpoint
 ```
 

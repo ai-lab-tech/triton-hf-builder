@@ -1,0 +1,4 @@
+include LICENSE README.md CONTRIBUTING.md SECURITY.md RELEASING.md
+recursive-include scripts *.py *.md Dockerfile.serving
+recursive-include tests *.py
+global-exclude __pycache__ *.py[cod]

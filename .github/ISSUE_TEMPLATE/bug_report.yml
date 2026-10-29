@@ -1,0 +1,22 @@
+name: Bug report
+description: Report a reproducible generation or serving issue
+body:
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Builder/Python version, OS, runtime, image tag or digest, GPU if relevant.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction and expected behavior
+      description: Include the command, model ID/revision if public, and actual error. Remove secrets and private data.
+    validations:
+      required: true
+  - type: textarea
+    id: stage
+    attributes:
+      label: Validation performed
+      description: Did generation fail, dependency installation fail, or real Triton inference fail? Include relevant sanitized logs.

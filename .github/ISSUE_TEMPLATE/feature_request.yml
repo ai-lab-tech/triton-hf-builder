@@ -1,0 +1,10 @@
+name: Feature request
+description: Suggest an improvement or runtime capability
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Use case and expected behavior
+      description: Describe the task, runtime and constraints. Include public model references if relevant.
+    validations:
+      required: true

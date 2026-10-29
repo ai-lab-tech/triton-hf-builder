@@ -1,23 +1,38 @@
 [build-system]
-requires = ["setuptools>=68"]
+requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "triton-hf-builder"
-version = "0.1.0"
+dynamic = ["version"]
 description = "Build Triton model repositories from local Hugging Face checkpoints"
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = ["packaging>=23"]
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+keywords = ["triton", "huggingface", "inference", "model-repository"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
 
 [project.optional-dependencies]
 e2e = ["huggingface-hub>=0.30,<1"]
+dev = ["build>=1.2,<2", "twine>=6,<7", "ruff>=0.9,<1"]
 
 [project.scripts]
 triton-hf = "triton_hf_builder.cli:main"
 
 [project.urls]
 Repository = "https://github.com/ai-lab-tech/triton-hf-builder"
+Issues = "https://github.com/ai-lab-tech/triton-hf-builder/issues"
+Documentation = "https://github.com/ai-lab-tech/triton-hf-builder#readme"
+
+[tool.setuptools.dynamic]
+version = {attr = "triton_hf_builder._version.__version__"}
 
 [tool.setuptools.packages.find]
 where = ["src"]

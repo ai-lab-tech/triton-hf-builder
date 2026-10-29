@@ -1,5 +1,10 @@
 # triton-hf-builder
 
+[![CI](https://github.com/ai-lab-tech/triton-hf-builder/actions/workflows/tests.yml/badge.svg)](https://github.com/ai-lab-tech/triton-hf-builder/actions/workflows/tests.yml)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](pyproject.toml)
+[![Status: Alpha](https://img.shields.io/badge/Status-Alpha-orange.svg)](#adapters-and-compatibility)
+
 Build a Triton model repository from an **already downloaded Hugging Face
 checkpoint**. Use the Python library or CLI independently, or invoke the CLI
 from the code-server extension in `triton-control`.

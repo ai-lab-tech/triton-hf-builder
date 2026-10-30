@@ -78,3 +78,98 @@ jobs:
           name: distributions
           path: dist
       - uses: pypa/gh-action-pypi-publish@release/v1
+
+  finish-dependabot-cleanup-once:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      pull-requests: write
+      actions: write
+    steps:
+      - name: Close five Dependabot PRs and delete only Dependabot update history
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PYTHON'
+          import json
+          import os
+          import urllib.error
+          import urllib.parse
+          import urllib.request
+
+          repository = os.environ["GITHUB_REPOSITORY"]
+          assert repository == "ai-lab-tech/triton-hf-builder"
+          base = f"https://api.github.com/repos/{repository}"
+          headers = {
+              "Authorization": f"Bearer {os.environ['GH_TOKEN']}",
+              "Accept": "application/vnd.github+json",
+              "X-GitHub-Api-Version": "2022-11-28",
+          }
+          report = {"pull_requests": {}, "deleted_runs": [], "errors": []}
+
+
+          def api(method, path, payload=None):
+              data = None if payload is None else json.dumps(payload).encode()
+              request = urllib.request.Request(base + path, data=data, headers=headers, method=method)
+              try:
+                  with urllib.request.urlopen(request, timeout=30) as response:
+                      raw = response.read()
+                      return json.loads(raw) if raw else None
+              except urllib.error.HTTPError as error:
+                  message = json.loads(error.read()).get("message", str(error))
+                  raise RuntimeError(f"{method} {path}: HTTP {error.code}: {message}") from None
+
+
+          def dependabot_runs():
+              found = []
+              page = 1
+              while True:
+                  query = urllib.parse.urlencode({"actor": "dependabot[bot]", "per_page": 100, "page": page})
+                  runs = api("GET", f"/actions/runs?{query}")["workflow_runs"]
+                  for run in runs:
+                      path = run.get("path", "")
+                      if run.get("name") == "Dependabot Updates" or "dependabot/dependabot-updates" in path:
+                          found.append(run)
+                  if len(runs) < 100:
+                      return found
+                  page += 1
+
+
+          try:
+              for number in range(1, 6):
+                  try:
+                      path = f"/pulls/{number}"
+                      pull = api("GET", path)
+                      if pull["user"]["login"] != "dependabot[bot]":
+                          raise RuntimeError(f"PR #{number} is not authored by Dependabot; left unchanged")
+                      if pull["state"] == "open":
+                          api("PATCH", path, {"state": "closed"})
+                      verified = api("GET", path)
+                      report["pull_requests"][str(number)] = verified["state"]
+                      if verified["state"] != "closed":
+                          raise RuntimeError(f"PR #{number} is still open")
+                  except Exception as error:
+                      report["errors"].append(str(error))
+
+              for run in dependabot_runs():
+                  try:
+                      api("DELETE", f"/actions/runs/{run['id']}")
+                      report["deleted_runs"].append(run["id"])
+                  except Exception as error:
+                      report["errors"].append(str(error))
+              report["remaining_dependabot_runs"] = len(dependabot_runs())
+              report["open_pull_requests"] = [
+                  {"number": pull["number"], "author": pull["user"]["login"]}
+                  for pull in api("GET", "/pulls?state=open&per_page=100")
+              ]
+          except Exception as error:
+              report["errors"].append(str(error))
+          finally:
+              print(json.dumps(report, indent=2))
+              with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as summary:
+                  summary.write('```json\n' + json.dumps(report, indent=2) + '\n```\n')
+
+          if report['errors'] or report.get('remaining_dependabot_runs') != 0:
+              raise SystemExit(1)
+          PYTHON

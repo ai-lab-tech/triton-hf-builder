@@ -3,14 +3,14 @@
 [![CI](https://github.com/ai-lab-tech/triton-hf-builder/actions/workflows/tests.yml/badge.svg)](https://github.com/ai-lab-tech/triton-hf-builder/actions/workflows/tests.yml)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](pyproject.toml)
-[![Status: Alpha](https://img.shields.io/badge/Status-Alpha-orange.svg)](#adapters-and-compatibility)
+[![Status: Beta](https://img.shields.io/badge/Status-Beta-blue.svg)](#adapters-and-compatibility)
 
 **Turn a downloaded Hugging Face checkpoint into a Triton model repository.**
 
 Use the Python library, CLI or the code-server extension in
 [Triton Control](https://github.com/ai-lab-tech/triton-control).
 Generation reads metadata and copies assets; it does not load weights or require
-a GPU. Allow disk space for a full checkpoint copy. **Status: alpha.**
+a GPU. Allow disk space for a full checkpoint copy. **Status: beta.**
 
 [Python API](docs/python-api.md) · [Serving guide](docs/serving.md) ·
 [Serving tests](scripts/README.md) · [Contributing](CONTRIBUTING.md)

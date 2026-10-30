@@ -1,6 +1,6 @@
 # Releases
 
-The package is currently alpha. A release packages generation support; it does
+The package is currently beta. A release packages generation support; it does
 not certify every model, engine, GPU or CUDA combination. Record real serving
 evidence separately, including image digests, model revisions and failed cases.
 

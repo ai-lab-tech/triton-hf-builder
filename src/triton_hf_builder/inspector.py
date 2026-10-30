@@ -2,7 +2,7 @@
 
 import json
 from dataclasses import asdict, dataclass
-from pathlib import Path, PurePosixPath
+from pathlib import Path, PurePosixPath, PureWindowsPath
 
 TASKS = ("text-generation", "text2text-generation", "text-classification", "feature-extraction")
 
@@ -49,7 +49,9 @@ def inspect_model(source: str | Path) -> ModelInfo:
         raise ValueError("config.json architectures must be a list of strings")
     weights = set()
     for pattern in ("*.safetensors", "pytorch_model*.bin"):
-        weights.update(p.name for p in source.glob(pattern) if p.is_file())
+        weights.update(
+            p.name for p in source.glob(pattern) if p.is_file() and not p.name.startswith(".")
+        )
     for pattern in ("*.safetensors.index.json", "pytorch_model*.bin.index.json"):
         for index in source.glob(pattern):
             weight_map = read_json(index).get("weight_map")
@@ -59,8 +61,19 @@ def inspect_model(source: str | Path) -> ModelInfo:
                 if not isinstance(shard, str):
                     raise ValueError(f"Invalid shard name in {index.name}")
                 parts = PurePosixPath(shard)
-                if parts.is_absolute() or ".." in parts.parts or "\\" in shard:
+                if (
+                    parts.is_absolute()
+                    or PureWindowsPath(shard).drive
+                    or any(part.startswith(".") for part in parts.parts)
+                    or "\\" in shard
+                    or "\x00" in shard
+                ):
                     raise ValueError(f"Unsafe shard name in {index.name}")
+                suffix = (
+                    ".safetensors" if index.name.endswith(".safetensors.index.json") else ".bin"
+                )
+                if parts.suffix != suffix:
+                    raise ValueError(f"Checkpoint shard must end with {suffix}: {shard}")
                 if not (source / shard).is_file():
                     raise ValueError(f"Missing checkpoint shard: {shard}")
                 weights.add(shard)

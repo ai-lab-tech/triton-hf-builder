@@ -7,7 +7,7 @@ from .licensing import is_attribution_file
 
 def copy_assets(source, destination, weights):
     # Follow file symlinks used by HF snapshots, producing a self-contained export.
-    # Exclude cache directories, credentials, arbitrary source code and unrelated files.
+    # Skip hidden files, cache directories, source code and unrelated filename types.
     allowed_suffixes = {".json", ".model", ".txt", ".tiktoken", ".jinja", ".jinja2"}
     for item in source.iterdir():
         if (
@@ -22,8 +22,12 @@ def copy_assets(source, destination, weights):
         shutil.copy2(source / relative, target)
     chat_templates = source / "chat_templates"
     if chat_templates.is_dir() and not chat_templates.is_symlink():
-        for item in chat_templates.glob("*.jinja*"):
-            if item.is_file():
+        for item in chat_templates.iterdir():
+            if (
+                item.is_file()
+                and not item.name.startswith(".")
+                and item.suffix in {".jinja", ".jinja2"}
+            ):
                 target = destination / "chat_templates" / item.name
                 target.parent.mkdir(exist_ok=True)
                 shutil.copy2(item, target)

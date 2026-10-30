@@ -73,6 +73,11 @@ it does not load or validate tensor contents. It writes no repository. A checkpo
 can pass inspection but fail generation, for example when its tokenizer is missing
 or multimodal metadata is recognized.
 
+Indexed shards must use relative paths without hidden components or Windows drive
+prefixes, and match the index's weight format (`.safetensors` or `.bin`). Nested
+shards and Hugging Face snapshot file symlinks are supported. Chat-template exports
+include only non-hidden `.jinja` and `.jinja2` files.
+
 | `ModelInfo` attribute | Meaning |
 | --- | --- |
 | `source` | Resolved local directory as a `Path`. |

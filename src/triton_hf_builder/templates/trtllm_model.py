@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Standalone TensorRT-LLM public LLM API adapter using local HF weights."""
 
 import json

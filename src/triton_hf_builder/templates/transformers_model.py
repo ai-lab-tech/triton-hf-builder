@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Standalone Triton Python adapter. No dependency on triton-hf-builder."""
 
 import json

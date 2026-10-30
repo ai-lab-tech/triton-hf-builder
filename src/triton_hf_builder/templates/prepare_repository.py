@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: Apache-2.0
 """Resolve native vLLM asset paths after mounting this repository for serving.
 
 Run this standalone script in the serving container, before starting Triton.

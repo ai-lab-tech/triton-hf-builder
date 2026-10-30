@@ -1,5 +1,7 @@
 from pathlib import Path
 
+from triton_hf_builder.licensing import is_attribution_file
+
 CASES = {
     "generation": {
         "repo_id": "HuggingFaceTB/SmolLM2-135M-Instruct",
@@ -44,8 +46,13 @@ def download_checkpoint(repo_id, cache, revisions):
     metadata = [
         name
         for name in names
-        if ("/" not in name or name.startswith("chat_templates/"))
-        and Path(name).suffix in suffixes
+        if (
+            ("/" not in name and is_attribution_file(name))
+            or (
+                ("/" not in name or name.startswith("chat_templates/"))
+                and Path(name).suffix in suffixes
+            )
+        )
         and not (safe_weights and name.endswith(".bin.index.json"))
         and not (not safe_weights and name.endswith(".safetensors.index.json"))
     ]

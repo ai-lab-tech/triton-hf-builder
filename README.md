@@ -106,5 +106,6 @@ See [CONTRIBUTING.md](CONTRIBUTING.md) for local checks and
 [RELEASING.md](RELEASING.md) for package publication and code-server integration.
 Real GPU serving tests are opt-in; follow the [test guide](scripts/README.md).
 
-[Apache-2.0 license](LICENSE) · [Security policy](SECURITY.md)
+[Apache-2.0 license](LICENSE) · [Licensing and test models](docs/licensing.md) ·
+[Security policy](SECURITY.md)
 Model weights and serving engines retain their own licenses.

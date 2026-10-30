@@ -44,6 +44,12 @@ python scripts/test_serving.py --runtime tensorrt-llm --device gpu
 | Features | Same DistilBERT checkpoint | Raw token features match direct inference within numerical tolerance |
 
 Transformers runs all four cases by default; engine runtimes run generation only.
+The three checkpoint model cards declare Apache-2.0 at the
+[reviewed revisions](../docs/licensing.md#serving-test-checkpoints). The runner
+preserves root model cards, licenses and notices when downloading checkpoints;
+the builder preserves them again when exporting model assets. Model assets and
+NVIDIA test images retain their own license terms.
+
 Every case starts its own real server on an automatically allocated localhost-only
 port. Cases run sequentially. Direct Transformers reference inference runs inside
 the container from the same local weights independently of generated `model.py`.

@@ -2,13 +2,19 @@
 
 import shutil
 
+from .licensing import is_attribution_file
+
 
 def copy_assets(source, destination, weights):
     # Follow file symlinks used by HF snapshots, producing a self-contained export.
     # Exclude cache directories, credentials, arbitrary source code and unrelated files.
     allowed_suffixes = {".json", ".model", ".txt", ".tiktoken", ".jinja", ".jinja2"}
     for item in source.iterdir():
-        if item.is_file() and item.suffix in allowed_suffixes and not item.name.startswith("."):
+        if (
+            item.is_file()
+            and not item.name.startswith(".")
+            and (item.suffix in allowed_suffixes or is_attribution_file(item.name))
+        ):
             shutil.copy2(item, destination / item.name)
     for relative in weights:
         target = destination / relative
@@ -53,6 +59,12 @@ vLLM uses its native Triton generate API; its request contract differs from the
 Python adapters. Set sampling limits in the request for vLLM.
 
 HF assets are local copies, including dereferenced snapshot file symlinks.
+Checkpoint license, notice and model-card documents are preserved in
+`{manifest["model_name"]}/1/model/` when present at the checkpoint root. These
+assets retain their own licenses. Generated Python support scripts are covered
+by the Apache-2.0 license in `LICENSE.triton-hf-builder`. The builder does not
+determine whether a checkpoint may be used or redistributed.
+
 Python custom model code is not copied or trusted. CPU is available for the
 Transformers adapter; engine adapters require GPUs. For TensorRT-LLM the LLM API
 selects from the container's visible GPUs; allocate exactly the requested GPUs.

@@ -9,6 +9,7 @@ from pathlib import Path
 from ._version import __version__
 from .artifacts import copy_assets, serving_readme
 from .inspector import TASKS, ModelInfo, inspect_model
+from .licensing import generator_license
 from .options import BuildOptions
 from .requirements import resolve_requirements
 from .runtimes import RuntimeAdapter, get_adapter
@@ -77,6 +78,7 @@ def generate_repository(
         (staging / "serving.json").write_text(
             json.dumps(manifest, indent=2) + "\n", encoding="utf-8"
         )
+        (staging / "LICENSE.triton-hf-builder").write_text(generator_license(), encoding="utf-8")
         (staging / "README.md").write_text(serving_readme(manifest), encoding="utf-8")
         if output.exists() or output.is_symlink():
             raise ValueError(f"Output already exists: {output}")

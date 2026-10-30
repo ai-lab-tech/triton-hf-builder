@@ -7,10 +7,10 @@
 
 **Turn a downloaded Hugging Face checkpoint into a Triton model repository.**
 
-Use the Python library, CLI or the code-server extension in
+The builder generates Triton configuration, runtime scripts and dependency
+files for Transformers, vLLM and TensorRT-LLM. Use it through the Python API,
+the `triton-hf` CLI, or the code-server extension in
 [Triton Control](https://github.com/ai-lab-tech/triton-control).
-Generation reads metadata and copies assets; it does not load weights or require
-a GPU. Allow disk space for a full checkpoint copy. **Status: beta.**
 
 [Python API](docs/python-api.md) · [Serving guide](docs/serving.md) ·
 [Serving tests](scripts/README.md) · [Contributing](CONTRIBUTING.md)
@@ -30,6 +30,9 @@ For development from a source checkout, see
 
 Point `source` to a complete local checkpoint with weights and tokenizer files.
 Choose a new `output` directory outside the checkpoint directory.
+
+Generation copies the checkpoint assets without loading weights and runs without
+a GPU. Allow disk space for a complete checkpoint copy.
 
 ```python
 from triton_hf_builder import generate_repository

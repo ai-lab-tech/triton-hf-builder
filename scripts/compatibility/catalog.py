@@ -95,7 +95,8 @@ def render_table(catalog):
         f"Source: [NVIDIA image matrix]({catalog['image_matrix_source']['url']}). "
         "† Upstream base version; NVIDIA build differs.",
         "",
-        "[Full catalog](compatibility.json): architecture names, exact engine versions, "
+        "[Full catalog](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/compatibility.json): "
+        "architecture names, exact engine versions, "
         "CUDA and reported driver versions. See the linked backend documentation "
         "for quantization, GPU and feature requirements.",
         "",

@@ -1,9 +1,9 @@
 # triton-hf-builder
 
 [![CI](https://github.com/ai-lab-tech/triton-hf-builder/actions/workflows/tests.yml/badge.svg)](https://github.com/ai-lab-tech/triton-hf-builder/actions/workflows/tests.yml)
-[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
-[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](pyproject.toml)
-[![Status: Beta](https://img.shields.io/badge/Status-Beta-blue.svg)](#adapters-and-compatibility)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/LICENSE)
+[![Python 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/pyproject.toml)
+[![Status: Beta](https://img.shields.io/badge/Status-Beta-blue.svg)](https://github.com/ai-lab-tech/triton-hf-builder#adapters-and-compatibility)
 
 **Turn a downloaded Hugging Face checkpoint into a Triton model repository.**
 
@@ -12,8 +12,8 @@ files for Transformers, vLLM and TensorRT-LLM. Use it through the Python API,
 the `triton-hf` CLI, or the code-server extension in
 [Triton Control](https://github.com/ai-lab-tech/triton-control).
 
-[Python API](docs/python-api.md) · [Serving guide](docs/serving.md) ·
-[Serving tests](scripts/README.md) · [Contributing](CONTRIBUTING.md)
+[Python API](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/docs/python-api.md) · [Serving guide](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/docs/serving.md) ·
+[Serving tests](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/scripts/README.md) · [Contributing](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/CONTRIBUTING.md)
 
 ## Install
 
@@ -50,7 +50,7 @@ print(result.model_directory / "config.pbtxt")
 
 **No manual `requirements` needed:** the builder writes runtime defaults into
 `requirements.txt`. Optional overrides, all parameters and return values are
-explained in the [Python API](docs/python-api.md).
+explained in the [Python API](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/docs/python-api.md).
 
 The equivalent CLI:
 
@@ -92,7 +92,7 @@ TensorRT-LLM uses the same layout with its own Python adapter. For vLLM,
 
 Deploy the `model_repository/` root to Triton after preparing its serving
 dependencies; generation alone does not validate inference.
-See the [serving guide](docs/serving.md) for deployment and vLLM path preparation.
+See the [serving guide](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/docs/serving.md) for deployment and vLLM path preparation.
 
 ## Adapters and compatibility
 
@@ -106,7 +106,7 @@ The API parameter `runtime` selects the builder adapter. The Triton backend and
 model execution framework are separate layers.
 
 Recognized multimodal checkpoints and custom model Python are outside the current
-adapter scope. See [runtime limitations](docs/serving.md#runtimes-and-request-contracts).
+adapter scope. See [runtime limitations](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/docs/serving.md#runtimes-and-request-contracts).
 
 ### Manufacturer compatibility catalog
 
@@ -123,12 +123,12 @@ Architecture support reported by the backend projects; individual models may req
 
 Source: [NVIDIA image matrix](https://github.com/triton-inference-server/server/blob/eb74dea5d400b92f54eacbd5f3f84903c786e4cd/docs/introduction/compatibility.md). † Upstream base version; NVIDIA build differs.
 
-[Full catalog](compatibility.json): architecture names, exact engine versions, CUDA and reported driver versions. See the linked backend documentation for quantization, GPU and feature requirements.
+[Full catalog](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/compatibility.json): architecture names, exact engine versions, CUDA and reported driver versions. See the linked backend documentation for quantization, GPU and feature requirements.
 
 <!-- compatibility:end -->
 
 The catalog tracks 26.06 and the latest documented image per runtime. A weekly
-workflow proposes updates as PRs. [Maintenance and selection policy](scripts/README.md#compatibility-catalog-maintenance).
+workflow proposes updates as PRs. [Maintenance and selection policy](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/scripts/README.md#compatibility-catalog-maintenance).
 
 ## Try it with Docker
 
@@ -147,10 +147,10 @@ for requirements, requests and cleanup.
 
 ## Development and releases
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for local checks and
-[RELEASING.md](RELEASING.md) for package publication and code-server integration.
-Real GPU serving tests are opt-in; follow the [test guide](scripts/README.md).
+See [CONTRIBUTING.md](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/CONTRIBUTING.md) for local checks and
+[RELEASING.md](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/RELEASING.md) for package publication and code-server integration.
+Real GPU serving tests are opt-in; follow the [test guide](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/scripts/README.md).
 
-[Apache-2.0 license](LICENSE) · [Licensing and test models](docs/licensing.md) ·
-[Security policy](SECURITY.md) · [Code of Conduct](CODE_OF_CONDUCT.md)
+[Apache-2.0 license](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/LICENSE) · [Licensing and test models](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/docs/licensing.md) ·
+[Security policy](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/SECURITY.md) · [Code of Conduct](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/CODE_OF_CONDUCT.md)
 Model weights and serving engines retain their own licenses.

@@ -34,6 +34,15 @@ It uses OIDC; no persistent PyPI token is needed. Follow the
 [PyPI Trusted Publishing documentation](https://docs.pypi.org/trusted-publishers/using-a-publisher/).
 Do not overwrite a published version; publish a new version for corrections.
 
+After PyPI publication succeeds, the release job creates a GitHub Release for
+the same existing tag, generates release notes, and attaches the tested wheel
+and source archive. It uses GitHub's automatic workflow token; no additional
+secret is needed. A failed build, test, or PyPI upload prevents the GitHub Release
+from being created. The release job does not run when PyPI publishing is disabled.
+
+Pushing a tag alone does not create a GitHub Release outside this workflow.
+Tags pushed before the release job was added do not gain a release retroactively.
+
 ## code-server integration
 
 This repository produces the Python package. `triton-control` owns the extension,

@@ -4,6 +4,16 @@ Focused bug reports, fixes, documentation and runtime adapters are welcome.
 Keep discussions respectful and technical. Explain the problem and resulting
 behavior in pull requests, with validation and remaining limitations.
 
+## Development model
+
+Public contributions are welcome through issues, discussions and pull requests.
+Code changes go through a pull request and require at least one maintainer's
+approval before merging. New changes after approval require another review.
+Maintainers decide which changes to merge and when to publish releases.
+
+Follow the [Code of Conduct](CODE_OF_CONDUCT.md) in all project discussions.
+Report vulnerabilities privately as described in [SECURITY.md](SECURITY.md).
+
 ## Development
 
 Use Python 3.10 or newer in a virtual environment:
@@ -41,6 +51,8 @@ repositories or test reports. Include provenance for third-party code; model
 licenses remain separate from this project's Apache-2.0 license.
 
 See [RELEASING.md](RELEASING.md) for packaging and publication.
+The GitHub settings prepared for public access are documented in
+[Repository settings](docs/repository-settings.md).
 
 Generate `config.pbtxt` through the official `tritonclient` `ModelConfig` protobuf
 type and `google.protobuf.text_format`, not hand-built strings. Keep target-server

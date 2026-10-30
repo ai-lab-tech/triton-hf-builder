@@ -1,4 +1,4 @@
-include LICENSE README.md CONTRIBUTING.md SECURITY.md RELEASING.md
+include LICENSE README.md CONTRIBUTING.md CODE_OF_CONDUCT.md SECURITY.md RELEASING.md
 include compatibility.json compatibility-policy.json
 recursive-include scripts *.py *.md Dockerfile.serving
 recursive-include tests *.py

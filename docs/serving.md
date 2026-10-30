@@ -33,8 +33,13 @@ model_repository/
 ├── requirements.txt
 ├── serving.json
 ├── prepare_repository.py           # vLLM only; standalone mount path preparation
+├── LICENSE.triton-hf-builder        # Apache-2.0 license for generated support code
 └── README.md
 ```
+
+The `1/model/` directory preserves root model cards, license files and attribution
+notices when supplied with the checkpoint, alongside the weights and tokenizer
+assets. These files retain their original names and licenses.
 
 Deploy the repository root. Install its generated `requirements.txt` in the serving
 environment before Triton loads the model. Triton itself does not install it;

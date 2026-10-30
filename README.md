@@ -62,9 +62,36 @@ triton-hf build /workspace/hf-checkpoint \
   --image nvcr.io/nvidia/tritonserver:26.06-py3
 ```
 
-The output contains the checkpoint assets, `config.pbtxt`, runtime files,
-`requirements.txt` and `serving.json`. Deploy this repository to Triton after
-preparing its serving dependencies; generation alone does not validate inference.
+## Generated output
+
+For the Transformers example above, a checkpoint with a single Safetensors weight
+file produces the following layout. Checkpoint filenames vary with the source.
+
+```text
+model_repository/
+├── my_model/
+│   ├── config.pbtxt                 # Triton model configuration
+│   └── 1/
+│       ├── model.py                 # Triton Python adapter
+│       ├── settings.json            # Task and generation settings
+│       └── model/
+│           ├── config.json
+│           ├── model.safetensors    # Copied checkpoint weights
+│           ├── tokenizer.json
+│           ├── README.md            # Original model card, if supplied
+│           └── LICENSE              # Original model license, if supplied
+├── requirements.txt                # Serving dependencies
+├── serving.json                    # Runtime, image and build metadata
+├── LICENSE.triton-hf-builder        # License for generated support scripts
+└── README.md                       # Serving instructions
+```
+
+TensorRT-LLM uses the same layout with its own Python adapter. For vLLM,
+`my_model/1/model.json` replaces `model.py` and `settings.json`, and
+`prepare_repository.py` is added at the repository root.
+
+Deploy the `model_repository/` root to Triton after preparing its serving
+dependencies; generation alone does not validate inference.
 See the [serving guide](docs/serving.md) for deployment and vLLM path preparation.
 
 ## Adapters and compatibility

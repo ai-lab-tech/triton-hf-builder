@@ -25,7 +25,7 @@ classifiers = [
 
 [project.optional-dependencies]
 e2e = ["huggingface-hub>=0.30,<3"]
-dev = ["build>=1.2,<2", "twine>=6,<7", "ruff>=0.9,<1"]
+dev = ["build>=1.2,<2", "twine>=6,<8", "ruff>=0.9,<1"]
 
 [project.scripts]
 triton-hf = "triton_hf_builder.cli:main"

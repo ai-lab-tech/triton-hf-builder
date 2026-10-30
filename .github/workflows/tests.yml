@@ -78,3 +78,27 @@ jobs:
           name: distributions
           path: dist
       - uses: pypa/gh-action-pypi-publish@release/v1
+
+  close-dependabot-prs-once:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      pull-requests: write
+    steps:
+      - name: Close only Dependabot PRs 1 through 5
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          for number in 1 2 3 4 5; do
+            path="repos/$GITHUB_REPOSITORY/pulls/$number"
+            author="$(gh api "$path" --jq '.user.login')"
+            if [ "$author" != 'dependabot[bot]' ]; then
+              echo "PR #$number is not a Dependabot PR; stopping."
+              exit 1
+            fi
+            state="$(gh api --method PATCH "$path" -f state=closed --jq '.state')"
+            test "$state" = closed
+            echo "PR #$number: verified closed"
+          done

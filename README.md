@@ -20,12 +20,11 @@ a GPU. Allow disk space for a full checkpoint copy. **Status: alpha.**
 Requires Python 3.10+.
 
 ```bash
-git clone https://github.com/ai-lab-tech/triton-hf-builder.git
-cd triton-hf-builder
-python3 -m venv .venv
-source .venv/bin/activate
-python -m pip install .
+python -m pip install triton-hf-builder
 ```
+
+For development from a source checkout, see
+[Contributing](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/CONTRIBUTING.md).
 
 ## Quick start
 

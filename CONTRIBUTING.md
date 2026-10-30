@@ -9,6 +9,8 @@ behavior in pull requests, with validation and remaining limitations.
 Use Python 3.10 or newer in a virtual environment:
 
 ```bash
+git clone https://github.com/ai-lab-tech/triton-hf-builder.git
+cd triton-hf-builder
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -e '.[dev]'

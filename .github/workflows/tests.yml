@@ -22,8 +22,8 @@ jobs:
         env:
           RELEASE_TAG: ${{ github.ref_type == 'tag' && github.ref_name || '' }}
         run: |
-          ruff check src scripts tests
-          ruff format --check src scripts tests
+          ruff check src scripts tests examples
+          ruff format --check src scripts tests examples
           python scripts/check_release.py
           python scripts/update_compatibility.py --check
           if [ -n "$RELEASE_TAG" ]; then

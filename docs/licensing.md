@@ -7,6 +7,10 @@ documentation, unit tests, synthetic fixtures and serving-test runner are
 licensed under [Apache-2.0](../LICENSE). This does not change the licenses of
 third-party dependencies, model assets or container contents.
 
+The Docker quickstart scripts are covered by the same project license. Its
+serving image includes a copy of that license for its inference client; model
+weights remain outside both demo images in the local cache and exported assets.
+
 The unit tests construct their checkpoint metadata and placeholder weight bytes
 locally. They do not download or bundle real checkpoints or datasets. The source
 distribution includes the tests; the wheel does not. Both distributions include

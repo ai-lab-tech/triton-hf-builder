@@ -6,3 +6,5 @@ __pycache__/
 build/
 dist/
 .e2e-artifacts/
+examples/docker/data/
+examples/docker/requirements.generated.txt

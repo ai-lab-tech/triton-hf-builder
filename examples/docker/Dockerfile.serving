@@ -1,0 +1,15 @@
+FROM nvcr.io/nvidia/tritonserver:26.06-py3
+
+ENV PYTHONPATH=""
+COPY examples/docker/requirements.generated.txt /tmp/demo-requirements.txt
+RUN python3 -m venv --without-pip /opt/triton-hf-demo
+RUN --mount=type=cache,id=triton-hf-demo-serving-pip,target=/root/.cache/pip \
+    python3 -m pip --python /opt/triton-hf-demo install \
+      --extra-index-url https://download.pytorch.org/whl/cpu \
+      -r /tmp/demo-requirements.txt \
+    && python3 -m pip --python /opt/triton-hf-demo check
+
+ENV PYTHONPATH=/opt/triton-hf-demo/lib/python3.12/site-packages
+COPY LICENSE /opt/demo/LICENSE
+COPY examples/docker/infer.py /opt/demo/infer.py
+CMD ["tritonserver", "--model-repository=/models", "--model-control-mode=explicit", "--load-model=demo", "--pinned-memory-pool-byte-size=0"]

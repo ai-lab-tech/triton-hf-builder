@@ -2,6 +2,13 @@
 
 [Quick start](../README.md#quick-start) · [Python API](python-api.md) · [Real serving tests](../scripts/README.md)
 
+## Docker example
+
+The [CPU Docker quickstart](../examples/docker/README.md) downloads a pinned
+checkpoint, generates its repository and starts a Transformers-backed Triton
+server. Its launcher also waits for readiness and sends an inference request.
+It uses the same generated configuration and requirements as the library and CLI.
+
 ## Configuration format
 
 `config.pbtxt` is generated as the official Triton client's `ModelConfig`

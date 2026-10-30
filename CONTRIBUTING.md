@@ -24,8 +24,8 @@ cd triton-hf-builder
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -e '.[dev]'
-ruff check src scripts tests
-ruff format --check src scripts tests
+ruff check src scripts tests examples
+ruff format --check src scripts tests examples
 python -m unittest discover -s tests -v
 python scripts/check_release.py
 python -m build
@@ -36,6 +36,8 @@ CI installs the built wheel on Python 3.10, 3.12 and 3.14 and runs the unit
 suite against it. These tests use fake checkpoint weights and mocked engines;
 they do not establish real model or GPU compatibility. Real-serving tests are
 opt-in: follow [scripts/README.md](scripts/README.md). Report both separately.
+The [Docker quickstart](examples/docker/README.md) is a smaller real-serving
+smoke test for the pinned CPU generation example; it does not cover every runtime.
 
 ## Design and tests
 

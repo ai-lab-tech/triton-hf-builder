@@ -1,0 +1,12 @@
+FROM python:3.12-slim-bookworm
+
+WORKDIR /app
+COPY pyproject.toml README.md LICENSE ./
+COPY src/ ./src/
+RUN --mount=type=cache,id=triton-hf-demo-prepare-pip,target=/root/.cache/pip \
+    python -m pip install '.[e2e]' 'huggingface-hub==2.4.0'
+
+COPY scripts/serving_tests/__init__.py scripts/serving_tests/checkpoints.py /demo/serving_tests/
+COPY examples/docker/prepare.py /demo/prepare.py
+ENV HF_HOME=/data/hf-cache PYTHONUNBUFFERED=1
+ENTRYPOINT ["python", "/demo/prepare.py"]

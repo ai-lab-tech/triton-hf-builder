@@ -1,0 +1,46 @@
+name: triton-hf-demo
+
+services:
+  prepare:
+    profiles: [setup]
+    image: triton-hf-builder-demo:prepare
+    build:
+      context: ../..
+      dockerfile: examples/docker/Dockerfile.prepare
+    user: "${DEMO_UID:-1000}:${DEMO_GID:-1000}"
+    volumes:
+      - ./data:/data
+
+  triton:
+    image: triton-hf-builder-demo:cpu
+    build:
+      context: ../..
+      dockerfile: examples/docker/Dockerfile.serving
+    init: true
+    shm_size: 1gb
+    ports:
+      - "127.0.0.1:${DEMO_PORT:-8000}:8000"
+    volumes:
+      - type: bind
+        source: ./data/model_repository
+        target: /models
+        read_only: true
+        bind:
+          create_host_path: false
+    environment:
+      HF_HUB_OFFLINE: "1"
+      TRANSFORMERS_OFFLINE: "1"
+      TOKENIZERS_PARALLELISM: "false"
+      OMP_NUM_THREADS: "2"
+      MKL_NUM_THREADS: "2"
+    healthcheck:
+      test:
+        - CMD
+        - python3
+        - -c
+        - "from urllib.request import urlopen; [urlopen('http://127.0.0.1:8000/v2/' + route, timeout=2).close() for route in ('health/ready', 'models/demo/ready')]"
+      interval: 5s
+      timeout: 5s
+      start_period: 60s
+      retries: 60
+    stop_grace_period: 30s

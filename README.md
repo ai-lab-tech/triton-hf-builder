@@ -26,6 +26,21 @@ python -m pip install triton-hf-builder
 For development from a source checkout, see
 [Contributing](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/CONTRIBUTING.md).
 
+## Try it with Docker
+
+Run a complete CPU serving example from a repository checkout:
+
+```bash
+./examples/docker/quickstart.sh
+```
+
+The launcher downloads a small pinned checkpoint, generates its model repository,
+builds the serving image, waits for readiness and sends an inference request.
+No GPU or local Python installation is needed. The first run downloads large
+images and dependencies; later runs reuse cached files and build layers.
+See the [Docker quickstart](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/examples/docker/README.md)
+for requirements, requests and cleanup.
+
 ## Quick start
 
 Point `source` to a complete local checkpoint with weights and tokenizer files.

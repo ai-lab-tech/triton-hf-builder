@@ -75,11 +75,11 @@ def render_table(catalog):
     lines = [
         BEGIN,
         "",
-        "Manufacturer-documented text-generation candidates. "
-        "[Full catalog and architecture names](compatibility.json).",
+        "Architecture support reported by the backend projects; "
+        "individual models may require additional configuration.",
         "",
-        "| Image tag | Engine version | CUDA / reported driver | Architectures |",
-        "| --- | --- | --- | --- |",
+        "| Triton image | Backend | Supported architectures |",
+        "| --- | --- | --- |",
     ]
     for row in catalog["images"]:
         tag = row["image"].split(":", 1)[1]
@@ -88,18 +88,16 @@ def render_table(catalog):
         reference = f"[{count} candidates]({source['url']})" if source else "Unknown"
         if row.get("version_match") == "upstream_base_only":
             reference += " †"
-        lines.append(
-            f"| `{tag}` | `{row['engine_version']}` | {row['cuda_version']} / "
-            f"{row['driver_version_reported']} | {reference} |"
-        )
+        backend = "vLLM" if row["runtime"] == "vllm" else "TensorRT-LLM"
+        lines.append(f"| `{tag}` | {backend} | {reference} |")
     lines += [
         "",
         f"Source: [NVIDIA image matrix]({catalog['image_matrix_source']['url']}). "
         "† Upstream base version; NVIDIA build differs.",
         "",
-        "These are documentation references, not serving guarantees. "
-        "Check the linked matrices for quantization, GPU and feature restrictions; "
-        "the reported driver is not a universal minimum.",
+        "[Full catalog](compatibility.json): architecture names, exact engine versions, "
+        "CUDA and reported driver versions. See the linked backend documentation "
+        "for quantization, GPU and feature requirements.",
         "",
     ]
     return "\n".join([*lines, END])

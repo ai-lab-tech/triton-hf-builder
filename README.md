@@ -127,18 +127,18 @@ adapter scope. See [runtime limitations](docs/serving.md#runtimes-and-request-co
 
 <!-- compatibility:begin -->
 
-Manufacturer-documented text-generation candidates. [Full catalog and architecture names](compatibility.json).
+Architecture support reported by the backend projects; individual models may require additional configuration.
 
-| Image tag | Engine version | CUDA / reported driver | Architectures |
-| --- | --- | --- | --- |
-| `26.09-vllm-python-py3` | `0.29.0+3b480f30.nv26.9.68265578` | 13.4.1.012 / 615.71.09 | [118 candidates](https://github.com/vllm-project/vllm/blob/98dff2a81d747d1dba01a47f939f48c3526d4206/docs/models/supported_models.md) † |
-| `26.06-vllm-python-py3` | `0.22.1+7b9cb5b7.nv26.6.55098374` | 13.3.0.035 / 610.43.02 | [129 candidates](https://github.com/vllm-project/vllm/blob/0decac0d96c42b49572498019f0a0e3600f50398/docs/models/supported_models.md) † |
-| `26.07-trtllm-python-py3` | `1.2.1` | 13.1.0.036 / 590.44.01 | [18 candidates](https://github.com/NVIDIA/TensorRT-LLM/blob/376f7e1bd8ed543f75014309e3fd4b237e9b0e73/docs/source/models/supported-models.md) |
-| `26.06-trtllm-python-py3` | `1.2.1` | 13.1.0.036 / 590.44.01 | [18 candidates](https://github.com/NVIDIA/TensorRT-LLM/blob/376f7e1bd8ed543f75014309e3fd4b237e9b0e73/docs/source/models/supported-models.md) |
+| Triton image | Backend | Supported architectures |
+| --- | --- | --- |
+| `26.09-vllm-python-py3` | vLLM | [118 candidates](https://github.com/vllm-project/vllm/blob/98dff2a81d747d1dba01a47f939f48c3526d4206/docs/models/supported_models.md) † |
+| `26.06-vllm-python-py3` | vLLM | [129 candidates](https://github.com/vllm-project/vllm/blob/0decac0d96c42b49572498019f0a0e3600f50398/docs/models/supported_models.md) † |
+| `26.07-trtllm-python-py3` | TensorRT-LLM | [18 candidates](https://github.com/NVIDIA/TensorRT-LLM/blob/376f7e1bd8ed543f75014309e3fd4b237e9b0e73/docs/source/models/supported-models.md) |
+| `26.06-trtllm-python-py3` | TensorRT-LLM | [18 candidates](https://github.com/NVIDIA/TensorRT-LLM/blob/376f7e1bd8ed543f75014309e3fd4b237e9b0e73/docs/source/models/supported-models.md) |
 
 Source: [NVIDIA image matrix](https://github.com/triton-inference-server/server/blob/eb74dea5d400b92f54eacbd5f3f84903c786e4cd/docs/introduction/compatibility.md). † Upstream base version; NVIDIA build differs.
 
-These are documentation references, not serving guarantees. Check the linked matrices for quantization, GPU and feature restrictions; the reported driver is not a universal minimum.
+[Full catalog](compatibility.json): architecture names, exact engine versions, CUDA and reported driver versions. See the linked backend documentation for quantization, GPU and feature requirements.
 
 <!-- compatibility:end -->
 

@@ -6,6 +6,10 @@
 Import the public API from `triton_hf_builder`. No code-server, Docker daemon or
 inference framework is needed to inspect a checkpoint or generate its repository.
 
+For a runnable, generation-only example with a revision-pinned real checkpoint,
+use the [Colab CPU notebook](../examples/colab/README.md). For model loading and
+actual inference, use the [CPU Docker quickstart](../examples/docker/README.md).
+
 ### `generate_repository(...) -> BuildResult`
 
 Reads a local checkpoint, validates metadata and options, and copies the required

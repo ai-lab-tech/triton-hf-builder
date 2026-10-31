@@ -130,6 +130,13 @@ Source: [NVIDIA image matrix](https://github.com/triton-inference-server/server/
 The catalog tracks 26.06 and the latest documented image per runtime. A weekly
 workflow proposes updates as PRs. [Maintenance and selection policy](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/scripts/README.md#compatibility-catalog-maintenance).
 
+## Try it on Colab CPU
+
+Open the [generation-only notebook](https://colab.research.google.com/github/ai-lab-tech/triton-hf-builder/blob/main/examples/colab/generation_only.ipynb)
+to download a pinned SmolLM2 checkpoint, inspect it and generate a CPU repository
+using the Python API. No GPU or Docker is needed. This example does not load the
+model or run inference. See the [Colab example](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/examples/colab/README.md).
+
 ## Try it with Docker
 
 Run a complete CPU serving example from a repository checkout:

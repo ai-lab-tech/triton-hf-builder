@@ -2,6 +2,7 @@ include LICENSE README.md CONTRIBUTING.md CODE_OF_CONDUCT.md SECURITY.md RELEASI
 include compatibility.json compatibility-policy.json
 include .dockerignore
 recursive-include examples/docker *.py *.md *.sh *.yaml Dockerfile.*
+recursive-include examples/colab *.md *.ipynb
 prune examples/docker/data
 exclude examples/docker/requirements.generated.txt
 recursive-include scripts *.py *.md Dockerfile.serving

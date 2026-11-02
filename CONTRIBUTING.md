@@ -14,7 +14,7 @@ Maintainers decide which changes to merge and when to publish releases.
 Follow the [Code of Conduct](CODE_OF_CONDUCT.md) in all project discussions.
 Report vulnerabilities privately as described in [SECURITY.md](SECURITY.md).
 
-## Development
+## Local development
 
 Use Python 3.10 or newer in a virtual environment:
 

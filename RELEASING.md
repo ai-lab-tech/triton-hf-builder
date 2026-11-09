@@ -6,16 +6,16 @@ evidence separately, including image digests, model revisions and failed cases.
 
 ## Prepare
 
-1. Update `src/triton_hf_builder/_version.py`, the single version source.
-2. Run the checks in [CONTRIBUTING.md](CONTRIBUTING.md), including wheel and sdist
-   builds. Run the serving tests yourself for any compatibility claims.
-3. Review the diff, model/code provenance and repository history before making
-   the repository public. This workflow does not audit historical secrets.
-4. Create a matching tag such as `v0.1.0` only when ready to release. CI checks
-   the tag against the package version and tests the exact wheel it built.
+Commit and push the code you want to release, then create and push an unused tag:
 
-`tests.yml` uploads wheel and sdist as the `distributions` workflow artifact.
-This is available without enabling publication. Failed tests block publication.
+```bash
+git tag -a v0.1.5 -m "Release v0.1.5"
+git push origin v0.1.5
+```
+
+The tag sets the version automatically. Once checks pass, GitHub Actions
+publishes the package to PyPI and creates a GitHub Release, provided publishing
+is enabled as described below. Use a new version for each release.
 
 ## Enable PyPI once ready
 

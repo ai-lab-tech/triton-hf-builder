@@ -1,5 +1,6 @@
 """Offline regression tests for manufacturer data; no GPU or network required."""
 
+import copy
 import json
 import sys
 import unittest
@@ -8,6 +9,7 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 from compatibility.catalog import BEGIN, END, build_catalog, change_summary, update_readme
+from compatibility.dependencies import build_dependency_catalog
 from compatibility.parsing import image_rows, model_rows
 from compatibility.sources import GitHubSources, MissingSource
 
@@ -64,6 +66,31 @@ SOURCE = {
     "commit": "a" * 40,
     "sha256": "b" * 64,
 }
+REVIEWED_PROFILE = {
+    "runtime": "vllm",
+    "image": "nvcr.io/nvidia/tritonserver:26.06-vllm-python-py3",
+    "device": "gpu",
+    "status": "manufacturer_documented",
+    "requirements": ["sentencepiece==0.2.1"],
+    "package_indexes": [],
+    "sources": [{"url": "https://example.com/reviewed-rule"}],
+    "notes": ["Reviewed tokenizer dependency"],
+}
+IMAGE_CORRECTION = {
+    "runtime": "tensorrt-llm",
+    "image": "nvcr.io/nvidia/tritonserver:26.06-trtllm-python-py3",
+    "requirements": ["openai==2.8.1"],
+    "sources": [SOURCE],
+    "notes": ["Import correction only"],
+}
+
+
+def curated_rules(*, profiles=(), corrections=()):
+    return {
+        "schema_version": 1,
+        "profiles": copy.deepcopy(list(profiles)),
+        "image_corrections": copy.deepcopy(list(corrections)),
+    }
 
 
 class FakeSources:
@@ -81,6 +108,107 @@ class FakeSources:
 
 
 class CompatibilityTests(unittest.TestCase):
+    def test_dependency_catalog_preserves_image_variants_and_scoped_corrections(self):
+        # Arrange
+        catalog = build_catalog(FakeSources(), POLICY)
+        curated = curated_rules(corrections=[IMAGE_CORRECTION])
+        # Act
+        bundled = build_dependency_catalog(catalog, curated)
+        # Assert
+        self.assertEqual(len(bundled["profiles"]), 4)
+        corrected = [p for p in bundled["profiles"] if p["requirements"]]
+        self.assertEqual(len(corrected), 1)
+        self.assertEqual(corrected[0]["image"], curated["image_corrections"][0]["image"])
+        self.assertTrue(all(p["status"] == "manufacturer_documented" for p in bundled["profiles"]))
+
+    def test_dependency_catalog_leaves_inputs_unchanged(self):
+        # Arrange
+        catalog = build_catalog(FakeSources(), POLICY)
+        curated = curated_rules(profiles=[REVIEWED_PROFILE], corrections=[IMAGE_CORRECTION])
+        original_catalog = copy.deepcopy(catalog)
+        original_curated = copy.deepcopy(curated)
+        # Act
+        build_dependency_catalog(catalog, curated)
+        # Assert
+        self.assertEqual(catalog, original_catalog)
+        self.assertEqual(curated, original_curated)
+
+    def test_reviewed_profile_extends_existing_engine_without_losing_source_facts(self):
+        # Arrange
+        catalog = build_catalog(FakeSources(), POLICY)
+        curated = curated_rules(profiles=[REVIEWED_PROFILE])
+        # Act
+        result = build_dependency_catalog(catalog, curated)
+        # Assert
+        self.assertEqual(len(result["profiles"]), 4)
+        profile = next(
+            p for p in result["profiles"] if p["image"] == curated["profiles"][0]["image"]
+        )
+        self.assertEqual(profile["requirements"], ["sentencepiece==0.2.1"])
+        self.assertEqual(profile["environment"]["engine_version"], "0.22.1+vendor")
+        self.assertEqual(profile["sources"], [SOURCE, *curated["profiles"][0]["sources"]])
+
+    def test_invalid_reviewed_rules_fail_before_publication(self):
+        # Arrange
+        catalog = build_catalog(FakeSources(), POLICY)
+        cases = [
+            (
+                "package_indexes",
+                ["https://example.com\n--trusted-host example.com"],
+                "single HTTPS",
+            ),
+            ("requirements", ["torch==2.9.0\nother==1"], "single-line"),
+            ("requirements", ["torch @ https://example.com/torch.whl"], "URLs"),
+            ("status", "verified", "status"),
+            ("sources", [], "source URLs"),
+        ]
+        for field, value, message in cases:
+            with self.subTest(field=field, value=value):
+                # Arrange
+                curated = curated_rules(profiles=[REVIEWED_PROFILE])
+                curated["profiles"][0][field] = value
+                # Act
+                with self.assertRaises(ValueError) as error:
+                    build_dependency_catalog(catalog, curated)
+                # Assert
+                self.assertIn(message, str(error.exception))
+
+    def test_duplicate_reviewed_rules_are_rejected(self):
+        # Arrange
+        catalog = build_catalog(FakeSources(), POLICY)
+        for field in ("profiles", "image_corrections"):
+            with self.subTest(field=field):
+                # Arrange
+                curated = curated_rules(profiles=[REVIEWED_PROFILE], corrections=[IMAGE_CORRECTION])
+                curated[field].append(copy.deepcopy(curated[field][0]))
+                # Act
+                with self.assertRaises(ValueError) as error:
+                    build_dependency_catalog(catalog, curated)
+                # Assert
+                self.assertIn("Duplicate", str(error.exception))
+
+    def test_reviewed_rule_cannot_overwrite_manufacturer_environment(self):
+        # Arrange
+        catalog = build_catalog(FakeSources(), POLICY)
+        curated = curated_rules(profiles=[REVIEWED_PROFILE])
+        curated["profiles"][0]["environment"] = {"cuda_version": "wrong"}
+        # Act
+        with self.assertRaises(ValueError) as error:
+            build_dependency_catalog(catalog, curated)
+        # Assert
+        self.assertIn("disagrees with manufacturer", str(error.exception))
+
+    def test_bundled_dependency_catalog_matches_maintenance_inputs(self):
+        # Arrange
+        root = Path(__file__).resolve().parents[1]
+        catalog = json.loads((root / "compatibility.json").read_text())
+        curated = json.loads((root / "dependency-profiles.json").read_text())
+        bundled = json.loads((root / "src/triton_hf_builder/dependency_profiles.json").read_text())
+        # Act
+        expected = build_dependency_catalog(catalog, curated)
+        # Assert
+        self.assertEqual(bundled, expected)
+
     def test_summary_reports_added_and_removed_architectures(self):
         # Arrange
         current = build_catalog(FakeSources(), POLICY)

@@ -16,6 +16,8 @@ def verify(path):
         line = line.split(" #", 1)[0].strip()
         if not line or line.startswith("#"):
             continue
+        if line.startswith("--extra-index-url "):
+            continue
         requirement = Requirement(line)
         if requirement.marker and not requirement.marker.evaluate():
             continue

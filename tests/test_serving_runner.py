@@ -13,6 +13,17 @@ from serving_tests import cli, docker, inference, runner, support
 
 
 class ServingRunnerTests(unittest.TestCase):
+    def test_release_selection_and_python_alias_match_builder(self):
+        # Arrange
+        arguments = ["--runtime", "python", "--triton-version", "26.07"]
+        # Act
+        args = cli.parse_args(arguments)
+        # Assert
+        self.assertEqual(args.runtime, ["transformers"])
+        self.assertEqual(args.python_base_image, "nvcr.io/nvidia/tritonserver:26.07-py3")
+        self.assertEqual(args.vllm_image, "nvcr.io/nvidia/tritonserver:26.07-vllm-python-py3")
+        self.assertEqual(args.trtllm_image, "nvcr.io/nvidia/tritonserver:26.07-trtllm-python-py3")
+
     def test_derived_trt_image_uses_base_image_dependency_correction(self):
         # Arrange
         base = "nvcr.io/nvidia/tritonserver:26.06-trtllm-python-py3"

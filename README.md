@@ -41,16 +41,29 @@ result = generate_repository(
     source="/workspace/hf-checkpoint",
     output="/workspace/model_repository",
     name="my_model",
-    runtime="transformers",
-    image="nvcr.io/nvidia/tritonserver:26.06-py3",
+    runtime="python",
+    triton_version="26.06",
     device="cpu",
 )
 print(result.model_directory / "config.pbtxt")
+print(result.manifest["image"])  # nvcr.io/nvidia/tritonserver:26.06-py3
 ```
 
-**No manual `requirements` needed:** the builder writes runtime defaults into
-`requirements.txt`. Optional overrides, all parameters and return values are
-explained in the [Python API](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/docs/python-api.md).
+Choose the **Triton release and serving runtime**. The builder selects the image
+and writes `requirements.txt` using its bundled dependency profiles. `python` is
+an alias for the Transformers adapter. The code-server environment can use a
+different backend; it does not need the serving engine installed.
+
+| Runtime | Image selected for `triton_version="26.06"` |
+| --- | --- |
+| `python` / `transformers` | `nvcr.io/nvidia/tritonserver:26.06-py3` |
+| `vllm` | `nvcr.io/nvidia/tritonserver:26.06-vllm-python-py3` |
+| `tensorrt-llm` | `nvcr.io/nvidia/tritonserver:26.06-trtllm-python-py3` |
+
+Generation stays offline. Unknown image/device combinations use dependency
+defaults with an explicit warning. For custom images, pass `image="my/serving:tag"`
+instead of `triton_version`. See the [Python API](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/docs/python-api.md)
+for overrides and all options.
 
 The equivalent CLI:
 
@@ -58,8 +71,7 @@ The equivalent CLI:
 triton-hf inspect /workspace/hf-checkpoint
 triton-hf build /workspace/hf-checkpoint \
   --output /workspace/model_repository --name my_model \
-  --runtime transformers --device cpu \
-  --image nvcr.io/nvidia/tritonserver:26.06-py3
+  --runtime python --device cpu --triton-version 26.06
 ```
 
 ## Generated output

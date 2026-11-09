@@ -156,6 +156,31 @@ workflow, not through an extra manual installation. See the
 
 ## Compatibility catalog maintenance
 
+The updater also generates `src/triton_hf_builder/dependency_profiles.json`, which
+is shipped in the wheel and read offline during repository generation. It combines
+published engine image facts from `compatibility.json` with reviewed rules in
+the root `dependency-profiles.json`. Curated pins must include sources, a precise
+image/runtime/device scope, limitations and an honest validation status. New
+manufacturer entries are documented baselines, never automatically serving-tested.
+Reviewed profiles can extend a manufacturer entry with the same image, runtime
+and device. Published environment facts and their sources are preserved. Conflicting
+environment facts, duplicate reviewed entries, malformed requirements and invalid
+package indexes fail the update before any generated files are written.
+Digest references must be cataloged explicitly; an accompanying tag is insufficient.
+The documented Transformers CPU example supplies the initial pinned CPU profile;
+there is no equivalent tested GPU profile yet.
+
+After changing reviewed rules, rebuild the packaged snapshot without network:
+
+```bash
+python scripts/update_compatibility.py --offline
+python scripts/update_compatibility.py --check
+```
+
+Normal refreshes update both catalogs, and the existing scheduled workflow proposes
+the bundled snapshot in the same review PR. `--check` validates both snapshots
+offline. Do not edit the generated packaged JSON directly.
+
 The manufacturer catalog is independent of serving tests. It downloads small
 official documentation files; it does not download weights, pull Docker images,
 install serving engines or run inference. No AI service or API key is needed.

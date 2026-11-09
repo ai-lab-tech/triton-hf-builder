@@ -8,6 +8,8 @@ import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 
+from triton_hf_builder.runtimes import RUNTIMES, get_adapter
+
 from .checkpoints import CASES
 from .runner import run_case
 from .support import command, write_json
@@ -15,9 +17,7 @@ from .support import command, write_json
 
 def parse_args(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument(
-        "--runtime", action="append", choices=("transformers", "vllm", "tensorrt-llm", "all")
-    )
+    parser.add_argument("--runtime", action="append", choices=(*RUNTIMES, "all"))
     parser.add_argument("--device", choices=("cpu", "gpu"), default="cpu")
     parser.add_argument("--case", action="append", choices=tuple(CASES))
     parser.add_argument("--work-dir", type=Path, default=Path(".e2e-artifacts"))
@@ -49,6 +49,8 @@ def parse_args(argv=None):
     args.case = list(dict.fromkeys(args.case)) if args.case else None
     if "all" in args.runtime:
         args.runtime = ["transformers", "vllm", "tensorrt-llm"]
+    else:
+        args.runtime = list(dict.fromkeys(get_adapter(runtime).name for runtime in args.runtime))
     if args.device != "gpu" and any(runtime != "transformers" for runtime in args.runtime):
         parser.error("vLLM and TensorRT-LLM require --device gpu")
     if (
@@ -63,15 +65,22 @@ def parse_args(argv=None):
         parser.error("--gpu-device must be a single numeric GPU index")
     if min(args.startup_timeout, args.inference_timeout, args.build_timeout) < 1:
         parser.error("Timeouts must be positive")
-    args.python_base_image = (
-        args.python_base_image or f"nvcr.io/nvidia/tritonserver:{args.triton_version}-py3"
-    )
-    args.vllm_image = (
-        args.vllm_image or f"nvcr.io/nvidia/tritonserver:{args.triton_version}-vllm-python-py3"
-    )
-    args.trtllm_image = (
-        args.trtllm_image or f"nvcr.io/nvidia/tritonserver:{args.triton_version}-trtllm-python-py3"
-    )
+    try:
+        for runtime, attribute in (
+            ("transformers", "python_base_image"),
+            ("vllm", "vllm_image"),
+            ("tensorrt-llm", "trtllm_image"),
+        ):
+            image = getattr(args, attribute)
+            setattr(
+                args,
+                attribute,
+                get_adapter(runtime).resolve_image(
+                    image=image, triton_version=None if image is not None else args.triton_version
+                ),
+            )
+    except ValueError as error:
+        parser.error(str(error))
     return args
 
 

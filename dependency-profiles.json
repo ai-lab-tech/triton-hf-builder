@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "profiles": [
+    {
+      "runtime": "transformers",
+      "image": "nvcr.io/nvidia/tritonserver:26.06-py3",
+      "release": "26.06",
+      "device": "cpu",
+      "status": "example_tested",
+      "installation": {
+        "kind": "isolated_python",
+        "python_version": "3.12",
+        "platform": "linux/amd64"
+      },
+      "requirements": [
+        "numpy==1.26.4",
+        "torch==2.9.0+cpu",
+        "transformers==4.57.1",
+        "safetensors==0.6.2",
+        "sentencepiece==0.2.1",
+        "protobuf==5.29.5"
+      ],
+      "package_indexes": ["https://download.pytorch.org/whl/cpu"],
+      "sources": [
+        {"url": "https://github.com/ai-lab-tech/triton-hf-builder/blob/056218650e70171ce5477b6a060ce0c893de188b/examples/docker/README.md#validation"},
+        {"url": "https://github.com/ai-lab-tech/triton-hf-builder/blob/056218650e70171ce5477b6a060ce0c893de188b/examples/docker/Dockerfile.serving"}
+      ],
+      "notes": [
+        "Tested only with the documented SmolLM2 CPU example on Linux x86_64 on 2026-10-30; other models and platforms require serving validation.",
+        "Install these pins in an isolated Python 3.12 environment and expose it to Triton's Python backend, as in the linked Dockerfile. Installing them into the base image's Python environment was not validated."
+      ]
+    }
+  ],
+  "image_corrections": [
+    {
+      "runtime": "tensorrt-llm",
+      "image": "nvcr.io/nvidia/tritonserver:26.06-trtllm-python-py3",
+      "requirements": ["openai==2.8.1"],
+      "sources": [
+        {"url": "https://github.com/triton-inference-server/server/blob/main/docs/getting_started/llm.md"},
+        {"url": "https://github.com/openai/openai-python/blob/v2.8.1/src/openai/types/responses/response_content_part_added_event.py"}
+      ],
+      "notes": ["The OpenAI SDK pin addresses the documented PartReasoningText import failure; it is our correction, not an NVIDIA-prescribed version or a full serving test."]
+    }
+  ]
+}

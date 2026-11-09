@@ -1,0 +1,173 @@
+{
+  "schema_version": 1,
+  "profiles": [
+    {
+      "runtime": "transformers",
+      "image": "nvcr.io/nvidia/tritonserver:26.06-py3",
+      "release": "26.06",
+      "device": "cpu",
+      "status": "example_tested",
+      "installation": {
+        "kind": "isolated_python",
+        "python_version": "3.12",
+        "platform": "linux/amd64"
+      },
+      "requirements": [
+        "numpy==1.26.4",
+        "torch==2.9.0+cpu",
+        "transformers==4.57.1",
+        "safetensors==0.6.2",
+        "sentencepiece==0.2.1",
+        "protobuf==5.29.5"
+      ],
+      "package_indexes": [
+        "https://download.pytorch.org/whl/cpu"
+      ],
+      "sources": [
+        {
+          "url": "https://github.com/ai-lab-tech/triton-hf-builder/blob/056218650e70171ce5477b6a060ce0c893de188b/examples/docker/README.md#validation"
+        },
+        {
+          "url": "https://github.com/ai-lab-tech/triton-hf-builder/blob/056218650e70171ce5477b6a060ce0c893de188b/examples/docker/Dockerfile.serving"
+        }
+      ],
+      "notes": [
+        "Tested only with the documented SmolLM2 CPU example on Linux x86_64 on 2026-10-30; other models and platforms require serving validation.",
+        "Install these pins in an isolated Python 3.12 environment and expose it to Triton's Python backend, as in the linked Dockerfile. Installing them into the base image's Python environment was not validated."
+      ]
+    },
+    {
+      "runtime": "tensorrt-llm",
+      "image": "nvcr.io/nvidia/tritonserver:26.06-trtllm-python-py3",
+      "release": "26.06",
+      "device": "gpu",
+      "status": "manufacturer_documented",
+      "requirements": [
+        "openai==2.8.1"
+      ],
+      "package_indexes": [],
+      "environment": {
+        "engine_version": "1.2.1",
+        "python_version": "Python 3.12.3",
+        "cuda_version": "13.1.0.036",
+        "driver_version_reported": "590.44.01"
+      },
+      "sources": [
+        {
+          "url": "https://github.com/triton-inference-server/server/blob/eb74dea5d400b92f54eacbd5f3f84903c786e4cd/docs/introduction/compatibility.md",
+          "ref": "main",
+          "commit": "eb74dea5d400b92f54eacbd5f3f84903c786e4cd",
+          "sha256": "514d7e8a54526e6491428a1c76dfe7528c1e0fb92c3077aa9d1699a8893bec70"
+        },
+        {
+          "url": "https://github.com/triton-inference-server/server/blob/main/docs/getting_started/llm.md"
+        },
+        {
+          "url": "https://github.com/openai/openai-python/blob/v2.8.1/src/openai/types/responses/response_content_part_added_event.py"
+        }
+      ],
+      "notes": [
+        "Retain the engine and framework stack supplied by this image. Manufacturer documentation does not establish builder serving validation.",
+        "The OpenAI SDK pin addresses the documented PartReasoningText import failure; it is our correction, not an NVIDIA-prescribed version or a full serving test."
+      ]
+    },
+    {
+      "runtime": "vllm",
+      "image": "nvcr.io/nvidia/tritonserver:26.06-vllm-python-py3",
+      "release": "26.06",
+      "device": "gpu",
+      "status": "manufacturer_documented",
+      "requirements": [],
+      "package_indexes": [],
+      "environment": {
+        "engine_version": "0.22.1+7b9cb5b7.nv26.6.55098374",
+        "python_version": "Python 3.12.3",
+        "cuda_version": "13.3.0.035",
+        "driver_version_reported": "610.43.02"
+      },
+      "sources": [
+        {
+          "url": "https://github.com/triton-inference-server/server/blob/eb74dea5d400b92f54eacbd5f3f84903c786e4cd/docs/introduction/compatibility.md",
+          "ref": "main",
+          "commit": "eb74dea5d400b92f54eacbd5f3f84903c786e4cd",
+          "sha256": "514d7e8a54526e6491428a1c76dfe7528c1e0fb92c3077aa9d1699a8893bec70"
+        }
+      ],
+      "notes": [
+        "Retain the engine and framework stack supplied by this image. Manufacturer documentation does not establish builder serving validation."
+      ]
+    },
+    {
+      "runtime": "tensorrt-llm",
+      "image": "nvcr.io/nvidia/tritonserver:26.07-trtllm-python-py3",
+      "release": "26.07",
+      "device": "gpu",
+      "status": "manufacturer_documented",
+      "requirements": [],
+      "package_indexes": [],
+      "environment": {
+        "engine_version": "1.2.1",
+        "python_version": "Python 3.12.3",
+        "cuda_version": "13.1.0.036",
+        "driver_version_reported": "590.44.01"
+      },
+      "sources": [
+        {
+          "url": "https://github.com/triton-inference-server/server/blob/eb74dea5d400b92f54eacbd5f3f84903c786e4cd/docs/introduction/compatibility.md",
+          "ref": "main",
+          "commit": "eb74dea5d400b92f54eacbd5f3f84903c786e4cd",
+          "sha256": "514d7e8a54526e6491428a1c76dfe7528c1e0fb92c3077aa9d1699a8893bec70"
+        }
+      ],
+      "notes": [
+        "Retain the engine and framework stack supplied by this image. Manufacturer documentation does not establish builder serving validation."
+      ]
+    },
+    {
+      "runtime": "vllm",
+      "image": "nvcr.io/nvidia/tritonserver:26.09-vllm-python-py3",
+      "release": "26.09",
+      "device": "gpu",
+      "status": "manufacturer_documented",
+      "requirements": [],
+      "package_indexes": [],
+      "environment": {
+        "engine_version": "0.29.0+3b480f30.nv26.9.68265578",
+        "python_version": "Python 3.12.3",
+        "cuda_version": "13.4.1.012",
+        "driver_version_reported": "615.71.09"
+      },
+      "sources": [
+        {
+          "url": "https://github.com/triton-inference-server/server/blob/eb74dea5d400b92f54eacbd5f3f84903c786e4cd/docs/introduction/compatibility.md",
+          "ref": "main",
+          "commit": "eb74dea5d400b92f54eacbd5f3f84903c786e4cd",
+          "sha256": "514d7e8a54526e6491428a1c76dfe7528c1e0fb92c3077aa9d1699a8893bec70"
+        }
+      ],
+      "notes": [
+        "Retain the engine and framework stack supplied by this image. Manufacturer documentation does not establish builder serving validation."
+      ]
+    }
+  ],
+  "image_corrections": [
+    {
+      "runtime": "tensorrt-llm",
+      "image": "nvcr.io/nvidia/tritonserver:26.06-trtllm-python-py3",
+      "requirements": [
+        "openai==2.8.1"
+      ],
+      "sources": [
+        {
+          "url": "https://github.com/triton-inference-server/server/blob/main/docs/getting_started/llm.md"
+        },
+        {
+          "url": "https://github.com/openai/openai-python/blob/v2.8.1/src/openai/types/responses/response_content_part_added_event.py"
+        }
+      ],
+      "notes": [
+        "The OpenAI SDK pin addresses the documented PartReasoningText import failure; it is our correction, not an NVIDIA-prescribed version or a full serving test."
+      ]
+    }
+  ]
+}

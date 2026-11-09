@@ -2,6 +2,7 @@
 
 import ast
 import json
+import re
 from dataclasses import dataclass
 from importlib.resources import files
 from pathlib import Path
@@ -17,11 +18,23 @@ class RuntimeAdapter:
     tasks: tuple[str, ...]
     model_template: str | None
     instance_kind: str | None
+    image_suffix: str
     gpu_required: bool = True
     tensor_parallel: bool = True
     max_model_len: bool = False
     default_requirements: tuple[str, ...] = ()
     managed_packages: frozenset[str] = frozenset()
+
+    def resolve_image(self, *, image: str | None, triton_version: str | None) -> str:
+        if (image is None) == (triton_version is None):
+            raise ValueError("Specify exactly one of triton_version or image")
+        if image is not None:
+            return image
+        if not isinstance(triton_version, str) or not re.fullmatch(
+            r"[0-9]{2}\.(?:0[1-9]|1[0-2])", triton_version
+        ):
+            raise ValueError("triton_version must use YY.MM format, for example '26.06'")
+        return f"nvcr.io/nvidia/tritonserver:{triton_version}-{self.image_suffix}"
 
     def validate(self, options: BuildOptions) -> None:
         if not self.tensor_parallel and options.tensor_parallel_size != 1:
@@ -73,35 +86,40 @@ def _write_template(name: str, target: Path) -> None:
 _ENGINE_PACKAGES = frozenset({"torch", "vllm", "tensorrt-llm", "tensorrt", "transformers", "numpy"})
 ADAPTERS = {
     "transformers": RuntimeAdapter(
-        "transformers",
-        TASKS,
-        "transformers_model.py",
-        None,
+        name="transformers",
+        tasks=TASKS,
+        model_template="transformers_model.py",
+        instance_kind=None,
+        image_suffix="py3",
         gpu_required=False,
         tensor_parallel=False,
         default_requirements=("numpy", "torch", "transformers>=4.51,<5", "safetensors"),
     ),
     "vllm": RuntimeAdapter(
-        "vllm",
-        ("text-generation",),
-        None,
-        "KIND_MODEL",
+        name="vllm",
+        tasks=("text-generation",),
+        model_template=None,
+        instance_kind="KIND_MODEL",
+        image_suffix="vllm-python-py3",
         max_model_len=True,
         managed_packages=_ENGINE_PACKAGES,
     ),
     # CPU scheduling starts one Python process; the LLM engine owns visible GPUs.
     "tensorrt-llm": RuntimeAdapter(
-        "tensorrt-llm",
-        ("text-generation",),
-        "trtllm_model.py",
-        "KIND_CPU",
+        name="tensorrt-llm",
+        tasks=("text-generation",),
+        model_template="trtllm_model.py",
+        instance_kind="KIND_CPU",
+        image_suffix="trtllm-python-py3",
         managed_packages=_ENGINE_PACKAGES,
     ),
 }
-RUNTIMES = tuple(ADAPTERS)
+RUNTIMES = ("python", *ADAPTERS)
 
 
 def get_adapter(runtime: str) -> RuntimeAdapter:
+    if runtime == "python":
+        runtime = "transformers"
     if not isinstance(runtime, str) or runtime not in ADAPTERS:
         raise ValueError(f"Runtime must be one of {RUNTIMES}")
     return ADAPTERS[runtime]

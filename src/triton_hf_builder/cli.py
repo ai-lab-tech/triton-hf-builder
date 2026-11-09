@@ -21,9 +21,18 @@ def main(argv=None):
     build.add_argument("source")
     build.add_argument("--output", required=True)
     build.add_argument("--name", required=True)
-    build.add_argument("--runtime", choices=RUNTIMES, required=True)
     build.add_argument(
-        "--image", required=True, help="Target serving image with explicit tag/digest"
+        "--runtime",
+        choices=RUNTIMES,
+        required=True,
+        help="Serving runtime; python uses the Transformers adapter",
+    )
+    destination = build.add_mutually_exclusive_group(required=True)
+    destination.add_argument(
+        "--triton-version", help="Triton release, e.g. 26.06; selects the image for --runtime"
+    )
+    destination.add_argument(
+        "--image", help="Explicit serving image instead of --triton-version (tag/digest required)"
     )
     build.add_argument("--task", choices=TASKS)
     build.add_argument("--device", choices=("cpu", "gpu"), default="gpu")

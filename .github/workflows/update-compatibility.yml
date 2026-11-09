@@ -48,6 +48,7 @@ jobs:
           delete-branch: true
           add-paths: |
             compatibility.json
+            src/triton_hf_builder/dependency_profiles.json
             README.md
           commit-message: 'docs: refresh manufacturer compatibility catalog'
           title: 'Update manufacturer image and architecture compatibility'

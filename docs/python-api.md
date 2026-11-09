@@ -17,13 +17,35 @@ assets into a new Triton model repository. Generation does not start a server,
 install dependencies or run inference. Arguments after `source` and `output`
 must be passed by keyword.
 
+Choose the serving runtime and Triton release; the builder selects the official
+image variant and its bundled dependency profile:
+
+```python
+from triton_hf_builder import generate_repository
+
+result = generate_repository(
+    "/workspace/hf-checkpoint", "/workspace/model_repository",
+    name="my_model", runtime="vllm", triton_version="26.06",
+)
+print(result.manifest["image"])
+# nvcr.io/nvidia/tritonserver:26.06-vllm-python-py3
+```
+
+The code-server can run in `26.06-py3` or any other environment with the builder
+installed. Only the destination runtime controls generated serving files.
+For Transformers through Triton's Python backend, use `runtime="python"`
+(`"transformers"` remains supported). Set `device="cpu"` for CPU serving.
+For custom images or digest references, replace `triton_version` with
+`image="my/serving:tag"`. Supply exactly one of these two options.
+
 | Parameter | Default | Meaning |
 | --- | --- | --- |
 | `source: str \| Path` | Required | Local HF checkpoint directory with `config.json`, supported weights and tokenizer files. Use a downloaded directory, not a Hugging Face model ID or URL. |
 | `output: str \| Path` | Required | New repository root. Must not exist and must be outside `source`. Missing parent directories are created. |
 | `name: str` | Required | Triton model name and subdirectory name. Start with a letter or digit; then use letters, digits, `_` or `-`. |
-| `runtime: str` | Required | `transformers`, `vllm` or `tensorrt-llm`. See the task support table below. |
-| `image: str` | Required | Target serving image with an explicit tag or SHA-256 digest. `latest` is rejected. This is recorded in the manifest; the builder does not pull or inspect it. |
+| `runtime: str` | Required | `python` (alias for `transformers`), `transformers`, `vllm` or `tensorrt-llm`. The manifest records the canonical adapter name. |
+| `triton_version: str \| None` | `None` | Destination release in `YY.MM` format, e.g. `"26.06"`. Selects the official image for the runtime. Required unless `image` is supplied. |
+| `image: str \| None` | `None` | Explicit destination image instead of `triton_version`, with a tag or SHA-256 digest. `latest` is rejected. The builder does not pull or inspect it. |
 | `task: str \| None` | `None` | Infer from checkpoint metadata. If ambiguous, choose `text-generation`, `text2text-generation`, `text-classification` or `feature-extraction`. Engine runtimes accept only `text-generation`. |
 | `device: str` | `"gpu"` | Serving device: `cpu` or `gpu`. CPU is supported only by `transformers`. This does not select a GPU index or require a GPU on the build machine. |
 | `requirements: Sequence[str]` | `()` | Optional serving package overrides or additions, for example `["transformers==4.57.1"]`. Omit this to use automatic defaults. An empty sequence still includes defaults. |
@@ -34,6 +56,10 @@ must be passed by keyword.
 Integer options must be positive integers; booleans and fractional values are
 rejected. An explicit `task` must agree with recognized architecture metadata,
 except that `feature-extraction` may be selected explicitly for Transformers.
+Selecting a release constructs the standard image reference; it does not check
+registry availability. Uncataloged releases retain the existing warning and
+fallback behavior. `serving.json` records the resolved `image` and the requested
+`triton_version` (or `null` when an explicit image was supplied).
 
 The returned `BuildResult` contains:
 
@@ -120,9 +146,33 @@ a forced process termination can leave a `.triton-hf-*` temporary directory.
 
 ## Serving dependencies
 
-**Start by omitting `requirements`.** You do not need to know package versions
-to generate your first repository. Dependencies come from the selected runtime's
-built-in defaults, with a small tokenizer-based addition:
+**Start by omitting `requirements`.** The builder looks up the exact destination
+image, runtime and device in a dependency catalog shipped inside the package.
+Generation performs no internet lookup, image pull or inspection of the builder's
+installed libraries. References containing a digest require an explicitly
+cataloged match, even when a tag is also present: the digest selects the actual
+image. Mirrors, custom images and other releases are not guessed.
+
+The bundled catalog currently includes:
+
+| Destination | Dependency profile |
+| --- | --- |
+| `26.06-py3`, Transformers, CPU | Pins from the documented Linux x86_64 SmolLM2 example: NumPy 1.26.4, Torch 2.9.0+cpu, Transformers 4.57.1, Safetensors 0.6.2, SentencePiece 0.2.1 and Protobuf 5.29.5. The generated file includes the CPU wheel index. |
+| Tracked official vLLM / TensorRT-LLM images | Retains each image's own engine/framework stack, records its published engine, Python and CUDA versions and applies reviewed image corrections. |
+
+The current bundled profiles cover official `nvcr.io/nvidia/tritonserver:` images. A shared
+release number does not transfer dependency rules between backend variants.
+The CPU example profile is not used for GPU builds. `example_tested` describes
+the documented example only; `manufacturer_documented` describes published image
+facts. Neither means the newly generated repository passed serving validation.
+The CPU example used an isolated Python 3.12 environment on `linux/amd64`, exposed
+to Triton's Python backend through `PYTHONPATH`. Its `installation` metadata and
+generated README preserve that condition. Follow the profile's linked Dockerfile;
+installing those pins directly into the base image's Python environment was not
+validated.
+
+For an unknown combination, generation continues with the following runtime
+defaults and adds an explicit warning to `serving.json`:
 
 | Runtime | Automatically generated requirements |
 | --- | --- |
@@ -142,7 +192,9 @@ digest-only references are not guessed. For a custom image derived from this bas
 pass the same requirement explicitly. An explicit unconditional `openai` requirement
 overrides this default, as with other dependency overrides.
 
-The builder always writes `requirements.txt`. You can inspect it before deploying:
+The builder always writes `requirements.txt`. `serving.json` records the selected
+baseline in `dependency_profile` (or `null`), its sources, limitations and any
+`package_indexes`. You can inspect the generated file before deploying:
 
 ```python
 print((result.repository / "requirements.txt").read_text())
@@ -163,6 +215,8 @@ name replace earlier ones. Conditional declarations such as
 `'some-package==1.0; sys_platform == "linux"'` are retained alongside defaults;
 they do not remove mandatory packages on other platforms. URL requirements,
 multiline declarations and pip command-line options are rejected.
+Profile rules extend the adapter's required dependencies; a partial profile does
+not remove libraries the adapter needs.
 
 For engine runtimes, overrides of `torch`, `vllm`, `tensorrt-llm`, `tensorrt`,
 `transformers` and `numpy` are rejected to preserve the specialized image's stack.
@@ -171,7 +225,7 @@ Other extra packages may be supplied, but their compatibility still needs testin
 ### What automatic defaults do and do not guarantee
 
 `requirements.txt` contains **serving dependencies**, never a freeze of the
-machine running the generator. Transformers builds start with `numpy`, `torch`,
+machine running the generator. Unprofiled Transformers builds start with `numpy`, `torch`,
 `transformers>=4.51,<5`, and `safetensors`. This initial pipeline adapter targets
 Transformers 4.x. SentencePiece vocabularies add `sentencepiece`.
 Supply version overrides or extra packages with repeated `--requirement` options.

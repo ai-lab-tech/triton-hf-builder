@@ -42,7 +42,7 @@ version = {attr = "triton_hf_builder._version.__version__"}
 where = ["src"]
 
 [tool.setuptools.package-data]
-triton_hf_builder = ["templates/*.py"]
+triton_hf_builder = ["templates/*.py", "dependency_profiles.json"]
 
 [tool.ruff]
 line-length = 100

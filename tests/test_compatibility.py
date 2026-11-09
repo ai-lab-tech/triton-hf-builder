@@ -159,6 +159,9 @@ class CompatibilityTests(unittest.TestCase):
             ),
             ("requirements", ["torch==2.9.0\nother==1"], "single-line"),
             ("requirements", ["torch @ https://example.com/torch.whl"], "URLs"),
+            ("package_find_links", ["file:///tmp/wheels"], "HTTPS"),
+            ("package_find_links", ["https://user:password@example.org/"], "credentials"),
+            ("package_find_links", "https://example.org", "list"),
             ("status", "verified", "status"),
             ("sources", [], "source URLs"),
         ]

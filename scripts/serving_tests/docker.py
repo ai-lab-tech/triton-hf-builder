@@ -40,15 +40,7 @@ def build_serving_image(args, runtime, repository, image, base_image, directory,
         Path(__file__).resolve().parents[1] / "verify_requirements.py",
         context / "verify_requirements.py",
     )
-    index_option = '--extra-index-url "${TORCH_INDEX_URL}" ' if runtime == "transformers" else ""
-    (context / "Dockerfile").write_text(
-        Path(__file__)
-        .with_name("Dockerfile.serving")
-        .read_text(encoding="utf-8")
-        .replace("@INDEX_OPTION@", index_option),
-        encoding="utf-8",
-    )
-    index = "https://download.pytorch.org/whl/" + ("cpu" if args.device == "cpu" else "cu130")
+    shutil.copy2(Path(__file__).with_name("Dockerfile.serving"), context / "Dockerfile")
     command(
         [
             "docker",
@@ -57,8 +49,6 @@ def build_serving_image(args, runtime, repository, image, base_image, directory,
             image,
             "--build-arg",
             f"BASE_IMAGE={base_image}",
-            "--build-arg",
-            f"TORCH_INDEX_URL={index}",
             "--build-arg",
             f"E2E_CASE_ID={directory.parent.name}/{runtime}/{directory.name}",
             context,

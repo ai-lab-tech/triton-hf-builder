@@ -194,7 +194,8 @@ overrides this default, as with other dependency overrides.
 
 The builder always writes `requirements.txt`. `serving.json` records the selected
 baseline in `dependency_profile` (or `null`), its sources, limitations and any
-`package_find_links` (package-specific wheel pages); `package_indexes` is empty.
+`package_find_links` (wheel pages) and `package_indexes` (additional indexes).
+Both source lists are preserved in the generated requirements file.
 CPU targets without a bundled profile require an exact Torch override such as
 `requirements=["torch==2.9.0"]`, which selects `torch==2.9.0+cpu`.
 Explicit CUDA build pins are preserved; GPU targets reject CPU-only pins. You can inspect the generated file before deploying:

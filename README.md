@@ -182,6 +182,6 @@ Explicit build labels are preserved; GPU serving rejects CPU-only pins.
 Unpinned GPU dependencies still need validation in the serving image.
 
 Install the generated `requirements.txt` to retain its wheel sources, or pass
-both `requirements` and `package_find_links` from `serving.json`.
+`requirements`, `package_indexes` and `package_find_links` from `serving.json`.
 Custom builds need their own source. Compatible image packages can be reused
 when the install environment exposes them; differing pins require installation.

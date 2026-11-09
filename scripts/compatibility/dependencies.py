@@ -34,14 +34,23 @@ def _validate_profile(profile):
         raise ValueError("Dependency profiles need a CPU or GPU device")
     if profile.get("status") not in {"manufacturer_documented", "example_tested"}:
         raise ValueError("Unknown dependency profile status")
-    if not isinstance(profile.get("package_indexes"), list):
-        raise ValueError("Dependency package_indexes must be a list")
-    for url in profile["package_indexes"]:
-        if not isinstance(url, str) or any(c.isspace() for c in url):
-            raise ValueError("Package indexes must be single HTTPS URLs")
-        parsed = urlsplit(url)
-        if parsed.scheme != "https" or not parsed.hostname or parsed.username or parsed.password:
-            raise ValueError("Package indexes must be HTTPS URLs without credentials")
+    for field in ("package_indexes", "package_find_links"):
+        urls = profile.get(field, [] if field == "package_find_links" else None)
+        if not isinstance(urls, list):
+            raise ValueError(f"Dependency {field} must be a list")
+        for url in urls:
+            if not isinstance(url, str) or any(c.isspace() for c in url):
+                raise ValueError("Package indexes and wheel sources must be single HTTPS URLs")
+            parsed = urlsplit(url)
+            if (
+                parsed.scheme != "https"
+                or not parsed.hostname
+                or parsed.username
+                or parsed.password
+            ):
+                raise ValueError(
+                    "Package indexes and wheel sources must be HTTPS URLs without credentials"
+                )
 
 
 def _profile_key(profile):

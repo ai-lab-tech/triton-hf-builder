@@ -20,9 +20,7 @@
         "sentencepiece==0.2.1",
         "protobuf==5.29.5"
       ],
-      "package_indexes": [
-        "https://download.pytorch.org/whl/cpu"
-      ],
+      "package_indexes": [],
       "sources": [
         {
           "url": "https://github.com/ai-lab-tech/triton-hf-builder/blob/056218650e70171ce5477b6a060ce0c893de188b/examples/docker/README.md#validation"
@@ -34,6 +32,9 @@
       "notes": [
         "Tested only with the documented SmolLM2 CPU example on Linux x86_64 on 2026-10-30; other models and platforms require serving validation.",
         "Install these pins in an isolated Python 3.12 environment and expose it to Triton's Python backend, as in the linked Dockerfile. Installing them into the base image's Python environment was not validated."
+      ],
+      "package_find_links": [
+        "https://download.pytorch.org/whl/cpu/torch/"
       ]
     },
     {

@@ -173,3 +173,15 @@ Real GPU serving tests are opt-in; follow the [test guide](https://github.com/ai
 [Apache-2.0 license](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/LICENSE) · [Licensing and test models](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/docs/licensing.md) ·
 [Security policy](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/SECURITY.md) · [Code of Conduct](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/CODE_OF_CONDUCT.md)
 Model weights and serving engines retain their own licenses.
+
+### Serving wheel selection
+
+CPU serving requires an exact Torch version from an image profile or
+`--requirement 'torch==<version>'`; bare version pins become `+cpu`.
+Explicit build labels are preserved; GPU serving rejects CPU-only pins.
+Unpinned GPU dependencies still need validation in the serving image.
+
+Install the generated `requirements.txt` to retain its wheel sources, or pass
+both `requirements` and `package_find_links` from `serving.json`.
+Custom builds need their own source. Compatible image packages can be reused
+when the install environment exposes them; differing pins require installation.

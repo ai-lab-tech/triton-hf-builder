@@ -27,7 +27,7 @@ class ValidationTests(ModelFixture):
         self.assertIn("sentencepiece==0.2.1", result.manifest["requirements"])
         self.assertNotIn("sentencepiece", result.manifest["requirements"])
         content = (result.repository / "requirements.txt").read_text()
-        self.assertIn("--extra-index-url https://download.pytorch.org/whl/cpu", content)
+        self.assertIn("--find-links https://download.pytorch.org/whl/cpu/torch/", content)
 
     def test_cpu_profile_records_installation_scope_without_claiming_serving_validation(self):
         # Arrange
@@ -142,6 +142,7 @@ class ValidationTests(ModelFixture):
                     runtime=runtime,
                     image=image,
                     device=device,
+                    requirements=["torch==2.9.0"] if runtime == "transformers" else (),
                 )
                 # Assert
                 self.assertIsNone(result.manifest["dependency_profile"])
@@ -221,7 +222,9 @@ class ValidationTests(ModelFixture):
         result = self.build(requirements=requirements)
         # Assert
         self.assertIn("torch", result.manifest["requirements"])
-        self.assertIn(requirements[0], result.manifest["requirements"])
+        self.assertIn(
+            'torch!=2.9.0+cpu,==2.9.0; sys_platform == "win32"', result.manifest["requirements"]
+        )
 
     def test_platform_alternatives_are_preserved(self):
         # Arrange

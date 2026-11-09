@@ -86,7 +86,7 @@ assert not {"torch", "transformers", "vllm", "tensorrt_llm"}.intersection(sys.mo
 
     def test_transformers_requirements_override_and_cpu(self):
         # Arrange
-        dependencies = ["transformers==4.57.1", "sentencepiece==0.2.1"]
+        dependencies = ["torch==2.9.0", "transformers==4.57.1", "sentencepiece==0.2.1"]
 
         # Act
         result = self.build(device="cpu", requirements=dependencies)

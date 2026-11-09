@@ -54,10 +54,10 @@
       },
       "sources": [
         {
-          "url": "https://github.com/triton-inference-server/server/blob/eb74dea5d400b92f54eacbd5f3f84903c786e4cd/docs/introduction/compatibility.md",
+          "url": "https://github.com/triton-inference-server/server/blob/f40e8b90419b0ee98c3644a5341404b21ab1b51c/docs/introduction/compatibility.md",
           "ref": "main",
-          "commit": "eb74dea5d400b92f54eacbd5f3f84903c786e4cd",
-          "sha256": "514d7e8a54526e6491428a1c76dfe7528c1e0fb92c3077aa9d1699a8893bec70"
+          "commit": "f40e8b90419b0ee98c3644a5341404b21ab1b51c",
+          "sha256": "63d8557c2863a287d80bef16defdb8535508bb0e4ff8a82f3cbd6bd8062a6880"
         },
         {
           "url": "https://github.com/triton-inference-server/server/blob/main/docs/getting_started/llm.md"
@@ -87,10 +87,10 @@
       },
       "sources": [
         {
-          "url": "https://github.com/triton-inference-server/server/blob/eb74dea5d400b92f54eacbd5f3f84903c786e4cd/docs/introduction/compatibility.md",
+          "url": "https://github.com/triton-inference-server/server/blob/f40e8b90419b0ee98c3644a5341404b21ab1b51c/docs/introduction/compatibility.md",
           "ref": "main",
-          "commit": "eb74dea5d400b92f54eacbd5f3f84903c786e4cd",
-          "sha256": "514d7e8a54526e6491428a1c76dfe7528c1e0fb92c3077aa9d1699a8893bec70"
+          "commit": "f40e8b90419b0ee98c3644a5341404b21ab1b51c",
+          "sha256": "63d8557c2863a287d80bef16defdb8535508bb0e4ff8a82f3cbd6bd8062a6880"
         }
       ],
       "notes": [
@@ -113,10 +113,10 @@
       },
       "sources": [
         {
-          "url": "https://github.com/triton-inference-server/server/blob/eb74dea5d400b92f54eacbd5f3f84903c786e4cd/docs/introduction/compatibility.md",
+          "url": "https://github.com/triton-inference-server/server/blob/f40e8b90419b0ee98c3644a5341404b21ab1b51c/docs/introduction/compatibility.md",
           "ref": "main",
-          "commit": "eb74dea5d400b92f54eacbd5f3f84903c786e4cd",
-          "sha256": "514d7e8a54526e6491428a1c76dfe7528c1e0fb92c3077aa9d1699a8893bec70"
+          "commit": "f40e8b90419b0ee98c3644a5341404b21ab1b51c",
+          "sha256": "63d8557c2863a287d80bef16defdb8535508bb0e4ff8a82f3cbd6bd8062a6880"
         }
       ],
       "notes": [
@@ -125,24 +125,24 @@
     },
     {
       "runtime": "vllm",
-      "image": "nvcr.io/nvidia/tritonserver:26.09-vllm-python-py3",
-      "release": "26.09",
+      "image": "nvcr.io/nvidia/tritonserver:26.10-vllm-python-py3",
+      "release": "26.10",
       "device": "gpu",
       "status": "manufacturer_documented",
       "requirements": [],
       "package_indexes": [],
       "environment": {
-        "engine_version": "0.29.0+3b480f30.nv26.9.68265578",
+        "engine_version": "0.31.0+8977dc6f.nv26.10.72757140",
         "python_version": "Python 3.12.3",
-        "cuda_version": "13.4.1.012",
+        "cuda_version": "13.4.3.001",
         "driver_version_reported": "615.71.09"
       },
       "sources": [
         {
-          "url": "https://github.com/triton-inference-server/server/blob/eb74dea5d400b92f54eacbd5f3f84903c786e4cd/docs/introduction/compatibility.md",
+          "url": "https://github.com/triton-inference-server/server/blob/f40e8b90419b0ee98c3644a5341404b21ab1b51c/docs/introduction/compatibility.md",
           "ref": "main",
-          "commit": "eb74dea5d400b92f54eacbd5f3f84903c786e4cd",
-          "sha256": "514d7e8a54526e6491428a1c76dfe7528c1e0fb92c3077aa9d1699a8893bec70"
+          "commit": "f40e8b90419b0ee98c3644a5341404b21ab1b51c",
+          "sha256": "63d8557c2863a287d80bef16defdb8535508bb0e4ff8a82f3cbd6bd8062a6880"
         }
       ],
       "notes": [

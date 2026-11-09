@@ -49,7 +49,11 @@ def prepare(data: Path) -> Path:
             for line in (repository / "requirements.txt").read_text().splitlines()
             if line.strip() and not line.lstrip().startswith("#")
         }
-        if requirements != set(REQUIREMENTS):
+        expected_requirements = {
+            *REQUIREMENTS,
+            "--find-links https://download.pytorch.org/whl/cpu/torch/",
+        }
+        if requirements != expected_requirements:
             raise ValueError("Existing demo requirements were changed; refusing to overwrite them")
         print(f"Reusing generated repository: {repository}", flush=True)
         return repository

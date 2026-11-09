@@ -29,6 +29,7 @@ class ModelConfigTests(ModelFixture):
                     runtime=runtime,
                     image="test:1",
                     device=device,
+                    requirements=["torch==2.9.0"] if runtime == "transformers" else (),
                 )
                 config = text_format.Parse(
                     (result.model_directory / "config.pbtxt").read_text(),

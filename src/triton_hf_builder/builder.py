@@ -12,7 +12,7 @@ from .dependency_profiles import dependency_profile
 from .inspector import TASKS, ModelInfo, inspect_model
 from .licensing import generator_license
 from .options import BuildOptions
-from .requirements import resolve_requirements
+from .requirements import resolve_requirements, serving_torch_requirements
 from .runtimes import RuntimeAdapter, get_adapter
 
 
@@ -72,9 +72,12 @@ def generate_repository(
         raise ValueError("Output must be outside the source model directory")
     profile = dependency_profile(adapter.name, image, device)
     deps = resolve_requirements(adapter, info.source, requirements, image=image, profile=profile)
+    deps, package_find_links = serving_torch_requirements(deps, device)
     manifest = _manifest(
         info, adapter, options, selected_task, deps, profile, triton_version=triton_version
     )
+    manifest["package_indexes"] = []
+    manifest["package_find_links"] = package_find_links
     output.parent.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix=".triton-hf-", dir=output.parent) as temporary:
         staging = Path(temporary) / "repository"
@@ -84,7 +87,7 @@ def generate_repository(
         adapter.write_artifacts(staging, options, selected_task)
         requirement_lines = [
             "# Extra serving dependencies; resolve and pin against the target image.",
-            *(f"--extra-index-url {url}" for url in manifest["package_indexes"]),
+            *(f"--find-links {url}" for url in manifest["package_find_links"]),
             *deps,
         ]
         (staging / "requirements.txt").write_text(

@@ -5,7 +5,6 @@ COPY examples/docker/requirements.generated.txt /tmp/demo-requirements.txt
 RUN python3 -m venv --without-pip /opt/triton-hf-demo
 RUN --mount=type=cache,id=triton-hf-demo-serving-pip,target=/root/.cache/pip \
     python3 -m pip --python /opt/triton-hf-demo install \
-      --extra-index-url https://download.pytorch.org/whl/cpu \
       -r /tmp/demo-requirements.txt \
     && python3 -m pip --python /opt/triton-hf-demo check
 

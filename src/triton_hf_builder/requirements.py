@@ -5,6 +5,7 @@ from pathlib import Path
 
 from packaging.requirements import InvalidRequirement, Requirement
 from packaging.utils import canonicalize_name
+from packaging.version import Version
 
 from .dependency_profiles import image_corrections
 from .runtimes import RuntimeAdapter
@@ -54,3 +55,49 @@ def resolve_requirements(
         else:
             unconditional[key] = normalized
     return [*unconditional.values(), *conditional.values()]
+
+
+TORCH_PACKAGES = frozenset({"torch", "torchvision", "torchaudio"})
+
+
+def serving_torch_requirements(requirements: list[str], device: str) -> tuple[list[str], list[str]]:
+    """Select CPU wheels from exact pins; preserve explicitly selected GPU builds.
+
+    Generation never inspects the builder host's installed packages. Unknown CPU
+    targets need an explicit version instead of guessing a compatible release.
+    """
+    resolved = []
+    sources = []
+    for value in requirements:
+        requirement = Requirement(value)
+        name = canonicalize_name(requirement.name)
+        if name not in TORCH_PACKAGES:
+            resolved.append(value)
+            continue
+        pins = [s for s in requirement.specifier if s.operator == "==" and "*" not in s.version]
+        if device == "cpu" and len(pins) != 1:
+            raise ValueError(
+                f"CPU serving requires an exact {name} version; "
+                f"select a supported image profile or pass {name}==<version>"
+            )
+        if len(pins) == 1:
+            pin = pins[0]
+            version = Version(pin.version)
+            local = version.local
+            if device == "gpu" and local == "cpu":
+                raise ValueError(f"GPU serving cannot use {name}=={version}; select a GPU build")
+            specifications = [str(s) for s in requirement.specifier if s != pin]
+            if device == "cpu" and local is None:
+                local = "cpu"
+                specifications.append(f"=={version.public}+cpu")
+            else:
+                specifications.append(str(pin))
+                if device == "gpu" and local is None:
+                    specifications.append(f"!={version.public}+cpu")
+            requirement.specifier = type(requirement.specifier)(",".join(specifications))
+            if local == "cpu" or (local and local.startswith("cu") and local[2:].isdigit()):
+                source = f"https://download.pytorch.org/whl/{local}/{name}/"
+                if source not in sources:
+                    sources.append(source)
+        resolved.append(str(requirement))
+    return resolved, sources

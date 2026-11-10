@@ -257,8 +257,11 @@ The workflow needs `contents: write` and `pull-requests: write`; its built-in
 The token is sent only to the GitHub API, never to raw-content downloads.
 
 PRs created with `GITHUB_TOKEN` normally do not trigger another PR workflow, so
-the updater runs unit tests, lint, formatting and offline catalog consistency
-checks itself before opening the PR. If branch protection requires ordinary PR
+the updater reinstalls the package after regenerating the catalog, then runs
+unit tests, lint, formatting and offline catalog consistency checks before
+opening the PR. The package-data test compares the installed catalog with its
+source inputs, so a stale installed snapshot fails validation.
+If branch protection requires ordinary PR
 CI, use an appropriately scoped GitHub App token for PR creation or arrange an
 explicit CI run; do not bypass required checks. These GitHub settings are not
 configured by adding workflow files. Scheduled runs may be delayed, and GitHub

@@ -37,6 +37,7 @@ jobs:
       - name: Validate generated update
         run: |
           python scripts/update_compatibility.py --check
+          python -m pip install --no-deps --force-reinstall .
           python -m unittest discover -s tests -v
           ruff check src scripts tests examples
           ruff format --check src scripts tests examples

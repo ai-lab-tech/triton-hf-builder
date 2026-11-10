@@ -118,7 +118,7 @@ include only non-hidden `.jinja` and `.jinja2` files.
 | `custom_code` | Whether model/tokenizer metadata declares custom code; generated adapters still disable it. |
 | `multimodal` | Whether recognized vision/audio configuration is present. |
 | `quantization` | Declared quantization method, or `None`; no compatibility validation is performed. |
-| `transformers_version` | Version recorded by the checkpoint, if present. It is informational and does not set dependencies automatically. |
+| `transformers_version` | Version recorded by the checkpoint, if present. Python/Transformers builds use it as the automatic Transformers pin unless explicitly overridden; engine runtimes retain their image's stack. |
 | `warnings` | Tuple of inspection warnings. |
 | `to_dict()` | Metadata dictionary with `source` converted to a string. |
 

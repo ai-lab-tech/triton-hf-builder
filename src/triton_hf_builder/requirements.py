@@ -16,6 +16,18 @@ def image_requirements(runtime: str, image: str) -> tuple[str, ...]:
     return image_corrections(runtime, image)
 
 
+def _parse_requirement(value: str) -> Requirement:
+    if not isinstance(value, str) or any(c in value for c in ("\n", "\r")):
+        raise ValueError("Each requirement must be one package specification")
+    try:
+        parsed = Requirement(value)
+    except InvalidRequirement as error:
+        raise ValueError(f"Invalid requirement: {value}") from error
+    if parsed.url:
+        raise ValueError("Use package version specifications, not URL requirements")
+    return parsed
+
+
 def resolve_requirements(
     adapter: RuntimeAdapter,
     source: Path,
@@ -34,17 +46,10 @@ def resolve_requirements(
     # Bundled profiles already include their image corrections. Apply those
     # separately only when no profile covers this image/device combination.
     defaults.extend(profile["requirements"] if profile else image_requirements(adapter.name, image))
+    parsed_extras = [_parse_requirement(value) for value in extras]
     unconditional: dict[str, str] = {}
     conditional: dict[str, str] = {}
-    for value in [*defaults, *extras]:
-        if not isinstance(value, str) or any(c in value for c in ("\n", "\r")):
-            raise ValueError("Each requirement must be one package specification")
-        try:
-            parsed = Requirement(value)
-        except InvalidRequirement as error:
-            raise ValueError(f"Invalid requirement: {value}") from error
-        if parsed.url:
-            raise ValueError("Use package version specifications, not URL requirements")
+    for parsed in [*(_parse_requirement(value) for value in defaults), *parsed_extras]:
         key = canonicalize_name(parsed.name)
         if key in adapter.managed_packages:
             raise ValueError(f"{key} must come from the selected {adapter.name} image")
@@ -57,7 +62,7 @@ def resolve_requirements(
             unconditional[key] = normalized
     explicit_transformers = any(
         canonicalize_name(parsed.name) == "transformers" and parsed.marker is None
-        for parsed in (Requirement(value) for value in extras)
+        for parsed in parsed_extras
     )
     if (
         adapter.name == "transformers"

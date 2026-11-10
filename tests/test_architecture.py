@@ -96,12 +96,17 @@ class ArchitectureTests(ModelFixture):
         # Arrange
         image = "nvcr.io/nvidia/tritonserver:26.06-vllm-python-py3"
         older = {**architecture_profile("vllm", image), "architectures": []}
+        newer_image = "test/vllm:newer"
+        newer = {
+            **architecture_profile("vllm", image),
+            "image": newer_image,
+            "engine_version": "99.0.0",
+        }
+        catalog = {"architecture_profiles": [older, newer]}
         # Act
-        with patch("triton_hf_builder.architecture.architecture_profile", return_value=older):
+        with patch("triton_hf_builder.dependency_profiles._catalog", return_value=catalog):
             old_result = check_architectures("vllm", image, ("LlamaForCausalLM",))
-        new_result = check_architectures(
-            "vllm", "nvcr.io/nvidia/tritonserver:26.09-vllm-python-py3", ("LlamaForCausalLM",)
-        )
+            new_result = check_architectures("vllm", newer_image, ("LlamaForCausalLM",))
         # Assert
         self.assertEqual(old_result["status"], "not_documented")
         self.assertEqual(new_result["status"], "upstream_documented")

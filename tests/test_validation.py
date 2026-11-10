@@ -1,3 +1,5 @@
+"""Validate dependency profiles, requirement overrides and generation options."""
+
 from unittest.mock import patch
 
 from test_builder import ModelFixture
@@ -325,6 +327,3 @@ class ValidationTests(ModelFixture):
             self.build(requirements=requirements)
         # Assert
         self.assertIn("sequence", str(error.exception))
-
-
-"""Validate dependency profiles, requirement overrides and generation options."""

@@ -4,6 +4,7 @@ import copy
 import json
 import sys
 import unittest
+from importlib.resources import files
 from pathlib import Path
 from unittest.mock import patch
 
@@ -230,8 +231,12 @@ class CompatibilityTests(unittest.TestCase):
         root = Path(__file__).resolve().parents[1]
         catalog = json.loads((root / "compatibility.json").read_text())
         curated = json.loads((root / "dependency-profiles.json").read_text())
-        bundled = json.loads((root / "src/triton_hf_builder/dependency_profiles.json").read_text())
         # Act
+        bundled = json.loads(
+            files("triton_hf_builder")
+            .joinpath("dependency_profiles.json")
+            .read_text(encoding="utf-8")
+        )
         expected = build_dependency_catalog(catalog, curated)
         # Assert
         self.assertEqual(bundled, expected)

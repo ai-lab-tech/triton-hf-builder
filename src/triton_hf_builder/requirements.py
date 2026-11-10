@@ -5,7 +5,7 @@ from pathlib import Path
 
 from packaging.requirements import InvalidRequirement, Requirement
 from packaging.utils import canonicalize_name
-from packaging.version import Version
+from packaging.version import InvalidVersion, Version
 
 from .dependency_profiles import image_corrections
 from .runtimes import RuntimeAdapter
@@ -16,6 +16,18 @@ def image_requirements(runtime: str, image: str) -> tuple[str, ...]:
     return image_corrections(runtime, image)
 
 
+def _parse_requirement(value: str) -> Requirement:
+    if not isinstance(value, str) or any(c in value for c in ("\n", "\r")):
+        raise ValueError("Each requirement must be one package specification")
+    try:
+        parsed = Requirement(value)
+    except InvalidRequirement as error:
+        raise ValueError(f"Invalid requirement: {value}") from error
+    if parsed.url:
+        raise ValueError("Use package version specifications, not URL requirements")
+    return parsed
+
+
 def resolve_requirements(
     adapter: RuntimeAdapter,
     source: Path,
@@ -23,8 +35,9 @@ def resolve_requirements(
     *,
     image: str = "",
     profile: dict | None = None,
+    transformers_version: str | None = None,
 ) -> list[str]:
-    """Apply adapter defaults, a selected profile and user overrides in that order."""
+    """Apply defaults, profile, model Transformers version and explicit overrides."""
     if isinstance(extras, (str, bytes)) or not isinstance(extras, Sequence):
         raise ValueError("Requirements must be a sequence of package specifications")
     defaults = list(adapter.default_requirements)
@@ -33,17 +46,10 @@ def resolve_requirements(
     # Bundled profiles already include their image corrections. Apply those
     # separately only when no profile covers this image/device combination.
     defaults.extend(profile["requirements"] if profile else image_requirements(adapter.name, image))
+    parsed_extras = [_parse_requirement(value) for value in extras]
     unconditional: dict[str, str] = {}
     conditional: dict[str, str] = {}
-    for value in [*defaults, *extras]:
-        if not isinstance(value, str) or any(c in value for c in ("\n", "\r")):
-            raise ValueError("Each requirement must be one package specification")
-        try:
-            parsed = Requirement(value)
-        except InvalidRequirement as error:
-            raise ValueError(f"Invalid requirement: {value}") from error
-        if parsed.url:
-            raise ValueError("Use package version specifications, not URL requirements")
+    for parsed in [*(_parse_requirement(value) for value in defaults), *parsed_extras]:
         key = canonicalize_name(parsed.name)
         if key in adapter.managed_packages:
             raise ValueError(f"{key} must come from the selected {adapter.name} image")
@@ -54,6 +60,25 @@ def resolve_requirements(
             conditional[normalized] = normalized
         else:
             unconditional[key] = normalized
+    explicit_transformers = any(
+        canonicalize_name(parsed.name) == "transformers" and parsed.marker is None
+        for parsed in parsed_extras
+    )
+    if (
+        adapter.name == "transformers"
+        and transformers_version is not None
+        and not explicit_transformers
+    ):
+        try:
+            if not isinstance(transformers_version, str):
+                raise InvalidVersion(str(transformers_version))
+            version = Version(transformers_version)
+        except InvalidVersion as error:
+            raise ValueError(
+                "Model transformers_version must be a valid package version; "
+                "pass an explicit transformers requirement to override it"
+            ) from error
+        unconditional["transformers"] = f"transformers=={version}"
     return [*unconditional.values(), *conditional.values()]
 
 

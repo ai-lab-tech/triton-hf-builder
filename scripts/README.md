@@ -157,7 +157,9 @@ workflow, not through an extra manual installation. See the
 ## Compatibility catalog maintenance
 
 The updater also generates `src/triton_hf_builder/dependency_profiles.json`, which
-is shipped in the wheel and read offline during repository generation. It combines
+is shipped in the wheel and read offline during repository generation. It includes
+versioned engine architecture profiles used to report model/image documentation
+matches and warnings in `serving.json`. It combines
 published engine image facts from `compatibility.json` with reviewed rules in
 the root `dependency-profiles.json`. Curated pins must include sources, a precise
 image/runtime/device scope, limitations and an honest validation status. New
@@ -170,12 +172,20 @@ Digest references must be cataloged explicitly; an accompanying tag is insuffici
 The documented Transformers CPU example supplies the initial pinned CPU profile;
 there is no equivalent tested GPU profile yet.
 
-After changing reviewed rules, rebuild the packaged snapshot without network:
+After changing `compatibility.json` or the reviewed rules in
+`dependency-profiles.json`, rebuild the packaged snapshot from the repository
+root without network:
 
 ```bash
 python scripts/update_compatibility.py --offline
 python scripts/update_compatibility.py --check
 ```
+
+`--offline` writes `src/triton_hf_builder/dependency_profiles.json` from those
+two saved inputs; it does not fetch newer manufacturer documentation or modify
+an already generated model repository's `serving.json`. Regenerate the model
+repository to apply the updated catalog. Package users receive the snapshot in
+the installed wheel and do not need this maintenance command.
 
 Normal refreshes update both catalogs, and the existing scheduled workflow proposes
 the bundled snapshot in the same review PR. `--check` validates both snapshots
@@ -234,8 +244,11 @@ Unchanged upstream files yield identical output, avoiding timestamp-only PRs.
 `.github/workflows/update-compatibility.yml` runs every Monday at 06:23 UTC and can
 also be started with **Actions → Update manufacturer compatibility → Run workflow**.
 Once the workflow is on the default branch, it updates the existing
-`automation/manufacturer-compatibility` PR or opens one when changes exist. Only
-`compatibility.json` and `README.md` are committed. It does not automatically merge.
+`automation/manufacturer-compatibility` PR or opens one when changes exist.
+The workflow runs `scripts/update_compatibility.py`, which fetches the upstream
+data and generates the packaged snapshot in the same run. The PR includes
+`compatibility.json`, `src/triton_hf_builder/dependency_profiles.json` and
+`README.md`; no separate `--offline` step is needed. It does not automatically merge.
 
 Enable **Settings → Actions → General → Workflow permissions → Allow GitHub
 Actions to create and approve pull requests** (the organization may control this).
@@ -244,8 +257,11 @@ The workflow needs `contents: write` and `pull-requests: write`; its built-in
 The token is sent only to the GitHub API, never to raw-content downloads.
 
 PRs created with `GITHUB_TOKEN` normally do not trigger another PR workflow, so
-the updater runs unit tests, lint, formatting and offline catalog consistency
-checks itself before opening the PR. If branch protection requires ordinary PR
+the updater reinstalls the package after regenerating the catalog, then runs
+unit tests, lint, formatting and offline catalog consistency checks before
+opening the PR. The package-data test compares the installed catalog with its
+source inputs, so a stale installed snapshot fails validation.
+If branch protection requires ordinary PR
 CI, use an appropriately scoped GitHub App token for PR creation or arrange an
 explicit CI run; do not bypass required checks. These GitHub settings are not
 configured by adding workflow files. Scheduled runs may be delayed, and GitHub

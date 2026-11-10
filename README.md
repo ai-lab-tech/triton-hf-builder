@@ -60,10 +60,11 @@ different backend; it does not need the serving engine installed.
 | `vllm` | `nvcr.io/nvidia/tritonserver:26.06-vllm-python-py3` |
 | `tensorrt-llm` | `nvcr.io/nvidia/tritonserver:26.06-trtllm-python-py3` |
 
-Generation stays offline. Unknown image/device combinations use dependency
-defaults with an explicit warning. For custom images, pass `image="my/serving:tag"`
-instead of `triton_version`. See the [Python API](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/docs/python-api.md)
-for overrides and all options.
+The builder generates files; deployment starts Triton in the selected image.
+To use your own existing serving image, pass its name and tag via `image`
+instead of `triton_version`. See the
+[Python API](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/docs/python-api.md)
+for dependency overrides.
 
 The equivalent CLI:
 

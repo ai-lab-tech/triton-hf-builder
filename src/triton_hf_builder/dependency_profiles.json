@@ -174,8 +174,8 @@
   "architecture_profiles": [
     {
       "runtime": "vllm",
-      "image": "nvcr.io/nvidia/tritonserver:26.09-vllm-python-py3",
-      "engine_version": "0.29.0+3b480f30.nv26.9.68265578",
+      "image": "nvcr.io/nvidia/tritonserver:26.10-vllm-python-py3",
+      "engine_version": "0.31.0+8977dc6f.nv26.10.72757140",
       "architecture_status": "upstream_documented",
       "architectures": [
         {
@@ -634,6 +634,13 @@
           "builder_test_status": "not_tested"
         },
         {
+          "architecture": "K2HorizonForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
           "architecture": "KimiLinearForCausalLM",
           "manufacturer_status": "documented",
           "modeling_backend": "native",
@@ -756,6 +763,13 @@
           "architecture": "MixtralForCausalLM",
           "manufacturer_status": "documented",
           "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "NanbeigeForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "transformers",
           "builder_scope": "text_generation_candidate",
           "builder_test_status": "not_tested"
         },
@@ -1020,10 +1034,10 @@
         }
       ],
       "model_source": {
-        "url": "https://github.com/vllm-project/vllm/blob/98dff2a81d747d1dba01a47f939f48c3526d4206/docs/models/supported_models.md",
-        "ref": "v0.29.0",
-        "commit": "98dff2a81d747d1dba01a47f939f48c3526d4206",
-        "sha256": "d982e37f455ad3771682904b12991d5728eec737264a9ba1596285c56cc0a0ee"
+        "url": "https://github.com/vllm-project/vllm/blob/db9527a46873454610df6dbedf79a36d6bf1a7f6/docs/models/supported_models.md",
+        "ref": "v0.31.0",
+        "commit": "db9527a46873454610df6dbedf79a36d6bf1a7f6",
+        "sha256": "138b999eef0259cb479047e59b22b183f58279eec7a1abd59ac52ab8729aec6b"
       },
       "version_match": "upstream_base_only"
     },

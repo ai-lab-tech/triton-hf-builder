@@ -12,7 +12,7 @@ files for Transformers, vLLM and TensorRT-LLM. Use it through the Python API,
 the `triton-hf` CLI, or the code-server extension in
 [Triton Control](https://github.com/ai-lab-tech/triton-control).
 
-[Python API](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/docs/python-api.md) · [Serving guide](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/docs/serving.md) ·
+[Examples](https://github.com/ai-lab-tech/triton-hf-builder/tree/main/examples) · [Python API](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/docs/python-api.md) · [Serving guide](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/docs/serving.md) ·
 [Serving tests](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/scripts/README.md) · [Contributing](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/CONTRIBUTING.md)
 
 ## Install

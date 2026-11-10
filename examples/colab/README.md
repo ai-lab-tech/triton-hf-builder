@@ -5,6 +5,10 @@
 Select a CPU runtime and run the cells in order: install the packages, download
 a pinned SmolLM2 checkpoint, inspect it and generate a Triton model repository.
 The last cell displays the configuration and validation status.
+The install cell pins `triton-hf-builder==0.1.4`, which supports the
+`runtime="python"` alias and `triton_version` argument used below. If you already
+imported an older builder in this session, restart the Colab runtime after
+installation and rerun the cells.
 Set `triton_version` and `runtime` to choose the destination image; the CPU
 example uses `triton_version="26.06"` and `runtime="python"`.
 

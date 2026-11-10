@@ -102,6 +102,16 @@ TensorRT-LLM uses the same layout with its own Python adapter. For vLLM,
 `my_model/1/model.json` replaces `model.py` and `settings.json`, and
 `prepare_repository.py` is added at the repository root.
 
+**Review `serving.json` before deployment.** It records the selected image,
+effective requirements, model metadata, architecture documentation checks,
+warnings and validation status. Keep it with the generated repository so deployment
+tools can read those settings. Successful generation means static checks passed;
+it does not mean dependencies were installed or inference was tested.
+For engine runtimes, inspect `architecture_compatibility` and `warnings`:
+missing documentation means support is unknown, and a documented architecture
+still needs a serving test. See the
+[manifest reference](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/docs/python-api.md#engine-architecture-checks).
+
 Deploy the `model_repository/` root to Triton after preparing its serving
 dependencies; generation alone does not validate inference.
 See the [serving guide](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/docs/serving.md) for deployment and vLLM path preparation.
@@ -141,6 +151,19 @@ Source: [NVIDIA image matrix](https://github.com/triton-inference-server/server/
 
 The catalog tracks 26.06 and the latest documented image per runtime. A weekly
 workflow proposes updates as PRs. [Maintenance and selection policy](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/scripts/README.md#compatibility-catalog-maintenance).
+
+For maintainers, after changing `compatibility.json` or the reviewed rules in
+`dependency-profiles.json`, rebuild and verify the packaged snapshot from the
+repository root:
+
+```bash
+python scripts/update_compatibility.py --offline
+python scripts/update_compatibility.py --check
+```
+
+This rebuilds `src/triton_hf_builder/dependency_profiles.json` from the saved
+inputs without fetching new upstream data. Do not edit that generated file
+directly. Normal package users do not need to run these commands.
 
 ## Try it on Colab CPU
 

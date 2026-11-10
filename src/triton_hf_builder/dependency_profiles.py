@@ -24,3 +24,10 @@ def image_corrections(runtime: str, image: str) -> tuple[str, ...]:
         if (correction["runtime"], correction["image"]) == (runtime, image):
             return tuple(correction["requirements"])
     return ()
+
+
+def architecture_profile(runtime: str, image: str) -> dict | None:
+    for profile in _catalog().get("architecture_profiles", []):
+        if (profile["runtime"], profile["image"]) == (runtime, image):
+            return profile
+    return None

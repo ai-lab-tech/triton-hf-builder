@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from ._version import __version__
+from .architecture import check_architectures
 from .artifacts import copy_assets, serving_readme
 from .dependency_profiles import dependency_profile
 from .inspector import TASKS, ModelInfo, inspect_model
@@ -71,7 +72,14 @@ def generate_repository(
     if output.resolve().is_relative_to(info.source):
         raise ValueError("Output must be outside the source model directory")
     profile = dependency_profile(adapter.name, image, device)
-    deps = resolve_requirements(adapter, info.source, requirements, image=image, profile=profile)
+    deps = resolve_requirements(
+        adapter,
+        info.source,
+        requirements,
+        image=image,
+        profile=profile,
+        transformers_version=info.transformers_version,
+    )
     deps, package_find_links = serving_torch_requirements(deps, device)
     manifest = _manifest(
         info, adapter, options, selected_task, deps, profile, triton_version=triton_version
@@ -140,6 +148,8 @@ def _manifest(
         "Runtime architecture, quantization and hardware compatibility require serving validation",
         "Requirements are not resolved or locked against the target image",
     ]
+    architecture = check_architectures(adapter.name, options.image, info.architectures)
+    warnings.extend(architecture["warnings"])
     if profile is None:
         warnings.append(
             "No bundled dependency profile matches this runtime, image and device; "
@@ -170,6 +180,7 @@ def _manifest(
         "requirements_file": "requirements.txt",
         "requirements": requirements,
         "dependency_profile": profile,
+        "architecture_compatibility": architecture,
         "package_indexes": profile["package_indexes"] if profile else [],
         "validation": {"static": "passed", "serving": "not_run", "dependencies": "unlocked"},
         "model": {key: value for key, value in info.to_dict().items() if key != "source"},

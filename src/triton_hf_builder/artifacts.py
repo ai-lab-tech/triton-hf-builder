@@ -65,6 +65,9 @@ Profile details, source links and package indexes are recorded in `serving.json`
 Check architecture, tokenizer, quantization, runtime versions and GPU memory in
 the target image. Requirements are starter specifications, not a resolved lock.
 Source Transformers version: {manifest["model"].get("transformers_version") or "unknown"}.
+Engine architecture documentation: {manifest["architecture_compatibility"]["status"]}.
+See `architecture_compatibility` and `warnings` in `serving.json` for versioned
+evidence and limitations; documented architectures still need serving validation.
 
 Python adapters accept one UTF-8 string in `text_input`, shape `[1]`, and return
 one UTF-8 string in `text_output`, shape `[1]`. Generation returns completion

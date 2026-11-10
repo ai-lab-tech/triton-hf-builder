@@ -153,6 +153,17 @@ installed libraries. References containing a digest require an explicitly
 cataloged match, even when a tag is also present: the digest selects the actual
 image. Mirrors, custom images and other releases are not guessed.
 
+For `python` / `transformers`, an unconditional explicit `transformers`
+requirement takes precedence. Otherwise, the builder uses
+`transformers==<transformers_version>` from the checkpoint's `config.json` when
+present, replacing the profile or adapter's Transformers constraint. If the
+field is absent, the profile/default applies. Invalid version metadata requires
+correction or an explicit Transformers override. Conditional requirements are
+preserved alongside the automatic pin. The model's version is a dependency
+selection hint, not proof that it works with the destination Python and PyTorch;
+installation and serving still need testing. Engine runtimes retain their image's
+framework stack and do not apply this model pin.
+
 The bundled catalog currently includes:
 
 | Destination | Dependency profile |
@@ -176,7 +187,7 @@ defaults and adds an explicit warning to `serving.json`:
 
 | Runtime | Automatically generated requirements |
 | --- | --- |
-| `transformers` | `numpy`, `torch`, `transformers>=4.51,<5`, `safetensors` |
+| `transformers` | `numpy`, `torch`, `transformers==<model version>` when declared (otherwise `transformers>=4.51,<5`), `safetensors` |
 | `vllm` / `tensorrt-llm` | No engine packages: use the engine stack already supplied by the specialized image. The requirements file can be empty apart from comments. |
 | Any runtime with `tokenizer.model` or `spiece.model` | Adds `sentencepiece`. |
 
@@ -230,8 +241,10 @@ Other extra packages may be supplied, but their compatibility still needs testin
 
 `requirements.txt` contains **serving dependencies**, never a freeze of the
 machine running the generator. Unprofiled Transformers builds start with `numpy`, `torch`,
-`transformers>=4.51,<5`, and `safetensors`. This initial pipeline adapter targets
-Transformers 4.x. SentencePiece vocabularies add `sentencepiece`.
+`transformers>=4.51,<5`, and `safetensors`, with the model's declared Transformers
+version replacing that constraint when present. This initial pipeline adapter
+targets Transformers 4.x; selecting a different major version does not certify
+adapter compatibility. SentencePiece vocabularies add `sentencepiece`.
 Supply version overrides or extra packages with repeated `--requirement` options.
 Specialized vLLM / TensorRT-LLM images provide their engine and framework packages;
 the builder rejects overrides for core engine packages in these modes.
@@ -241,6 +254,32 @@ inspect or pull images, resolve dependencies, infer every optional model package
 or certify CUDA compatibility. Resolve and pin packages in the target image,
 preserving its CUDA/framework stack. The Python version used by a custom
 execution environment must match Triton's Python backend stub.
+
+### Engine architecture checks
+
+For vLLM and TensorRT-LLM, the builder compares the checkpoint's `architectures`
+with the bundled, versioned model documentation for the exact selected image
+reference. No image is pulled or engine imported. Custom images and uncataloged
+digests do not inherit documentation from a similarly named tag.
+
+`serving.json` records the result in `architecture_compatibility`, including
+per-architecture evidence, the engine version, source URL and version-match
+limitations. Its overall `status` is:
+
+| Status | Meaning |
+| --- | --- |
+| `upstream_documented` | At least one declared architecture is documented as a text-generation candidate. This is not a serving test. |
+| `not_documented` | None of the declared architectures appears in the selected documentation; support is unverified. |
+| `outside_builder_scope` | An architecture is documented, but outside the catalog's builder text-generation scope, and no candidate matches. |
+| `unknown` | The image, versioned documentation or model architecture metadata is unavailable. |
+| `not_checked` | Python/Transformers backend; this engine catalog does not apply. |
+
+Missing entries produce warnings and allow generation. They are not proof of
+unsupported models: upstream fallback paths and custom images may work. Warnings
+also identify architectures documented through vLLM's Transformers modeling
+backend and documentation matching only an upstream base version of an NVIDIA
+build. Quantization, hardware, tokenizer and actual model loading remain subject
+to serving validation; `validation.serving` remains `not_run`.
 
 Triton itself does not install `requirements.txt`. Standalone deployments must
 install it before model loading or supply a compatible Python execution

@@ -133,6 +133,30 @@ class CompatibilityTests(unittest.TestCase):
         self.assertEqual(catalog, original_catalog)
         self.assertEqual(curated, original_curated)
 
+    def test_dependency_catalog_bundles_versioned_architecture_evidence(self):
+        # Arrange
+        catalog = build_catalog(FakeSources(), POLICY)
+        # Act
+        result = build_dependency_catalog(catalog, curated_rules())
+        # Assert
+        self.assertEqual(len(result["architecture_profiles"]), len(catalog["images"]))
+        for profile, row in zip(result["architecture_profiles"], catalog["images"]):
+            self.assertEqual(profile["architectures"], row["architectures"])
+            self.assertEqual(profile["model_source"], row["model_source"])
+            self.assertEqual(profile["version_match"], row["version_match"])
+
+    def test_unknown_engine_mapping_can_be_bundled_without_version_match(self):
+        # Arrange
+        catalog = build_catalog(FakeSources(), POLICY)
+        row = catalog["images"][0]
+        row.pop("version_match")
+        row.update(architecture_status="unknown", architectures=[], model_source=None)
+        # Act
+        result = build_dependency_catalog(catalog, curated_rules())
+        # Assert
+        self.assertIsNone(result["architecture_profiles"][0]["version_match"])
+        self.assertEqual(result["architecture_profiles"][0]["architecture_status"], "unknown")
+
     def test_reviewed_profile_extends_existing_engine_without_losing_source_facts(self):
         # Arrange
         catalog = build_catalog(FakeSources(), POLICY)

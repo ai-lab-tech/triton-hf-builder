@@ -132,4 +132,19 @@ def build_dependency_catalog(catalog, curated):
             profiles.values(), key=lambda p: (p["image"], p["runtime"], p["device"])
         ),
         "image_corrections": copy.deepcopy(curated["image_corrections"]),
+        "architecture_profiles": [
+            {
+                field: copy.deepcopy(row.get(field))
+                for field in (
+                    "runtime",
+                    "image",
+                    "engine_version",
+                    "architecture_status",
+                    "architectures",
+                    "model_source",
+                    "version_match",
+                )
+            }
+            for row in catalog["images"]
+        ],
     }

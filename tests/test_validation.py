@@ -50,9 +50,9 @@ class ValidationTests(ModelFixture):
         )
         self.assertIn("isolated Python 3.12", (result.repository / "README.md").read_text())
 
-    def test_checkpoint_transformers_version_does_not_override_profile(self):
+    def test_checkpoint_transformers_version_overrides_profile(self):
         # Arrange
-        self.config["transformers_version"] = "99.0.0"
+        self.config["transformers_version"] = "4.56.2"
         self.write_config()
         # Act
         result = generate_repository(
@@ -64,8 +64,78 @@ class ValidationTests(ModelFixture):
             triton_version="26.06",
         )
         # Assert
+        self.assertIn("transformers==4.56.2", result.manifest["requirements"])
+        self.assertEqual(result.manifest["model"]["transformers_version"], "4.56.2")
+        self.assertIn("transformers==4.56.2", (result.repository / "requirements.txt").read_text())
+
+    def test_explicit_transformers_requirement_overrides_model_version(self):
+        # Arrange
+        self.config["transformers_version"] = "4.56.2"
+        self.write_config()
+        # Act
+        result = generate_repository(
+            self.source,
+            self.root / "repository",
+            name="demo",
+            runtime="python",
+            device="cpu",
+            triton_version="26.06",
+            requirements=["transformers==4.57.1"],
+        )
+        # Assert
         self.assertIn("transformers==4.57.1", result.manifest["requirements"])
-        self.assertEqual(result.manifest["model"]["transformers_version"], "99.0.0")
+        self.assertNotIn("transformers==4.56.2", result.manifest["requirements"])
+
+    def test_engine_keeps_image_stack_despite_model_transformers_version(self):
+        # Arrange
+        self.config["transformers_version"] = "4.56.2"
+        self.write_config()
+        # Act
+        results = [
+            generate_repository(
+                self.source,
+                self.root / runtime,
+                name="demo",
+                runtime=runtime,
+                triton_version="26.06",
+            )
+            for runtime in ("vllm", "tensorrt-llm")
+        ]
+        # Assert
+        for result in results:
+            self.assertFalse(
+                any(r.startswith("transformers") for r in result.manifest["requirements"])
+            )
+
+    def test_invalid_automatic_model_version_fails_before_publication(self):
+        # Arrange
+        self.config["transformers_version"] = "4.57.1\nother-package"
+        self.write_config()
+        output = self.root / "repository"
+        # Act
+        with self.assertRaises(ValueError) as error:
+            generate_repository(
+                self.source, output, name="demo", runtime="python", triton_version="26.06"
+            )
+        # Assert
+        self.assertIn("transformers_version", str(error.exception))
+        self.assertFalse(output.exists())
+
+    def test_explicit_requirement_can_replace_invalid_model_version(self):
+        # Arrange
+        self.config["transformers_version"] = "invalid-version"
+        self.write_config()
+        # Act
+        result = generate_repository(
+            self.source,
+            self.root / "repository",
+            name="demo",
+            runtime="python",
+            triton_version="26.06",
+            requirements=["transformers==4.57.1"],
+        )
+        # Assert
+        self.assertIn("transformers==4.57.1", result.manifest["requirements"])
 
     def test_partial_profile_preserves_required_adapter_dependencies(self):
         # Arrange

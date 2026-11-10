@@ -5,7 +5,7 @@ from pathlib import Path
 
 from packaging.requirements import InvalidRequirement, Requirement
 from packaging.utils import canonicalize_name
-from packaging.version import Version
+from packaging.version import InvalidVersion, Version
 
 from .dependency_profiles import image_corrections
 from .runtimes import RuntimeAdapter
@@ -23,8 +23,9 @@ def resolve_requirements(
     *,
     image: str = "",
     profile: dict | None = None,
+    transformers_version: str | None = None,
 ) -> list[str]:
-    """Apply adapter defaults, a selected profile and user overrides in that order."""
+    """Apply defaults, profile, model Transformers version and explicit overrides."""
     if isinstance(extras, (str, bytes)) or not isinstance(extras, Sequence):
         raise ValueError("Requirements must be a sequence of package specifications")
     defaults = list(adapter.default_requirements)
@@ -54,6 +55,25 @@ def resolve_requirements(
             conditional[normalized] = normalized
         else:
             unconditional[key] = normalized
+    explicit_transformers = any(
+        canonicalize_name(parsed.name) == "transformers" and parsed.marker is None
+        for parsed in (Requirement(value) for value in extras)
+    )
+    if (
+        adapter.name == "transformers"
+        and transformers_version is not None
+        and not explicit_transformers
+    ):
+        try:
+            if not isinstance(transformers_version, str):
+                raise InvalidVersion(str(transformers_version))
+            version = Version(transformers_version)
+        except InvalidVersion as error:
+            raise ValueError(
+                "Model transformers_version must be a valid package version; "
+                "pass an explicit transformers requirement to override it"
+            ) from error
+        unconditional["transformers"] = f"transformers=={version}"
     return [*unconditional.values(), *conditional.values()]
 
 

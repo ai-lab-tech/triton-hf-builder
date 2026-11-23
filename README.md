@@ -139,12 +139,12 @@ Architecture support reported by the backend projects; individual models may req
 
 | Triton image | Backend | Supported architectures |
 | --- | --- | --- |
-| `26.10-vllm-python-py3` | vLLM | [120 candidates](https://github.com/vllm-project/vllm/blob/db9527a46873454610df6dbedf79a36d6bf1a7f6/docs/models/supported_models.md) † |
+| `26.11-vllm-python-py3` | vLLM | [126 candidates](https://github.com/vllm-project/vllm/blob/4ba787ec9959e566d3b587a796dff07673324da5/docs/models/supported_models.md) † |
 | `26.06-vllm-python-py3` | vLLM | [129 candidates](https://github.com/vllm-project/vllm/blob/0decac0d96c42b49572498019f0a0e3600f50398/docs/models/supported_models.md) † |
 | `26.07-trtllm-python-py3` | TensorRT-LLM | [18 candidates](https://github.com/NVIDIA/TensorRT-LLM/blob/376f7e1bd8ed543f75014309e3fd4b237e9b0e73/docs/source/models/supported-models.md) |
 | `26.06-trtllm-python-py3` | TensorRT-LLM | [18 candidates](https://github.com/NVIDIA/TensorRT-LLM/blob/376f7e1bd8ed543f75014309e3fd4b237e9b0e73/docs/source/models/supported-models.md) |
 
-Source: [NVIDIA image matrix](https://github.com/triton-inference-server/server/blob/f40e8b90419b0ee98c3644a5341404b21ab1b51c/docs/introduction/compatibility.md). † Upstream base version; NVIDIA build differs.
+Source: [NVIDIA image matrix](https://github.com/triton-inference-server/server/blob/16b5b73f108c94a495c58320846eff700c344b02/docs/introduction/compatibility.md). † Upstream base version; NVIDIA build differs.
 
 [Full catalog](https://github.com/ai-lab-tech/triton-hf-builder/blob/main/compatibility.json): architecture names, exact engine versions, CUDA and reported driver versions. See the linked backend documentation for quantization, GPU and feature requirements.
 

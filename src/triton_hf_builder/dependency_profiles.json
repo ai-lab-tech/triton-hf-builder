@@ -55,10 +55,10 @@
       },
       "sources": [
         {
-          "url": "https://github.com/triton-inference-server/server/blob/f40e8b90419b0ee98c3644a5341404b21ab1b51c/docs/introduction/compatibility.md",
+          "url": "https://github.com/triton-inference-server/server/blob/16b5b73f108c94a495c58320846eff700c344b02/docs/introduction/compatibility.md",
           "ref": "main",
-          "commit": "f40e8b90419b0ee98c3644a5341404b21ab1b51c",
-          "sha256": "63d8557c2863a287d80bef16defdb8535508bb0e4ff8a82f3cbd6bd8062a6880"
+          "commit": "16b5b73f108c94a495c58320846eff700c344b02",
+          "sha256": "19160d78341cbacfc312b4dd0a5eca0bce09670f3c16206c74dc390af54ef042"
         },
         {
           "url": "https://github.com/triton-inference-server/server/blob/main/docs/getting_started/llm.md"
@@ -88,10 +88,10 @@
       },
       "sources": [
         {
-          "url": "https://github.com/triton-inference-server/server/blob/f40e8b90419b0ee98c3644a5341404b21ab1b51c/docs/introduction/compatibility.md",
+          "url": "https://github.com/triton-inference-server/server/blob/16b5b73f108c94a495c58320846eff700c344b02/docs/introduction/compatibility.md",
           "ref": "main",
-          "commit": "f40e8b90419b0ee98c3644a5341404b21ab1b51c",
-          "sha256": "63d8557c2863a287d80bef16defdb8535508bb0e4ff8a82f3cbd6bd8062a6880"
+          "commit": "16b5b73f108c94a495c58320846eff700c344b02",
+          "sha256": "19160d78341cbacfc312b4dd0a5eca0bce09670f3c16206c74dc390af54ef042"
         }
       ],
       "notes": [
@@ -114,10 +114,10 @@
       },
       "sources": [
         {
-          "url": "https://github.com/triton-inference-server/server/blob/f40e8b90419b0ee98c3644a5341404b21ab1b51c/docs/introduction/compatibility.md",
+          "url": "https://github.com/triton-inference-server/server/blob/16b5b73f108c94a495c58320846eff700c344b02/docs/introduction/compatibility.md",
           "ref": "main",
-          "commit": "f40e8b90419b0ee98c3644a5341404b21ab1b51c",
-          "sha256": "63d8557c2863a287d80bef16defdb8535508bb0e4ff8a82f3cbd6bd8062a6880"
+          "commit": "16b5b73f108c94a495c58320846eff700c344b02",
+          "sha256": "19160d78341cbacfc312b4dd0a5eca0bce09670f3c16206c74dc390af54ef042"
         }
       ],
       "notes": [
@@ -126,24 +126,24 @@
     },
     {
       "runtime": "vllm",
-      "image": "nvcr.io/nvidia/tritonserver:26.10-vllm-python-py3",
-      "release": "26.10",
+      "image": "nvcr.io/nvidia/tritonserver:26.11-vllm-python-py3",
+      "release": "26.11",
       "device": "gpu",
       "status": "manufacturer_documented",
       "requirements": [],
       "package_indexes": [],
       "environment": {
-        "engine_version": "0.31.0+8977dc6f.nv26.10.72757140",
+        "engine_version": "0.33.0+908da4f6.nv26.11",
         "python_version": "Python 3.12.3",
-        "cuda_version": "13.4.3.001",
-        "driver_version_reported": "615.71.09"
+        "cuda_version": "13.5.0.025",
+        "driver_version_reported": "620.70.08"
       },
       "sources": [
         {
-          "url": "https://github.com/triton-inference-server/server/blob/f40e8b90419b0ee98c3644a5341404b21ab1b51c/docs/introduction/compatibility.md",
+          "url": "https://github.com/triton-inference-server/server/blob/16b5b73f108c94a495c58320846eff700c344b02/docs/introduction/compatibility.md",
           "ref": "main",
-          "commit": "f40e8b90419b0ee98c3644a5341404b21ab1b51c",
-          "sha256": "63d8557c2863a287d80bef16defdb8535508bb0e4ff8a82f3cbd6bd8062a6880"
+          "commit": "16b5b73f108c94a495c58320846eff700c344b02",
+          "sha256": "19160d78341cbacfc312b4dd0a5eca0bce09670f3c16206c74dc390af54ef042"
         }
       ],
       "notes": [
@@ -174,8 +174,8 @@
   "architecture_profiles": [
     {
       "runtime": "vllm",
-      "image": "nvcr.io/nvidia/tritonserver:26.10-vllm-python-py3",
-      "engine_version": "0.31.0+8977dc6f.nv26.10.72757140",
+      "image": "nvcr.io/nvidia/tritonserver:26.11-vllm-python-py3",
+      "engine_version": "0.33.0+908da4f6.nv26.11",
       "architecture_status": "upstream_documented",
       "architectures": [
         {
@@ -193,6 +193,13 @@
           "builder_test_status": "not_tested"
         },
         {
+          "architecture": "AliceAIForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
           "architecture": "ApertusForCausalLM",
           "manufacturer_status": "documented",
           "modeling_backend": "native",
@@ -202,7 +209,7 @@
         {
           "architecture": "ArceeForCausalLM",
           "manufacturer_status": "documented",
-          "modeling_backend": "native",
+          "modeling_backend": "transformers",
           "builder_scope": "text_generation_candidate",
           "builder_test_status": "not_tested"
         },
@@ -229,6 +236,13 @@
         },
         {
           "architecture": "BailingMoeV3ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "BeamForCausalLM",
           "manufacturer_status": "documented",
           "modeling_backend": "native",
           "builder_scope": "text_generation_candidate",
@@ -279,7 +293,7 @@
         {
           "architecture": "CwmForCausalLM",
           "manufacturer_status": "documented",
-          "modeling_backend": "native",
+          "modeling_backend": "transformers",
           "builder_scope": "text_generation_candidate",
           "builder_test_status": "not_tested"
         },
@@ -327,6 +341,20 @@
         },
         {
           "architecture": "DeepseekV4ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "DomynEdgeForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "DoryForCausalLM",
           "manufacturer_status": "documented",
           "modeling_backend": "native",
           "builder_scope": "text_generation_candidate",
@@ -403,6 +431,13 @@
           "builder_test_status": "not_tested"
         },
         {
+          "architecture": "FlintForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
           "architecture": "GPT2LMHeadModel",
           "manufacturer_status": "documented",
           "modeling_backend": "native",
@@ -426,7 +461,7 @@
         {
           "architecture": "GPTNeoXForCausalLM",
           "manufacturer_status": "documented",
-          "modeling_backend": "native",
+          "modeling_backend": "transformers",
           "builder_scope": "text_generation_candidate",
           "builder_test_status": "not_tested"
         },
@@ -489,7 +524,7 @@
         {
           "architecture": "GlmForCausalLM",
           "manufacturer_status": "documented",
-          "modeling_backend": "native",
+          "modeling_backend": "transformers",
           "builder_scope": "text_generation_candidate",
           "builder_test_status": "not_tested"
         },
@@ -622,7 +657,7 @@
         {
           "architecture": "Jais2ForCausalLM",
           "manufacturer_status": "documented",
-          "modeling_backend": "native",
+          "modeling_backend": "transformers",
           "builder_scope": "text_generation_candidate",
           "builder_test_status": "not_tested"
         },
@@ -644,6 +679,13 @@
           "architecture": "KimiLinearForCausalLM",
           "manufacturer_status": "documented",
           "modeling_backend": "native",
+          "builder_scope": "text_generation_candidate",
+          "builder_test_status": "not_tested"
+        },
+        {
+          "architecture": "Kolibri1ForCausalLM",
+          "manufacturer_status": "documented",
+          "modeling_backend": "transformers",
           "builder_scope": "text_generation_candidate",
           "builder_test_status": "not_tested"
         },
@@ -692,7 +734,7 @@
         {
           "architecture": "MellumForCausalLM",
           "manufacturer_status": "documented",
-          "modeling_backend": "native",
+          "modeling_backend": "transformers",
           "builder_scope": "text_generation_candidate",
           "builder_test_status": "not_tested"
         },
@@ -874,7 +916,7 @@
         {
           "architecture": "PhiForCausalLM",
           "manufacturer_status": "documented",
-          "modeling_backend": "native",
+          "modeling_backend": "transformers",
           "builder_scope": "text_generation_candidate",
           "builder_test_status": "not_tested"
         },
@@ -951,7 +993,7 @@
         {
           "architecture": "SeedOssForCausalLM",
           "manufacturer_status": "documented",
-          "modeling_backend": "native",
+          "modeling_backend": "transformers",
           "builder_scope": "text_generation_candidate",
           "builder_test_status": "not_tested"
         },
@@ -1034,10 +1076,10 @@
         }
       ],
       "model_source": {
-        "url": "https://github.com/vllm-project/vllm/blob/db9527a46873454610df6dbedf79a36d6bf1a7f6/docs/models/supported_models.md",
-        "ref": "v0.31.0",
-        "commit": "db9527a46873454610df6dbedf79a36d6bf1a7f6",
-        "sha256": "138b999eef0259cb479047e59b22b183f58279eec7a1abd59ac52ab8729aec6b"
+        "url": "https://github.com/vllm-project/vllm/blob/4ba787ec9959e566d3b587a796dff07673324da5/docs/models/supported_models.md",
+        "ref": "v0.33.0",
+        "commit": "4ba787ec9959e566d3b587a796dff07673324da5",
+        "sha256": "66c77abb76a21e3e184c49ef889be91debb43c823c45e7decce531d46d719134"
       },
       "version_match": "upstream_base_only"
     },
